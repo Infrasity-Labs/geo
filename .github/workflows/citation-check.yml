@@ -1,0 +1,33 @@
+name: citation-check
+
+on:
+  schedule:
+    - cron: "0 0,8,16,20 * * *"
+  workflow_dispatch:
+
+jobs:
+  run-citations:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip requests
+
+      - name: Run citation checks
+        run: python run.py
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: citation-logs
+          path: logs/

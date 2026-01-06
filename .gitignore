@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+.venv/
+venv/
+
+# Logs and outputs
+!logs/.gitkeep
+
+# Environment and secrets
+.env
+*.env
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Artifacts
+*.csv
+*.jsonl
+
+# GitHub Actions
+# (workflow logs are uploaded as artifacts, not committed)
+
+# Ignore master log and run outputs
+logs/master_log.jsonl
+logs/run_*.json
