@@ -218,6 +218,41 @@ def print_provider_summary(record: Dict) -> None:
         print(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
 
 
+def format_provider_block(record: Dict) -> str:
+    lines = [f"### Provider: {record.get('provider')} | Model: {record.get('model')}"]
+    for item in record.get("results", []):
+        prompt = item.get("prompt", "")
+        matches = item.get("matches", [])
+        if not matches:
+            lines.append(f"- prompt: {prompt} -> no target domains cited")
+            continue
+        parts = []
+        for match in matches:
+            ranks = match.get("ranks", [])
+            rank_str = f"ranks {ranks}" if ranks else "rank n/a"
+            parts.append(f"{match.get('domain')} ({match.get('count')}x, {rank_str})")
+        lines.append(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
+    return "\n".join(lines)
+
+
+def append_main_log(timestamp: str, provider_blocks: List[str]) -> None:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    path = LOG_DIR / "main_log.md"
+    header = "# Citation runs\n\n"
+    content = [f"## {timestamp}"]
+    content.extend(provider_blocks)
+    content.append("")
+    content.append("")
+    payload = "\n".join(content)
+    if not path.exists():
+        with path.open("w", encoding="utf-8") as handle:
+            handle.write(header)
+            handle.write(payload)
+    else:
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(payload)
+
+
 def log_run(record: Dict) -> None:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = record["timestamp"]
@@ -243,6 +278,8 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
     openai_caller = lambda prompt, key: call_openai_search(prompt, key, allowed_domains=targets)
+
+    provider_blocks: List[str] = []
 
     for provider, model, caller, key, mode in [
         ("openai", OPENAI_MODEL, openai_caller, openai_key, "llm"),
@@ -280,6 +317,9 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
         }
         log_run(record)
         print_provider_summary(record)
+        provider_blocks.append(format_provider_block(record))
+
+    append_main_log(timestamp, provider_blocks)
 
 
 if __name__ == "__main__":
