@@ -79,6 +79,31 @@ def extract_json_from_text(text: str) -> Tuple[Dict, bool]:
     return {}, False
 
 
+def unwrap_openai_output(parsed_obj) -> Tuple[Dict, bool]:
+    """Convert Responses API output list into our expected dict payload."""
+    if isinstance(parsed_obj, dict) and parsed_obj.get("results"):
+        return parsed_obj, True
+    if isinstance(parsed_obj, list):
+        for item in parsed_obj:
+            if not isinstance(item, dict):
+                continue
+            if item.get("type") != "message":
+                continue
+            contents = item.get("content", [])
+            if not isinstance(contents, list):
+                continue
+            for content in contents:
+                if not isinstance(content, dict):
+                    continue
+                if content.get("type") != "output_text":
+                    continue
+                inner_text = content.get("text", "")
+                inner_json, inner_valid = extract_json_from_text(inner_text)
+                if isinstance(inner_json, dict) and inner_json:
+                    return inner_json, inner_valid
+    return {}, False
+
+
 def call_openai_search(prompt: str, api_key: str, allowed_domains: Optional[List[str]] = None) -> str:
     url = "https://api.openai.com/v1/responses"
     tools: List[Dict] = [{"type": "web_search"}]
@@ -232,6 +257,8 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
                 json_valid = True
             else:
                 raw, parsed, json_valid = perform_request(caller, prompt, key)
+                if provider == "openai":
+                    parsed, json_valid = unwrap_openai_output(parsed)
             domain_ranks = collect_domains(parsed)
             matches = match_targets(domain_ranks, targets)
             provider_results.append(
