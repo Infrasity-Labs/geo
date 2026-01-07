@@ -9,8 +9,7 @@ jobs:
   run-citations:
     runs-on: ubuntu-latest
     env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,7 +22,19 @@ jobs:
       - name: Install dependencies
         run: python -m pip install --upgrade pip requests
 
-      - name: Run citation checks
+      - name: Run gpt-oss-20b free online
+        env:
+          MODEL_SLUGS: openai/gpt-oss-20b:free:online
+        run: python run.py
+
+      - name: Run claude 3.5 haiku online
+        env:
+          MODEL_SLUGS: anthropic/claude-3.5-haiku:online
+        run: python run.py
+
+      - name: Run perplexity sonar online
+        env:
+          MODEL_SLUGS: perplexity/sonar:online
         run: python run.py
 
       - name: Commit and push logs

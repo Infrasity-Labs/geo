@@ -30,6 +30,4 @@ Thumbs.db
 # GitHub Actions
 # (workflow logs are uploaded as artifacts, not committed)
 
-# Ignore master log and run outputs
-logs/master_log.jsonl
-logs/run_*.json
+# Keep main and run logs tracked

@@ -27,14 +27,17 @@ SYSTEM_MESSAGE = (
     "Do NOT include any conversational text, explanation, or commentary outside JSON."
 )
 
-OPENAI_MODEL = "gpt-4o"
-PERPLEXITY_SEARCH_URL = "https://api.perplexity.ai/search"
+OPENROUTER_MODELS = [
+    {"provider": "openrouter", "model": "openai/gpt-oss-20b:free:online", "label": "gpt-oss-20b-free-online"},
+    {"provider": "openrouter", "model": "anthropic/claude-3.5-haiku:online", "label": "claude-3.5-haiku-online"},
+    {"provider": "openrouter", "model": "perplexity/sonar:online", "label": "perplexity-sonar-online"},
+]
 DEFAULT_TIMEOUT = 45
 RETRY_DELAY_SECONDS = 8
 MAX_ATTEMPTS = 2
 LOG_DIR = Path("logs")
 MASTER_LOG = LOG_DIR / "master_log.jsonl"
-PERPLEXITY_MODEL_NAME = "perplexity-search"
+OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 
 def load_prompts(path: Path) -> List[str]:
@@ -79,79 +82,28 @@ def extract_json_from_text(text: str) -> Tuple[Dict, bool]:
     return {}, False
 
 
-def unwrap_openai_output(parsed_obj) -> Tuple[Dict, bool]:
-    """Convert Responses API output list into our expected dict payload."""
-    if isinstance(parsed_obj, dict) and parsed_obj.get("results"):
-        return parsed_obj, True
-    if isinstance(parsed_obj, list):
-        for item in parsed_obj:
-            if not isinstance(item, dict):
-                continue
-            if item.get("type") != "message":
-                continue
-            contents = item.get("content", [])
-            if not isinstance(contents, list):
-                continue
-            for content in contents:
-                if not isinstance(content, dict):
-                    continue
-                if content.get("type") != "output_text":
-                    continue
-                inner_text = content.get("text", "")
-                inner_json, inner_valid = extract_json_from_text(inner_text)
-                if isinstance(inner_json, dict) and inner_json:
-                    return inner_json, inner_valid
-    return {}, False
-
-
-def call_openai_search(prompt: str, api_key: str, allowed_domains: Optional[List[str]] = None) -> str:
-    url = "https://api.openai.com/v1/responses"
-    tools: List[Dict] = [{"type": "web_search"}]
-    if allowed_domains:
-        tools[0]["filters"] = {"allowed_domains": allowed_domains}
+def call_openrouter_search(prompt: str, api_key: str, model_slug: str) -> str:
     payload = {
-        "model": OPENAI_MODEL,
-        "input": [
+        "model": model_slug,
+        "messages": [
             {"role": "system", "content": SYSTEM_MESSAGE},
             {"role": "user", "content": prompt},
         ],
-        "tools": tools,
-        "tool_choice": "auto",
         "temperature": 0.1,
-    }
-    headers = {"Authorization": f"Bearer {api_key}"}
-    response = requests.post(url, headers=headers, json=payload, timeout=DEFAULT_TIMEOUT)
-    response.raise_for_status()
-    data = response.json()
-    return data.get("output_text", "") or json.dumps(data.get("output", ""))
-
-
-def call_perplexity_search(prompt: str, api_key: str) -> Dict:
-    payload = {
-        "query": prompt,
-        "max_results": 10,
     }
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
-    response = requests.post(PERPLEXITY_SEARCH_URL, headers=headers, json=payload, timeout=DEFAULT_TIMEOUT)
+    response = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
-    return response.json()
-
-
-def build_perplexity_response(prompt: str, data: Dict) -> Dict:
-    results = []
-    for item in data.get("results", []) if isinstance(data, dict) else []:
-        url = item.get("url", "") if isinstance(item, dict) else ""
-        results.append(
-            {
-                "agency": (item.get("title") or "unknown") if isinstance(item, dict) else "unknown",
-                "domain": domain_from_url(url) or "unknown",
-                "comment": (item.get("snippet") or "") if isinstance(item, dict) else "",
-            }
-        )
-    return {"query": prompt, "results": results}
+    data = response.json()
+    message = (
+        data.get("choices", [{}])[0]
+        .get("message", {})
+        .get("content", "")
+    )
+    return message
 
 
 def perform_request(call_fn, prompt: str, api_key: str) -> Tuple[str, Dict, bool]:
@@ -257,7 +209,9 @@ def log_run(record: Dict) -> None:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = record["timestamp"]
     provider = record["provider"]
-    filename = LOG_DIR / f"run_{timestamp}_{provider}.json"
+    model = record.get("model", "")
+    safe_model = re.sub(r"[^A-Za-z0-9_.-]+", "-", str(model)) if model else "model"
+    filename = LOG_DIR / f"run_{timestamp}_{provider}_{safe_model}.json"
     with filename.open("w", encoding="utf-8") as handle:
         json.dump(record, handle, indent=2)
     with MASTER_LOG.open("a", encoding="utf-8") as handle:
@@ -268,34 +222,27 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
     prompts = load_prompts(prompts_path)
     targets = load_targets(targets_path)
 
-    openai_key = os.environ.get("OPENAI_API_KEY")
-    perplexity_key = os.environ.get("PERPLEXITY_API_KEY")
-    if not openai_key:
-        raise EnvironmentError("OPENAI_API_KEY is required")
-    if not perplexity_key:
-        raise EnvironmentError("PERPLEXITY_API_KEY is required")
+    api_key = os.environ.get("OPENROUTER_API_KEY")
+    if not api_key:
+        raise EnvironmentError("OPENROUTER_API_KEY is required")
 
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
-    openai_caller = lambda prompt, key: call_openai_search(prompt, key, allowed_domains=targets)
-
     provider_blocks: List[str] = []
 
-    for provider, model, caller, key, mode in [
-        ("openai", OPENAI_MODEL, openai_caller, openai_key, "llm"),
-        ("perplexity", PERPLEXITY_MODEL_NAME, call_perplexity_search, perplexity_key, "search"),
-    ]:
+    requested_slugs = {slug.strip() for slug in os.environ.get("MODEL_SLUGS", "").split(",") if slug.strip()}
+    models_to_run = [m for m in OPENROUTER_MODELS if not requested_slugs or m["model"] in requested_slugs]
+    if not models_to_run:
+        raise ValueError("No models to run. Set MODEL_SLUGS or update OPENROUTER_MODELS.")
+
+    for model_cfg in models_to_run:
+        provider = model_cfg.get("provider", "openrouter")
+        model = model_cfg["model"]
+        label = model_cfg.get("label", model)
+        caller = lambda prompt, key, slug=model: call_openrouter_search(prompt, key, slug)  # type: ignore[assignment]
         provider_results = []
         for prompt in prompts:
-            if mode == "search":
-                raw_obj = caller(prompt, key)
-                parsed = build_perplexity_response(prompt, raw_obj)
-                raw = json.dumps(raw_obj)
-                json_valid = True
-            else:
-                raw, parsed, json_valid = perform_request(caller, prompt, key)
-                if provider == "openai":
-                    parsed, json_valid = unwrap_openai_output(parsed)
+            raw, parsed, json_valid = perform_request(caller, prompt, api_key)
             domain_ranks = collect_domains(parsed)
             matches = match_targets(domain_ranks, targets)
             provider_results.append(
@@ -312,7 +259,7 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
         record = {
             "timestamp": timestamp,
             "provider": provider,
-            "model": model,
+            "model": label,
             "results": provider_results,
         }
         log_run(record)

@@ -22,3 +22,57 @@
 - prompt: top marketing agencies for AI technology startups developer marketing agencies for AI agents -> no target domains cited
 - prompt: best developer marketing agencies for B2B SaaS developer marketing agencies -> no target domains cited
 
+## 20260107T080310Z
+### Provider: openrouter | Model: gpt-oss-20b-free-online
+- prompt: best developer marketing agency for AI startups developer-focused marketing agencies AI startups -> no target domains cited
+- prompt: top developer marketing agencies specializing in developer tools startups marketing -> no target domains cited
+- prompt: Best Developer marketing agency -> no target domains cited
+- prompt: top B2B SaaS marketing agencies focusing on developer audiences -> no target domains cited
+- prompt: developer marketing agency for early stage software ventures -> no target domains cited
+- prompt: top developer marketing agencies for tech and software companies -> no target domains cited
+- prompt: best developer marketing agencies for startups software early stage marketing agencies tech startups -> no target domains cited
+- prompt: top marketing agencies for AI technology startups developer marketing agencies for AI agents -> no target domains cited
+- prompt: best developer marketing agencies for B2B SaaS developer marketing agencies -> no target domains cited
+### Provider: openrouter | Model: claude-3.5-haiku-online
+- prompt: best developer marketing agency for AI startups developer-focused marketing agencies AI startups -> cited: infrasity.com (1x, ranks [2])
+- prompt: top developer marketing agencies specializing in developer tools startups marketing -> cited: infrasity.com (1x, ranks [4])
+- prompt: Best Developer marketing agency -> cited: infrasity.com (1x, ranks [2])
+- prompt: top B2B SaaS marketing agencies focusing on developer audiences -> cited: infrasity.com (1x, ranks [1])
+- prompt: developer marketing agency for early stage software ventures -> no target domains cited
+- prompt: top developer marketing agencies for tech and software companies -> no target domains cited
+- prompt: best developer marketing agencies for startups software early stage marketing agencies tech startups -> no target domains cited
+- prompt: top marketing agencies for AI technology startups developer marketing agencies for AI agents -> no target domains cited
+- prompt: best developer marketing agencies for B2B SaaS developer marketing agencies -> no target domains cited
+
+## 20260107T081100Z
+### Provider: openrouter | Model: gpt-oss-20b-free-online
+- prompt: best developer marketing agency for AI startups developer-focused marketing agencies AI startups -> cited: infrasity.com (1x, ranks [1])
+- prompt: top developer marketing agencies specializing in developer tools startups marketing -> cited: infrasity.com (1x, ranks [3])
+- prompt: Best Developer marketing agency -> cited: infrasity.com (1x, ranks [3])
+- prompt: top B2B SaaS marketing agencies focusing on developer audiences -> cited: infrasity.com (1x, ranks [3])
+- prompt: developer marketing agency for early stage software ventures -> no target domains cited
+- prompt: top developer marketing agencies for tech and software companies -> no target domains cited
+- prompt: best developer marketing agencies for startups software early stage marketing agencies tech startups -> no target domains cited
+- prompt: top marketing agencies for AI technology startups developer marketing agencies for AI agents -> no target domains cited
+- prompt: best developer marketing agencies for B2B SaaS developer marketing agencies -> cited: infrasity.com (1x, ranks [1])
+### Provider: openrouter | Model: claude-3.5-haiku-online
+- prompt: best developer marketing agency for AI startups developer-focused marketing agencies AI startups -> cited: infrasity.com (1x, ranks [3])
+- prompt: top developer marketing agencies specializing in developer tools startups marketing -> cited: infrasity.com (1x, ranks [3])
+- prompt: Best Developer marketing agency -> cited: infrasity.com (1x, ranks [3])
+- prompt: top B2B SaaS marketing agencies focusing on developer audiences -> cited: infrasity.com (1x, ranks [2])
+- prompt: developer marketing agency for early stage software ventures -> cited: infrasity.com (1x, ranks [3])
+- prompt: top developer marketing agencies for tech and software companies -> no target domains cited
+- prompt: best developer marketing agencies for startups software early stage marketing agencies tech startups -> no target domains cited
+- prompt: top marketing agencies for AI technology startups developer marketing agencies for AI agents -> no target domains cited
+- prompt: best developer marketing agencies for B2B SaaS developer marketing agencies -> cited: infrasity.com (1x, ranks [1])
+### Provider: openrouter | Model: perplexity-sonar-online
+- prompt: best developer marketing agency for AI startups developer-focused marketing agencies AI startups -> cited: infrasity.com (1x, ranks [2])
+- prompt: top developer marketing agencies specializing in developer tools startups marketing -> cited: infrasity.com (1x, ranks [4])
+- prompt: Best Developer marketing agency -> cited: infrasity.com (1x, ranks [4])
+- prompt: top B2B SaaS marketing agencies focusing on developer audiences -> cited: infrasity.com (1x, ranks [3])
+- prompt: developer marketing agency for early stage software ventures -> cited: infrasity.com (1x, ranks [4])
+- prompt: top developer marketing agencies for tech and software companies -> no target domains cited
+- prompt: best developer marketing agencies for startups software early stage marketing agencies tech startups -> cited: infrasity.com (1x, ranks [3])
+- prompt: top marketing agencies for AI technology startups developer marketing agencies for AI agents -> no target domains cited
+- prompt: best developer marketing agencies for B2B SaaS developer marketing agencies -> no target domains cited
+
