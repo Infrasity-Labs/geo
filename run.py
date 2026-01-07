@@ -38,6 +38,7 @@ MAX_ATTEMPTS = 2
 LOG_DIR = Path("logs")
 MASTER_LOG = LOG_DIR / "master_log.jsonl"
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+RANK_NA_TEXT = "rank n/a"
 
 
 def load_prompts(path: Path) -> List[str]:
@@ -165,7 +166,7 @@ def print_provider_summary(record: Dict) -> None:
         parts = []
         for match in matches:
             ranks = match.get("ranks", [])
-            rank_str = f"ranks {ranks}" if ranks else "rank n/a"
+            rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
             parts.append(f"{match.get('domain')} ({match.get('count')}x, {rank_str})")
         print(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
 
@@ -181,9 +182,39 @@ def format_provider_block(record: Dict) -> str:
         parts = []
         for match in matches:
             ranks = match.get("ranks", [])
-            rank_str = f"ranks {ranks}" if ranks else "rank n/a"
+            rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
             parts.append(f"{match.get('domain')} ({match.get('count')}x, {rank_str})")
         lines.append(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
+    return "\n".join(lines)
+
+
+def escape_pipe(text: str) -> str:
+    return text.replace("|", "\\|")
+
+
+def format_provider_table(record: Dict) -> str:
+    lines = [f"### Provider: {record.get('provider')} | Model: {record.get('model')}"]
+    lines.append("| Prompt | Target Domain | Status |")
+    lines.append("| --- | --- | --- |")
+    for item in record.get("results", []):
+        prompt = escape_pipe(item.get("prompt", ""))
+        matches = item.get("matches", [])
+        if not matches:
+            domain_cell = ""
+            status = "no target domains cited"
+        else:
+            domain_links = []
+            status_parts = []
+            for match in matches:
+                domain = match.get("domain")
+                if domain:
+                    domain_links.append(f"[{domain}](https://{domain})")
+                ranks = match.get("ranks", [])
+                rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
+                status_parts.append(f"cited {match.get('domain')} ({match.get('count')}x, {rank_str})")
+            domain_cell = "<br>".join(domain_links)
+            status = "; ".join(status_parts)
+        lines.append(f"| {prompt} | {domain_cell} | {status} |")
     return "\n".join(lines)
 
 
@@ -264,11 +295,15 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
         }
         log_run(record)
         print_provider_summary(record)
-        provider_blocks.append(format_provider_block(record))
+        provider_blocks.append(format_provider_table(record))
 
     append_main_log(timestamp, provider_blocks)
 
 
 if __name__ == "__main__":
     base_dir = Path(__file__).parent
-    run_once(base_dir / "config" / "prompts.txt", base_dir / "config" / "targets.json")
+    prompts_env = os.environ.get("PROMPTS_PATH")
+    targets_env = os.environ.get("TARGETS_PATH")
+    prompts_path = Path(prompts_env) if prompts_env else base_dir / "config" / "prompts.txt"
+    targets_path = Path(targets_env) if targets_env else base_dir / "config" / "targets.json"
+    run_once(prompts_path, targets_path)
