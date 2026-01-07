@@ -4,10 +4,13 @@ import re
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 from urllib.parse import urlparse
 
+from dotenv import load_dotenv
 import requests
+
+load_dotenv()
 
 SYSTEM_MESSAGE = (
     "You are doing an evaluation. For the given query, list relevant agencies with domain citations. "
@@ -154,6 +157,58 @@ def match_targets(domains: List[Tuple[str, int]], targets: List[str]) -> List[Di
     return list(matches.values())
 
 
+def resolve_model_configs(requested_slugs: Optional[Set[str]] = None) -> List[Dict]:
+    requested = {slug.strip() for slug in requested_slugs or set() if slug and slug.strip()}
+    filtered = [m for m in OPENROUTER_MODELS if not requested or m["model"] in requested]
+    if not filtered:
+        raise ValueError("No models to run. Set MODEL_SLUGS or update OPENROUTER_MODELS.")
+    return filtered
+
+
+def evaluate_models(
+    prompts: List[str],
+    targets: List[str],
+    api_key: str,
+    model_configs: List[Dict],
+    *,
+    timestamp: Optional[str] = None,
+) -> List[Dict]:
+    if not prompts:
+        raise ValueError("At least one prompt is required to evaluate models.")
+    ts = timestamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    records: List[Dict] = []
+    for model_cfg in model_configs:
+        provider = model_cfg.get("provider", "openrouter")
+        model = model_cfg["model"]
+        label = model_cfg.get("label", model)
+        caller = lambda prompt, key, slug=model: call_openrouter_search(prompt, key, slug)  # type: ignore[assignment]
+        provider_results = []
+        for prompt in prompts:
+            raw, parsed, json_valid = perform_request(caller, prompt, api_key)
+            domain_ranks = collect_domains(parsed)
+            matches = match_targets(domain_ranks, targets)
+            provider_results.append(
+                {
+                    "prompt": prompt,
+                    "raw": raw,
+                    "parsed": parsed,
+                    "json_valid": json_valid,
+                    "domains": [d for d, _ in domain_ranks],
+                    "domain_ranks": domain_ranks,
+                    "matches": matches,
+                }
+            )
+        records.append(
+            {
+                "timestamp": ts,
+                "provider": provider,
+                "model": label,
+                "results": provider_results,
+            }
+        )
+    return records
+
+
 def print_provider_summary(record: Dict) -> None:
     print(f"Provider: {record.get('provider')} | Model: {record.get('model')}")
     for item in record.get("results", []):
@@ -231,37 +286,10 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
     provider_blocks: List[str] = []
 
     requested_slugs = {slug.strip() for slug in os.environ.get("MODEL_SLUGS", "").split(",") if slug.strip()}
-    models_to_run = [m for m in OPENROUTER_MODELS if not requested_slugs or m["model"] in requested_slugs]
-    if not models_to_run:
-        raise ValueError("No models to run. Set MODEL_SLUGS or update OPENROUTER_MODELS.")
+    models_to_run = resolve_model_configs(requested_slugs)
+    records = evaluate_models(prompts, targets, api_key, models_to_run, timestamp=timestamp)
 
-    for model_cfg in models_to_run:
-        provider = model_cfg.get("provider", "openrouter")
-        model = model_cfg["model"]
-        label = model_cfg.get("label", model)
-        caller = lambda prompt, key, slug=model: call_openrouter_search(prompt, key, slug)  # type: ignore[assignment]
-        provider_results = []
-        for prompt in prompts:
-            raw, parsed, json_valid = perform_request(caller, prompt, api_key)
-            domain_ranks = collect_domains(parsed)
-            matches = match_targets(domain_ranks, targets)
-            provider_results.append(
-                {
-                    "prompt": prompt,
-                    "raw": raw,
-                    "parsed": parsed,
-                    "json_valid": json_valid,
-                    "domains": [d for d, _ in domain_ranks],
-                    "domain_ranks": domain_ranks,
-                    "matches": matches,
-                }
-            )
-        record = {
-            "timestamp": timestamp,
-            "provider": provider,
-            "model": label,
-            "results": provider_results,
-        }
+    for record in records:
         log_run(record)
         print_provider_summary(record)
         provider_blocks.append(format_provider_block(record))
