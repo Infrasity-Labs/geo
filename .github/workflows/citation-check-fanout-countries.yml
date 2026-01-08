@@ -1,0 +1,167 @@
+name: citation-check-fanout-countries
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-gpt-oss-fanout-countries:
+    runs-on: ubuntu-latest
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      MODEL_SLUGS: openai/gpt-oss-20b:free:online
+      PROMPTS_PATH: config/prompts_fanout_countries.txt
+      TARGETS_PATH: config/targets_fanout.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip requests python-dotenv
+
+      - name: Run gpt-oss-20b free online (fanout countries)
+        run: python run.py
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-gpt-oss-fanout-countries
+          path: logs/
+
+  run-claude-haiku-fanout-countries:
+    runs-on: ubuntu-latest
+    needs: run-gpt-oss-fanout-countries
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      MODEL_SLUGS: anthropic/claude-3.5-haiku:online
+      PROMPTS_PATH: config/prompts_fanout_countries.txt
+      TARGETS_PATH: config/targets_fanout.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip requests python-dotenv
+
+      - name: Run claude 3.5 haiku online (fanout countries)
+        run: python run.py
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-claude-haiku-fanout-countries
+          path: logs/
+
+  run-perplexity-sonar-fanout-countries:
+    runs-on: ubuntu-latest
+    needs: run-claude-haiku-fanout-countries
+    env:
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      MODEL_SLUGS: perplexity/sonar:online
+      PROMPTS_PATH: config/prompts_fanout_countries.txt
+      TARGETS_PATH: config/targets_fanout.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip requests python-dotenv
+
+      - name: Run perplexity sonar online (fanout countries)
+        run: python run.py
+
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-perplexity-sonar-fanout-countries
+          path: logs/
+
+  commit-logs-fanout-countries:
+    runs-on: ubuntu-latest
+    needs: run-perplexity-sonar-fanout-countries
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Merge logs
+        run: |
+          set -e
+          mkdir -p logs
+          python - <<'PY'
+          import pathlib
+          import shutil
+
+          root = pathlib.Path("artifacts")
+          log_dir = pathlib.Path("logs")
+          log_dir.mkdir(exist_ok=True)
+
+          artifact_logs = sorted(root.glob("*/logs"))
+
+          # Merge run_*.json files and master_log.jsonl
+          master_out = (log_dir / "master_log.jsonl").open("w", encoding="utf-8")
+          main_log_path = log_dir / "main_log.md"
+          main_written = False
+
+          def append_main(src: pathlib.Path):
+            nonlocal main_written
+            text = src.read_text(encoding="utf-8")
+            if not main_written:
+              main_log_path.write_text(text, encoding="utf-8")
+              main_written = True
+              return
+            # Append without duplicating the header line
+            lines = text.splitlines()
+            trimmed = lines
+            if trimmed and trimmed[0].startswith("# Citation runs"):
+              trimmed = trimmed[1:]
+            with main_log_path.open("a", encoding="utf-8") as handle:
+              handle.write("\n".join(trimmed) + "\n")
+
+          for src_logs in artifact_logs:
+            # Copy run-level JSON files
+            for run_file in src_logs.glob("run_*.json"):
+              shutil.copy(run_file, log_dir / run_file.name)
+
+            # Append master_log.jsonl content
+            master_file = src_logs / "master_log.jsonl"
+            if master_file.exists():
+              for line in master_file.read_text(encoding="utf-8").splitlines():
+                master_out.write(line + "\n")
+
+            # Merge main_log.md
+            main_file = src_logs / "main_log.md"
+            if main_file.exists():
+              append_main(main_file)
+
+          master_out.close()
+          PY
+
+      - name: Commit and push logs
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add logs/*.json logs/*.jsonl logs/main_log.md || true
+          if git diff --cached --quiet; then
+            echo "No log changes to commit."
+          else
+            git commit -m "Update citation logs (fanout countries) [skip ci]" || true
+            git push origin HEAD:${GITHUB_REF#refs/heads/} || true

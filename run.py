@@ -328,14 +328,7 @@ def evaluate_models(
 
 def print_provider_summary(record: Dict) -> None:
     print(f"Provider: {record.get('provider')} | Model: {record.get('model')}")
-    for item in record.get("results", []):
-        prompt = item.get("prompt", "")[:80]
-        matches = item.get("matches", [])
-        if not matches:
-            print(f"- prompt: {prompt} -> no target domains cited")
-            continue
-        parts = [describe_match(match) for match in matches]
-        print(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
+    print(format_console_table(record))
 
 
 def format_provider_block(record: Dict) -> str:
@@ -375,6 +368,54 @@ def describe_match(match: Dict, *, link_exact_urls: bool = False) -> str:
     else:
         pieces.append("no URL targets")
     return "; ".join(pieces)
+
+
+def top_results(parsed: Dict, limit: int = 3) -> List[Tuple[str, str]]:
+    results = parsed.get("results", []) if isinstance(parsed, dict) else []
+    rows: List[Tuple[str, str]] = []
+    for item in results[:limit]:
+        if not isinstance(item, dict):
+            continue
+        domain = normalize_domain(str(item.get("domain", "")))
+        agency = str(item.get("agency", "")).strip()
+        rows.append((domain, agency))
+    return rows
+
+
+def _target_cell(matches: List[Dict]) -> str:
+    if not matches:
+        return "—"
+    target_bits: List[str] = []
+    for match in matches:
+        urls = match.get("exact_url_matches", []) or match.get("target_urls", [])
+        domain = match.get("domain", "")
+        if urls:
+            target_bits.extend([f"https://{u}" for u in urls])
+        elif domain:
+            target_bits.append(f"https://{domain}")
+    return "<br>".join(target_bits) if target_bits else "—"
+
+
+def _top3_cell(parsed: Dict) -> str:
+    trio = []
+    for idx, (domain, agency) in enumerate(top_results(parsed), start=1):
+        if not domain and not agency:
+            continue
+        label = f"{idx}) {domain}" if domain else f"{idx})"
+        if agency:
+            label += f" – {agency}"
+        trio.append(label)
+    return "<br>".join(trio) if trio else "—"
+
+
+def format_console_table(record: Dict) -> str:
+    lines = ["| Prompt | Target citations | Top 3 results (domain – company) |", "| --- | --- | --- |"]
+    for item in record.get("results", []):
+        prompt = escape_pipe(item.get("prompt", ""))
+        target_cell = _target_cell(item.get("matches", []))
+        top_cell = _top3_cell(item.get("parsed", {}))
+        lines.append(f"| {prompt} | {target_cell} | {top_cell} |")
+    return "\n".join(lines)
 
 
 def escape_pipe(text: str) -> str:
