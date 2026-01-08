@@ -1,8 +1,6 @@
 name: citation-check
 
 on:
-  schedule:
-    - cron: "0 0,8,16,20 * * *"
   workflow_dispatch:
 
 jobs:
