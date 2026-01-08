@@ -135,3 +135,38 @@
 | best Reddit marketing agency for B2B SaaS Reddit marketing agencies |  | no target domains cited |
 | top agencies specialising in Reddit ads and marketing for B2B SaaS companies |  | no target domains cited |
 
+## 20260108T135421Z
+### Provider: openrouter | Model: perplexity-sonar-online
+| Prompt | Target Domain | Status |
+| --- | --- | --- |
+| Top developer marketing agencies for tech and software companies |  | no target domains cited |
+| top developer marketing agencies specializing in developer tools startups marketing | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [1]); no URL targets |
+| best developer marketing agencies for B2B SaaS developer marketing agencies | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [1]); no URL targets |
+| top B2B SaaS marketing agencies focusing on developer audiences | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [3]); no URL targets |
+| best developer marketing agency for AI startups developer-focused marketing agencies AI startups | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [1]); no URL targets |
+| developer marketing agency for early stage software ventures | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [7]); no URL targets |
+| best developer marketing agencies for startups software early stage marketing agencies tech startups | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [1]); no URL targets |
+| best tech content marketing agency |  | no target domains cited |
+| top technology content marketing agencies |  | no target domains cited |
+| best tech content marketing agencies for devtool startups | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [2]); no URL targets |
+| top B2B tech content marketing agencies specializing in developer tools and SaaS startups | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [1]); no URL targets |
+| top tech content marketing agencies for B2B SaaS startups |  | no target domains cited |
+| best content marketing agencies specializing in B2B SaaS tech startups |  | no target domains cited |
+| best tech content marketing agency for B2B SaaS |  | no target domains cited |
+| best product documentation agency services product documentation agency |  | no target domains cited |
+| top agencies for product documentation services |  | no target domains cited |
+| best product documentation agency for dev tools | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [10]); no URL targets |
+| top agencies specializing product documentation for developer tools and tech companies |  | no target domains cited |
+| best product documentation agency for AI startups | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [8]); no URL targets |
+| top technical documentation agencies that serve AI startups |  | no target domains cited |
+| best product documentation agency for B2B SaaS |  | no target domains cited |
+| top technical documentation agencies for SaaS product documentation services | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [3]); no URL targets |
+| best Reddit marketing agency |  | no target domains cited |
+| top Reddit advertising agencies services Reddit marketing agencies |  | no target domains cited |
+| Reddit marketing agency for dev tool startup what to look for and examples | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [4]); no URL targets |
+| Best agencies experienced in Reddit marketing for startups including for dev tools marketing | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [4]); no URL targets |
+| Reddit marketing agency for AI startups marketing on Reddit UK US agencies Reddit marketing specialised | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [1]); no URL targets |
+| Agencies that do Reddit marketing for startups or technology companies, Reddit ads management |  | no target domains cited |
+| best Reddit marketing agency for B2B SaaS Reddit marketing agencies | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [1]); no URL targets |
+| top agencies specialising in Reddit ads and marketing for B2B SaaS companies | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [3]); no URL targets |
+

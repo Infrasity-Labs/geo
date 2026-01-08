@@ -24,6 +24,9 @@ jobs:
       - name: Run gpt-oss-20b free online
         run: python run.py
 
+      - name: Job summary
+        run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
+
       - name: Upload logs
         uses: actions/upload-artifact@v4
         with:
@@ -51,6 +54,9 @@ jobs:
       - name: Run claude 3.5 haiku online
         run: python run.py
 
+      - name: Job summary
+        run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
+
       - name: Upload logs
         uses: actions/upload-artifact@v4
         with:
@@ -77,6 +83,9 @@ jobs:
 
         - name: Run perplexity sonar online
           run: python run.py
+
+        - name: Job summary
+          run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
 
         - name: Upload logs
           uses: actions/upload-artifact@v4
@@ -114,14 +123,13 @@ jobs:
           # Merge run_*.json files and master_log.jsonl
           master_out = (log_dir / "master_log.jsonl").open("w", encoding="utf-8")
           main_log_path = log_dir / "main_log.md"
-          main_written = False
+          main_written = {"done": False}
 
           def append_main(src: pathlib.Path):
-            global main_written
             text = src.read_text(encoding="utf-8")
-            if not main_written:
+            if not main_written["done"]:
               main_log_path.write_text(text, encoding="utf-8")
-              main_written = True
+              main_written["done"] = True
               return
             # Append without duplicating the header line
             lines = text.splitlines()

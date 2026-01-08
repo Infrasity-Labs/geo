@@ -462,6 +462,15 @@ def append_main_log(timestamp: str, provider_blocks: List[str]) -> None:
             handle.write(payload)
 
 
+def write_job_summary(timestamp: str, provider_blocks: List[str]) -> None:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    summary_path = LOG_DIR / "last_summary.md"
+    content = [f"## {timestamp}"]
+    content.extend(provider_blocks)
+    content.append("")
+    summary_path.write_text("\n".join(content), encoding="utf-8")
+
+
 def log_run(record: Dict) -> None:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = record["timestamp"]
@@ -497,6 +506,7 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
         provider_blocks.append(format_provider_table(record))
 
     append_main_log(timestamp, provider_blocks)
+    write_job_summary(timestamp, provider_blocks)
 
 
 if __name__ == "__main__":
