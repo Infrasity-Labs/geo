@@ -1,0 +1,840 @@
+{
+  "timestamp": "20260108T114332Z",
+  "provider": "openrouter",
+  "model": "perplexity-sonar-online",
+  "results": [
+    {
+      "prompt": "best developer marketing agencies for SaaS and devtool companies",
+      "raw": "```json\n{\n  \"query\": \"best developer marketing agencies for SaaS and devtool companies\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Specializes in go-to-market strategies for developer-centric products with market research and competitive analysis\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"comment\": \"Best for engineering-grade dev content with strong SEO foundations and developer-focused tutorials\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"comment\": \"Fast-growing GTM and DevRel solutions company helping DevTools businesses and AI agent startups scale adoption\"\n    },\n    {\n      \"agency\": \"Hoopy\",\n      \"domain\": \"hoopy.io\",\n      \"comment\": \"Developer relations consultancy focused on community programs, docs, and developer onboarding\"\n    },\n    {\n      \"agency\": \"Dev Spotlight\",\n      \"domain\": \"devspotlight.com\",\n      \"comment\": \"Produces engineering-grade technical content, tutorials, and developer education for DevTools\"\n    },\n    {\n      \"agency\": \"EveryDeveloper\",\n      \"domain\": \"everydeveloper.com\",\n      \"comment\": \"Documentation-style content agency producing API reference content and technical SEO articles\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.io\",\n      \"comment\": \"Creates technical content and tutorials to engage developers and drive product adoption\"\n    },\n    {\n      \"agency\": \"Wizard on Demand\",\n      \"domain\": \"wizardondemand.com\",\n      \"comment\": \"Technical content agency producing DevTools explainers and PLG-focused content for developer audiences\"\n    },\n    {\n      \"agency\": \"XQL Group\",\n      \"domain\": \"xql.group\",\n      \"comment\": \"Web and creative agency designing DevTools websites and developer-centric onboarding experiences\"\n    },\n    {\n      \"agency\": \"Powered by Search\",\n      \"domain\": \"poweredbysearch.com\",\n      \"comment\": \"SEO-first GTM agency specializing in DevTools and developer SaaS demand generation\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "best developer marketing agencies for SaaS and devtool companies",
+        "results": [
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "comment": "Specializes in go-to-market strategies for developer-centric products with market research and competitive analysis"
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "comment": "Best for engineering-grade dev content with strong SEO foundations and developer-focused tutorials"
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Fast-growing GTM and DevRel solutions company helping DevTools businesses and AI agent startups scale adoption"
+          },
+          {
+            "agency": "Hoopy",
+            "domain": "hoopy.io",
+            "comment": "Developer relations consultancy focused on community programs, docs, and developer onboarding"
+          },
+          {
+            "agency": "Dev Spotlight",
+            "domain": "devspotlight.com",
+            "comment": "Produces engineering-grade technical content, tutorials, and developer education for DevTools"
+          },
+          {
+            "agency": "EveryDeveloper",
+            "domain": "everydeveloper.com",
+            "comment": "Documentation-style content agency producing API reference content and technical SEO articles"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.io",
+            "comment": "Creates technical content and tutorials to engage developers and drive product adoption"
+          },
+          {
+            "agency": "Wizard on Demand",
+            "domain": "wizardondemand.com",
+            "comment": "Technical content agency producing DevTools explainers and PLG-focused content for developer audiences"
+          },
+          {
+            "agency": "XQL Group",
+            "domain": "xql.group",
+            "comment": "Web and creative agency designing DevTools websites and developer-centric onboarding experiences"
+          },
+          {
+            "agency": "Powered by Search",
+            "domain": "poweredbysearch.com",
+            "comment": "SEO-first GTM agency specializing in DevTools and developer SaaS demand generation"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "catchyagency.com",
+        "draft.dev",
+        "infrasity.com",
+        "hoopy.io",
+        "devspotlight.com",
+        "everydeveloper.com",
+        "hackmamba.io",
+        "wizardondemand.com",
+        "xql.group",
+        "poweredbysearch.com"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "draft.dev",
+          2
+        ],
+        [
+          "infrasity.com",
+          3
+        ],
+        [
+          "hoopy.io",
+          4
+        ],
+        [
+          "devspotlight.com",
+          5
+        ],
+        [
+          "everydeveloper.com",
+          6
+        ],
+        [
+          "hackmamba.io",
+          7
+        ],
+        [
+          "wizardondemand.com",
+          8
+        ],
+        [
+          "xql.group",
+          9
+        ],
+        [
+          "poweredbysearch.com",
+          10
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "count": 1,
+          "ranks": [
+            3
+          ],
+          "target_urls": [
+            "infrasity.com/services/developer-marketing-agency",
+            "infrasity.com/services/ai-geo-optimization-agency",
+            "infrasity.com/services/tech-video-production",
+            "infrasity.com/services/technical-writing-services",
+            "infrasity.com/services/webflow-agency",
+            "infrasity.com/services/reddit-marketing-agency",
+            "infrasity.com/services/product-documentation"
+          ],
+          "exact_url_matches": []
+        }
+      ]
+    },
+    {
+      "prompt": "agencies specializing in AI-driven geo optimization for businesses",
+      "raw": "```json\n{\n  \"query\": \"agencies specializing in AI-driven geo optimization for businesses\",\n  \"results\": [\n    {\n      \"agency\": \"Go Fish Digital\",\n      \"domain\": \"gofishdigital.com\",\n      \"comment\": \"Advanced GEO agency with custom-built technology for AI retrieval modeling; focuses on B2B and high-ticket product marketing\"\n    },\n    {\n      \"agency\": \"Singularity Digital\",\n      \"domain\": \"singularity.digital\",\n      \"comment\": \"Specializes in GEO and SEO for U.S.-based B2B SaaS companies between $1M-$10M ARR\"\n    },\n    {\n      \"agency\": \"Spicy Margarita\",\n      \"domain\": \"spicymargarita.co\",\n      \"comment\": \"Provides specialized GEO expertise for companies wanting dedicated AI search optimization without broader marketing services\"\n    },\n    {\n      \"agency\": \"Intero Digital\",\n      \"domain\": \"interodigital.com\",\n      \"comment\": \"Full-service digital marketing agency with proprietary Intero GRO framework integrating SEO, digital PR, and AI content structuring\"\n    },\n    {\n      \"agency\": \"Mint Position\",\n      \"domain\": \"mintposition.co\",\n      \"comment\": \"GEO agency specializing in fintech, emerging tech, healthtech, and VC-backed B2B startups with focus on AI-optimized content and reputation management\"\n    },\n    {\n      \"agency\": \"42DM\",\n      \"domain\": \"42dm.net\",\n      \"comment\": \"Full-cycle B2B marketing agency pioneering GEO/AEO/LMO for tech and SaaS companies to improve AI search visibility\"\n    },\n    {\n      \"agency\": \"Siege Media\",\n      \"domain\": \"siegemedia.com\",\n      \"comment\": \"Enterprise GEO agency providing data-driven content, digital PR, and AI-informed content modeling for large-scale programs\"\n    },\n    {\n      \"agency\": \"First Page Sage\",\n      \"domain\": \"firstpagesage.com\",\n      \"comment\": \"Full-service GEO agency combining SEO, content creation, and reputation management; pioneered GEO field in 2023\"\n    },\n    {\n      \"agency\": \"NoGood\",\n      \"domain\": \"unknown\",\n      \"comment\": \"Answer Engine Optimization specialist with data-driven approach; 65% of clients double revenue within six months\"\n    },\n    {\n      \"agency\": \"Brafton\",\n      \"domain\": \"brafton.com\",\n      \"comment\": \"Generative Engine Optimization company specializing in AI visibility and SEO/GEO services\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "agencies specializing in AI-driven geo optimization for businesses",
+        "results": [
+          {
+            "agency": "Go Fish Digital",
+            "domain": "gofishdigital.com",
+            "comment": "Advanced GEO agency with custom-built technology for AI retrieval modeling; focuses on B2B and high-ticket product marketing"
+          },
+          {
+            "agency": "Singularity Digital",
+            "domain": "singularity.digital",
+            "comment": "Specializes in GEO and SEO for U.S.-based B2B SaaS companies between $1M-$10M ARR"
+          },
+          {
+            "agency": "Spicy Margarita",
+            "domain": "spicymargarita.co",
+            "comment": "Provides specialized GEO expertise for companies wanting dedicated AI search optimization without broader marketing services"
+          },
+          {
+            "agency": "Intero Digital",
+            "domain": "interodigital.com",
+            "comment": "Full-service digital marketing agency with proprietary Intero GRO framework integrating SEO, digital PR, and AI content structuring"
+          },
+          {
+            "agency": "Mint Position",
+            "domain": "mintposition.co",
+            "comment": "GEO agency specializing in fintech, emerging tech, healthtech, and VC-backed B2B startups with focus on AI-optimized content and reputation management"
+          },
+          {
+            "agency": "42DM",
+            "domain": "42dm.net",
+            "comment": "Full-cycle B2B marketing agency pioneering GEO/AEO/LMO for tech and SaaS companies to improve AI search visibility"
+          },
+          {
+            "agency": "Siege Media",
+            "domain": "siegemedia.com",
+            "comment": "Enterprise GEO agency providing data-driven content, digital PR, and AI-informed content modeling for large-scale programs"
+          },
+          {
+            "agency": "First Page Sage",
+            "domain": "firstpagesage.com",
+            "comment": "Full-service GEO agency combining SEO, content creation, and reputation management; pioneered GEO field in 2023"
+          },
+          {
+            "agency": "NoGood",
+            "domain": "unknown",
+            "comment": "Answer Engine Optimization specialist with data-driven approach; 65% of clients double revenue within six months"
+          },
+          {
+            "agency": "Brafton",
+            "domain": "brafton.com",
+            "comment": "Generative Engine Optimization company specializing in AI visibility and SEO/GEO services"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "gofishdigital.com",
+        "singularity.digital",
+        "spicymargarita.co",
+        "interodigital.com",
+        "mintposition.co",
+        "42dm.net",
+        "siegemedia.com",
+        "firstpagesage.com",
+        "unknown",
+        "brafton.com"
+      ],
+      "domain_ranks": [
+        [
+          "gofishdigital.com",
+          1
+        ],
+        [
+          "singularity.digital",
+          2
+        ],
+        [
+          "spicymargarita.co",
+          3
+        ],
+        [
+          "interodigital.com",
+          4
+        ],
+        [
+          "mintposition.co",
+          5
+        ],
+        [
+          "42dm.net",
+          6
+        ],
+        [
+          "siegemedia.com",
+          7
+        ],
+        [
+          "firstpagesage.com",
+          8
+        ],
+        [
+          "unknown",
+          9
+        ],
+        [
+          "brafton.com",
+          10
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "top video production agencies for technology and software companies",
+      "raw": "```json\n{\n  \"query\": \"top video production agencies for technology and software companies\",\n  \"results\": [\n    {\n      \"agency\": \"Content Beta\",\n      \"domain\": \"contentbeta.com\",\n      \"comment\": \"SaaS and tech video production specialist founded in 2020, based in Sunnyvale, California. Works with 170+ software & tech companies.\"\n    },\n    {\n      \"agency\": \"Vidico\",\n      \"domain\": \"vidico.com\",\n      \"comment\": \"Tech video production agency specializing in explainer videos and product demos for software companies. Based in Melbourne.\"\n    },\n    {\n      \"agency\": \"Zelios Agency\",\n      \"domain\": \"unknown\",\n      \"comment\": \"Tech video production company founded in 2018, based in Northbrook, Illinois. Offers services for startups and SaaS organizations.\"\n    },\n    {\n      \"agency\": \"LV Productions\",\n      \"domain\": \"unknown\",\n      \"comment\": \"Technology video production company founded in 2018, based in San Francisco. Specializes in B2B and D2C tech brands.\"\n    },\n    {\n      \"agency\": \"Covalent\",\n      \"domain\": \"unknown\",\n      \"comment\": \"Tech video production agency founded in 2012, based in Pittsburgh, Pennsylvania. Specializes in corporate, training, sales, and product videos.\"\n    },\n    {\n      \"agency\": \"Superside\",\n      \"domain\": \"superside.com\",\n      \"comment\": \"Video production company offering AI-powered creative strategy and video services for enterprises and tech brands.\"\n    },\n    {\n      \"agency\": \"Lemonlight\",\n      \"domain\": \"lemonlight.com\",\n      \"comment\": \"Video production company specializing in on-demand video production for tech and software companies globally.\"\n    },\n    {\n      \"agency\": \"Wyzowl\",\n      \"domain\": \"wyzowl.com\",\n      \"comment\": \"Leader in animated explainer videos for tech companies. Produces custom animations that simplify complex topics.\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "top video production agencies for technology and software companies",
+        "results": [
+          {
+            "agency": "Content Beta",
+            "domain": "contentbeta.com",
+            "comment": "SaaS and tech video production specialist founded in 2020, based in Sunnyvale, California. Works with 170+ software & tech companies."
+          },
+          {
+            "agency": "Vidico",
+            "domain": "vidico.com",
+            "comment": "Tech video production agency specializing in explainer videos and product demos for software companies. Based in Melbourne."
+          },
+          {
+            "agency": "Zelios Agency",
+            "domain": "unknown",
+            "comment": "Tech video production company founded in 2018, based in Northbrook, Illinois. Offers services for startups and SaaS organizations."
+          },
+          {
+            "agency": "LV Productions",
+            "domain": "unknown",
+            "comment": "Technology video production company founded in 2018, based in San Francisco. Specializes in B2B and D2C tech brands."
+          },
+          {
+            "agency": "Covalent",
+            "domain": "unknown",
+            "comment": "Tech video production agency founded in 2012, based in Pittsburgh, Pennsylvania. Specializes in corporate, training, sales, and product videos."
+          },
+          {
+            "agency": "Superside",
+            "domain": "superside.com",
+            "comment": "Video production company offering AI-powered creative strategy and video services for enterprises and tech brands."
+          },
+          {
+            "agency": "Lemonlight",
+            "domain": "lemonlight.com",
+            "comment": "Video production company specializing in on-demand video production for tech and software companies globally."
+          },
+          {
+            "agency": "Wyzowl",
+            "domain": "wyzowl.com",
+            "comment": "Leader in animated explainer videos for tech companies. Produces custom animations that simplify complex topics."
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "contentbeta.com",
+        "vidico.com",
+        "unknown",
+        "unknown",
+        "unknown",
+        "superside.com",
+        "lemonlight.com",
+        "wyzowl.com"
+      ],
+      "domain_ranks": [
+        [
+          "contentbeta.com",
+          1
+        ],
+        [
+          "vidico.com",
+          2
+        ],
+        [
+          "unknown",
+          3
+        ],
+        [
+          "unknown",
+          4
+        ],
+        [
+          "unknown",
+          5
+        ],
+        [
+          "superside.com",
+          6
+        ],
+        [
+          "lemonlight.com",
+          7
+        ],
+        [
+          "wyzowl.com",
+          8
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "best technical writing service providers for software and IT documentation",
+      "raw": "{\n  \"query\": \"best technical writing service providers for software and IT documentation\",\n  \"results\": [    {\n      \"agency\": \"StanzaGo\",\n      \"domain\": \"stanzago.com\",\n      \"comment\": \"Specialized in SaaS, WordPress, and developer-focused technical documentation (user guides, API docs, installation manuals) with fast turnaround for software products.[blog.stanzago.com]\"\n    },\n    {\n      \"agency\": \"Stepes\",\n      \"domain\": \"stepes.com\",\n      \"comment\": \"Provides end-to-end technical writing services for software and technology, including user guides, online help, and release notes, plus localization in 100+ languages.[stepes.com]\"\n    },\n    {\n      \"agency\": \"DevDocs\",\n      \"domain\": \"devdocs.work\",\n      \"comment\": \"Developer-centric consultancy focused on API docs, SaaS documentation, developer portals, and content strategy for software companies.[blog.stanzago.com]\"\n    },\n    {\n      \"agency\": \"TechScribe\",\n      \"domain\": \"techscribe.co.uk\",\n      \"comment\": \"UK-based firm specializing in improving clarity and compliance of existing technical documentation, including software manuals, using controlled language standards.[blog.stanzago.com]\"\n    },\n    {\n      \"agency\": \"RightlyWritten\",\n      \"domain\": \"rightlywritten.com\",\n      \"comment\": \"Offers technical writing alongside other content services, including product and software-related documentation for tech clients.[blog.stanzago.com][squibler.io]\"\n    },\n    {\n      \"agency\": \"Verblio\",\n      \"domain\": \"verblio.com\",\n      \"comment\": \"Content platform that includes technical and IT documentation (how\u2011tos, FAQs, hardware/software guides) with SEO-focused online content for tech companies.[blog.stanzago.com][squibler.io]\"\n    },\n    {\n      \"agency\": \"The Word Factory\",\n      \"domain\": \"thewordfactory.com\",\n      \"comment\": \"Long-standing agency providing clear technical writing for small and scaling SaaS companies, including software documentation.[blog.stanzago.com]\"\n    },\n    {\n      \"agency\": \"Aptagon Technologies\",\n      \"domain\": \"aptagon.com\",\n      \"comment\": \"Software development company that also creates technical documentation for apps, websites, and UI/UX, leveraging in-house developer expertise.[blog.stanzago.com]\"\n    },\n    {\n      \"agency\": \"Manzeera Solutions\",\n      \"domain\": \"manzeerasolutions.co.uk\",\n      \"comment\": \"Cloud and SEO-focused firm that includes technical documentation services for SaaS and tech products, emphasizing online visibility.[blog.stanzago.com]\"\n    },\n    {\n      \"agency\": \"WriterHire\",\n      \"domain\": \"writerhire.co\",\n      \"comment\": \"Technical writing service covering software documentation, user manuals, and technical guides across industries.[squibler.io]\"\n    },\n    {\n      \"agency\": \"Stepes (Technical Writing Services page)\",\n      \"domain\": \"stepes.com\",\n      \"comment\": \"Dedicated technical writing services offering cloud-based authoring, DITA/single-source workflows, and software user manuals for technology clients.[stepes.com]\"\n    },\n    {\n      \"agency\": \"Cherryleaf\",\n      \"domain\": \"cherryleaf.com\",\n      \"comment\": \"UK-based specialists in software Help, API documentation, developer portals, and UI content for software and IT organizations.[cherryleaf.com]\"\n    },\n    {\n      \"agency\": \"MadCap Software \u2013 Technical Content Services\",\n      \"domain\": \"madcapsoftware.com\",\n      \"comment\": \"In addition to Flare software, offers expert technical content writing services for complex enterprise software documentation.[madcapsoftware.com][linkedin.com]\"\n    },\n    {\n      \"agency\": \"3di Information Solutions\",\n      \"domain\": \"3di-info.com\",\n      \"comment\": \"Technical communication and localization provider creating software manuals, API docs, and portals for global tech and industrial clients.[linkedin.com]\"\n    },\n    {\n      \"agency\": \"Essential Data Corporation\",\n      \"domain\": \"edc.us\",\n      \"comment\": \"US firm delivering technical manuals, SOPs, and IT/cloud documentation for software, healthcare, finance, and government sectors.[linkedin.com]\"\n    },\n    {\n      \"agency\": \"TimelyText\",\n      \"domain\": \"timelytext.com\",\n      \"comment\": \"Consultancy placing technical writers and instructional designers to create software documentation, SOPs, and corporate training content.[linkedin.com]\"\n    },\n    {\n      \"agency\": \"AEC Inc.\",\n      \"domain\": \"aecinc.com\",\n      \"comment\": \"Provides technical writing and documentation for engineering and manufacturing software and systems, including user and maintenance guides.[linkedin.com]\"\n    },\n    {\n      \"agency\": \"Shea Writing & Training Solutions\",\n      \"domain\": \"sheaws.com\",\n      \"comment\": \"Technical writing and training consultancy producing SOPs, work instructions, and documentation for industrial and IT-related systems.[linkedin.com]\"\n    },\n    {\n      \"agency\": \"Documatt\",\n      \"domain\": \"documatt.com\",\n      \"comment\": \"Cloud-based documentation platform and service suitable for creating software manuals and technical documentation websites.[linkedin.com]\"\n    },\n    {\n      \"agency\": \"Writers Of USA\",\n      \"domain\": \"writersofusa.com\",\n      \"comment\": \"Primarily a book/ghostwriting and publishing agency; can be relevant if software firms also need long-form technical or business content.[linkedin.com]\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "best technical writing service providers for software and IT documentation",
+        "results": [
+          {
+            "agency": "StanzaGo",
+            "domain": "stanzago.com",
+            "comment": "Specialized in SaaS, WordPress, and developer-focused technical documentation (user guides, API docs, installation manuals) with fast turnaround for software products.[blog.stanzago.com]"
+          },
+          {
+            "agency": "Stepes",
+            "domain": "stepes.com",
+            "comment": "Provides end-to-end technical writing services for software and technology, including user guides, online help, and release notes, plus localization in 100+ languages.[stepes.com]"
+          },
+          {
+            "agency": "DevDocs",
+            "domain": "devdocs.work",
+            "comment": "Developer-centric consultancy focused on API docs, SaaS documentation, developer portals, and content strategy for software companies.[blog.stanzago.com]"
+          },
+          {
+            "agency": "TechScribe",
+            "domain": "techscribe.co.uk",
+            "comment": "UK-based firm specializing in improving clarity and compliance of existing technical documentation, including software manuals, using controlled language standards.[blog.stanzago.com]"
+          },
+          {
+            "agency": "RightlyWritten",
+            "domain": "rightlywritten.com",
+            "comment": "Offers technical writing alongside other content services, including product and software-related documentation for tech clients.[blog.stanzago.com][squibler.io]"
+          },
+          {
+            "agency": "Verblio",
+            "domain": "verblio.com",
+            "comment": "Content platform that includes technical and IT documentation (how\u2011tos, FAQs, hardware/software guides) with SEO-focused online content for tech companies.[blog.stanzago.com][squibler.io]"
+          },
+          {
+            "agency": "The Word Factory",
+            "domain": "thewordfactory.com",
+            "comment": "Long-standing agency providing clear technical writing for small and scaling SaaS companies, including software documentation.[blog.stanzago.com]"
+          },
+          {
+            "agency": "Aptagon Technologies",
+            "domain": "aptagon.com",
+            "comment": "Software development company that also creates technical documentation for apps, websites, and UI/UX, leveraging in-house developer expertise.[blog.stanzago.com]"
+          },
+          {
+            "agency": "Manzeera Solutions",
+            "domain": "manzeerasolutions.co.uk",
+            "comment": "Cloud and SEO-focused firm that includes technical documentation services for SaaS and tech products, emphasizing online visibility.[blog.stanzago.com]"
+          },
+          {
+            "agency": "WriterHire",
+            "domain": "writerhire.co",
+            "comment": "Technical writing service covering software documentation, user manuals, and technical guides across industries.[squibler.io]"
+          },
+          {
+            "agency": "Stepes (Technical Writing Services page)",
+            "domain": "stepes.com",
+            "comment": "Dedicated technical writing services offering cloud-based authoring, DITA/single-source workflows, and software user manuals for technology clients.[stepes.com]"
+          },
+          {
+            "agency": "Cherryleaf",
+            "domain": "cherryleaf.com",
+            "comment": "UK-based specialists in software Help, API documentation, developer portals, and UI content for software and IT organizations.[cherryleaf.com]"
+          },
+          {
+            "agency": "MadCap Software \u2013 Technical Content Services",
+            "domain": "madcapsoftware.com",
+            "comment": "In addition to Flare software, offers expert technical content writing services for complex enterprise software documentation.[madcapsoftware.com][linkedin.com]"
+          },
+          {
+            "agency": "3di Information Solutions",
+            "domain": "3di-info.com",
+            "comment": "Technical communication and localization provider creating software manuals, API docs, and portals for global tech and industrial clients.[linkedin.com]"
+          },
+          {
+            "agency": "Essential Data Corporation",
+            "domain": "edc.us",
+            "comment": "US firm delivering technical manuals, SOPs, and IT/cloud documentation for software, healthcare, finance, and government sectors.[linkedin.com]"
+          },
+          {
+            "agency": "TimelyText",
+            "domain": "timelytext.com",
+            "comment": "Consultancy placing technical writers and instructional designers to create software documentation, SOPs, and corporate training content.[linkedin.com]"
+          },
+          {
+            "agency": "AEC Inc.",
+            "domain": "aecinc.com",
+            "comment": "Provides technical writing and documentation for engineering and manufacturing software and systems, including user and maintenance guides.[linkedin.com]"
+          },
+          {
+            "agency": "Shea Writing & Training Solutions",
+            "domain": "sheaws.com",
+            "comment": "Technical writing and training consultancy producing SOPs, work instructions, and documentation for industrial and IT-related systems.[linkedin.com]"
+          },
+          {
+            "agency": "Documatt",
+            "domain": "documatt.com",
+            "comment": "Cloud-based documentation platform and service suitable for creating software manuals and technical documentation websites.[linkedin.com]"
+          },
+          {
+            "agency": "Writers Of USA",
+            "domain": "writersofusa.com",
+            "comment": "Primarily a book/ghostwriting and publishing agency; can be relevant if software firms also need long-form technical or business content.[linkedin.com]"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "stanzago.com",
+        "stepes.com",
+        "devdocs.work",
+        "techscribe.co.uk",
+        "rightlywritten.com",
+        "verblio.com",
+        "thewordfactory.com",
+        "aptagon.com",
+        "manzeerasolutions.co.uk",
+        "writerhire.co",
+        "stepes.com",
+        "cherryleaf.com",
+        "madcapsoftware.com",
+        "3di-info.com",
+        "edc.us",
+        "timelytext.com",
+        "aecinc.com",
+        "sheaws.com",
+        "documatt.com",
+        "writersofusa.com"
+      ],
+      "domain_ranks": [
+        [
+          "stanzago.com",
+          1
+        ],
+        [
+          "stepes.com",
+          2
+        ],
+        [
+          "devdocs.work",
+          3
+        ],
+        [
+          "techscribe.co.uk",
+          4
+        ],
+        [
+          "rightlywritten.com",
+          5
+        ],
+        [
+          "verblio.com",
+          6
+        ],
+        [
+          "thewordfactory.com",
+          7
+        ],
+        [
+          "aptagon.com",
+          8
+        ],
+        [
+          "manzeerasolutions.co.uk",
+          9
+        ],
+        [
+          "writerhire.co",
+          10
+        ],
+        [
+          "stepes.com",
+          11
+        ],
+        [
+          "cherryleaf.com",
+          12
+        ],
+        [
+          "madcapsoftware.com",
+          13
+        ],
+        [
+          "3di-info.com",
+          14
+        ],
+        [
+          "edc.us",
+          15
+        ],
+        [
+          "timelytext.com",
+          16
+        ],
+        [
+          "aecinc.com",
+          17
+        ],
+        [
+          "sheaws.com",
+          18
+        ],
+        [
+          "documatt.com",
+          19
+        ],
+        [
+          "writersofusa.com",
+          20
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "leading Webflow design and development agencies for tech startups",
+      "raw": "{\n  \"query\": \"leading Webflow design and development agencies for tech startups\",\n  \"results\": [    {\n      \"agency\": \"StanVision\",\n      \"domain\": \"stan.vision\",\n      \"comment\": \"Positioned as the best Webflow agency for SaaS startups, focused on fast-growing SaaS companies and funded startups needing high-converting Webflow sites.[stan.vision](https://www.stan.vision/journal/top-webflow-design-agencies)\"\n    },\n    {\n      \"agency\": \"BRIX Agency\",\n      \"domain\": \"brixagency.com\",\n      \"comment\": \"Known for modular, component-based Webflow systems and scalable architectures, with a strong track record on SaaS and tech brands.[fineartdesign.agency](https://fineartdesign.agency/top-7-webflow-design-agencies-for-startups/)[stan.vision](https://www.stan.vision/journal/top-webflow-design-agencies)\"\n    },\n    {\n      \"agency\": \"Veza Digital\",\n      \"domain\": \"vezadigital.com\",\n      \"comment\": \"Global Webflow partner focused on high-growth B2B SaaS, combining Webflow builds with SEO and demand-generation programs.[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)\"\n    },\n    {\n      \"agency\": \"Flow Ninja\",\n      \"domain\": \"flow.ninja\",\n      \"comment\": \"Webflow Enterprise Partner of the Year (2023), strong at complex CMS, migrations, and enterprise-scale Webflow ecosystems for SaaS and tech.[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)\"\n    },\n    {\n      \"agency\": \"Flowout\",\n      \"domain\": \"flowout.com\",\n      \"comment\": \"Enterprise Webflow partner using a subscription model; suited to SaaS teams that need rapid, continuous Webflow iteration.[fineartdesign.agency](https://fineartdesign.agency/top-7-webflow-design-agencies-for-startups/)[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)\"\n    },\n    {\n      \"agency\": \"theCSS Agency\",\n      \"domain\": \"thecssagency.com\",\n      \"comment\": \"Premium Webflow agency focused on fast, clean, SEO-ready builds for B2B, SaaS, and IT, with strong emphasis on Core Web Vitals and scalable CMS.[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)\"\n    },\n    {\n      \"agency\": \"NUMI\",\n      \"domain\": \"numi.tech\",\n      \"comment\": \"Webflow development agency explicitly serving startups, including tech and SaaS, with product and web design plus Webflow development.[numi.tech](https://www.numi.tech/post/webflow-agencies)\"\n    },\n    {\n      \"agency\": \"Deduxer Studio\",\n      \"domain\": \"deduxer.studio\",\n      \"comment\": \"No-code/Webflow specialist and Enterprise Partner with strong recognition from tech media, used by startups needing strategy, UX/UI, and Webflow builds.[numi.tech](https://www.numi.tech/post/webflow-agencies)[superside.com](https://www.superside.com/blog/best-webflow-agencies)\"\n    },\n    {\n      \"agency\": \"Uroboro\",\n      \"domain\": \"uroboro.ca\",\n      \"comment\": \"Webflow-focused studio delivering high-performing marketing sites with advanced CMS and API integrations, suitable for tech and product companies.[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)\"\n    },\n    {\n      \"agency\": \"SVZ\",\n      \"domain\": \"svz.io\",\n      \"comment\": \"End-to-end Webflow agency with extensive experience and notable tech clients like Patreon and Fivetran, strong fit for funded startups.[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "leading Webflow design and development agencies for tech startups",
+        "results": [
+          {
+            "agency": "StanVision",
+            "domain": "stan.vision",
+            "comment": "Positioned as the best Webflow agency for SaaS startups, focused on fast-growing SaaS companies and funded startups needing high-converting Webflow sites.[stan.vision](https://www.stan.vision/journal/top-webflow-design-agencies)"
+          },
+          {
+            "agency": "BRIX Agency",
+            "domain": "brixagency.com",
+            "comment": "Known for modular, component-based Webflow systems and scalable architectures, with a strong track record on SaaS and tech brands.[fineartdesign.agency](https://fineartdesign.agency/top-7-webflow-design-agencies-for-startups/)[stan.vision](https://www.stan.vision/journal/top-webflow-design-agencies)"
+          },
+          {
+            "agency": "Veza Digital",
+            "domain": "vezadigital.com",
+            "comment": "Global Webflow partner focused on high-growth B2B SaaS, combining Webflow builds with SEO and demand-generation programs.[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)"
+          },
+          {
+            "agency": "Flow Ninja",
+            "domain": "flow.ninja",
+            "comment": "Webflow Enterprise Partner of the Year (2023), strong at complex CMS, migrations, and enterprise-scale Webflow ecosystems for SaaS and tech.[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)"
+          },
+          {
+            "agency": "Flowout",
+            "domain": "flowout.com",
+            "comment": "Enterprise Webflow partner using a subscription model; suited to SaaS teams that need rapid, continuous Webflow iteration.[fineartdesign.agency](https://fineartdesign.agency/top-7-webflow-design-agencies-for-startups/)[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)"
+          },
+          {
+            "agency": "theCSS Agency",
+            "domain": "thecssagency.com",
+            "comment": "Premium Webflow agency focused on fast, clean, SEO-ready builds for B2B, SaaS, and IT, with strong emphasis on Core Web Vitals and scalable CMS.[sophisticatedcloud.com](https://www.sophisticatedcloud.com/all-blogs/top-5-webflow-agencies)"
+          },
+          {
+            "agency": "NUMI",
+            "domain": "numi.tech",
+            "comment": "Webflow development agency explicitly serving startups, including tech and SaaS, with product and web design plus Webflow development.[numi.tech](https://www.numi.tech/post/webflow-agencies)"
+          },
+          {
+            "agency": "Deduxer Studio",
+            "domain": "deduxer.studio",
+            "comment": "No-code/Webflow specialist and Enterprise Partner with strong recognition from tech media, used by startups needing strategy, UX/UI, and Webflow builds.[numi.tech](https://www.numi.tech/post/webflow-agencies)[superside.com](https://www.superside.com/blog/best-webflow-agencies)"
+          },
+          {
+            "agency": "Uroboro",
+            "domain": "uroboro.ca",
+            "comment": "Webflow-focused studio delivering high-performing marketing sites with advanced CMS and API integrations, suitable for tech and product companies.[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)"
+          },
+          {
+            "agency": "SVZ",
+            "domain": "svz.io",
+            "comment": "End-to-end Webflow agency with extensive experience and notable tech clients like Patreon and Fivetran, strong fit for funded startups.[enzuzo.com](https://www.enzuzo.com/blog/webflow-agencies)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "stan.vision",
+        "brixagency.com",
+        "vezadigital.com",
+        "flow.ninja",
+        "flowout.com",
+        "thecssagency.com",
+        "numi.tech",
+        "deduxer.studio",
+        "uroboro.ca",
+        "svz.io"
+      ],
+      "domain_ranks": [
+        [
+          "stan.vision",
+          1
+        ],
+        [
+          "brixagency.com",
+          2
+        ],
+        [
+          "vezadigital.com",
+          3
+        ],
+        [
+          "flow.ninja",
+          4
+        ],
+        [
+          "flowout.com",
+          5
+        ],
+        [
+          "thecssagency.com",
+          6
+        ],
+        [
+          "numi.tech",
+          7
+        ],
+        [
+          "deduxer.studio",
+          8
+        ],
+        [
+          "uroboro.ca",
+          9
+        ],
+        [
+          "svz.io",
+          10
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "best agencies for Reddit marketing and community promotion in tech",
+      "raw": "{\n  \"query\": \"best agencies for Reddit marketing and community promotion in tech\",\n  \"results\": [    {\n      \"agency\": \"Foundation Marketing\",\n      \"domain\": \"foundationinc.co\",\n      \"comment\": \"B2B and SaaS-focused content and Reddit marketing agency with strong emphasis on tech/software brands and community-driven campaigns.[foundationinc.co]\"\n    },\n    {\n      \"agency\": \"Growth Marketing Pro\",\n      \"domain\": \"growthmarketingpro.com\",\n      \"comment\": \"Search and Reddit marketing agency that ties organic Reddit engagement to SEO and AI search visibility; works heavily with SaaS and tech companies.[growthmarketingpro.com]\"\n    },\n    {\n      \"agency\": \"Accelerated Digital Media\",\n      \"domain\": \"accelerateddigitalmedia.com\",\n      \"comment\": \"Performance marketing shop (social + PPC) with a dedicated Reddit advertising focus and experience driving SaaS/tech campaigns.[foundationinc.co]\"\n    },\n    {\n      \"agency\": \"Inflow\",\n      \"domain\": \"goinflow.com\",\n      \"comment\": \"Digital marketing agency offering Reddit PPC and social for SaaS and eCommerce, with senior strategists running campaigns end-to-end.[foundationinc.co]\"\n    },\n    {\n      \"agency\": \"Hotspex Media\",\n      \"domain\": \"hotspexmedia.com\",\n      \"comment\": \"Media and social agency using behavioral data and audience research to design Reddit campaigns; suitable for SaaS and consumer tech.[foundationinc.co]\"\n    },\n    {\n      \"agency\": \"Sociallyin\",\n      \"domain\": \"sociallyin.com\",\n      \"comment\": \"Social-only agency that includes Reddit marketing and community engagement, good fit for higher-budget tech and SaaS social programs.[growthmarketingpro.com]\"\n    },\n    {\n      \"agency\": \"Taktical Digital\",\n      \"domain\": \"taktical.co\",\n      \"comment\": \"Performance-focused agency offering data-driven Reddit marketing and advertising for B2B, SaaS, and e-commerce brands.[growthmarketingpro.com][foundationinc.co]\"\n    },\n    {\n      \"agency\": \"CAYK Marketing Inc.\",\n      \"domain\": \"cayk.ca\",\n      \"comment\": \"Data-driven digital agency running Reddit advertising with strong analytics and optimization; used by SaaS and other tech-adjacent clients.[foundationinc.co]\"\n    },\n    {\n      \"agency\": \"Out Origin\",\n      \"domain\": \"outorigin.com\",\n      \"comment\": \"Digital agency with affordable Reddit marketing and community operations, noted as good for early-stage startups and SaaS.[growthmarketingpro.com][foundationinc.co]\"\n    },\n    {\n      \"agency\": \"Growffic\",\n      \"domain\": \"growffic.com\",\n      \"comment\": \"US-based agency listing itself as best for organic Reddit marketing with community emphasis, including for tech brands.[growffic.com]\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "best agencies for Reddit marketing and community promotion in tech",
+        "results": [
+          {
+            "agency": "Foundation Marketing",
+            "domain": "foundationinc.co",
+            "comment": "B2B and SaaS-focused content and Reddit marketing agency with strong emphasis on tech/software brands and community-driven campaigns.[foundationinc.co]"
+          },
+          {
+            "agency": "Growth Marketing Pro",
+            "domain": "growthmarketingpro.com",
+            "comment": "Search and Reddit marketing agency that ties organic Reddit engagement to SEO and AI search visibility; works heavily with SaaS and tech companies.[growthmarketingpro.com]"
+          },
+          {
+            "agency": "Accelerated Digital Media",
+            "domain": "accelerateddigitalmedia.com",
+            "comment": "Performance marketing shop (social + PPC) with a dedicated Reddit advertising focus and experience driving SaaS/tech campaigns.[foundationinc.co]"
+          },
+          {
+            "agency": "Inflow",
+            "domain": "goinflow.com",
+            "comment": "Digital marketing agency offering Reddit PPC and social for SaaS and eCommerce, with senior strategists running campaigns end-to-end.[foundationinc.co]"
+          },
+          {
+            "agency": "Hotspex Media",
+            "domain": "hotspexmedia.com",
+            "comment": "Media and social agency using behavioral data and audience research to design Reddit campaigns; suitable for SaaS and consumer tech.[foundationinc.co]"
+          },
+          {
+            "agency": "Sociallyin",
+            "domain": "sociallyin.com",
+            "comment": "Social-only agency that includes Reddit marketing and community engagement, good fit for higher-budget tech and SaaS social programs.[growthmarketingpro.com]"
+          },
+          {
+            "agency": "Taktical Digital",
+            "domain": "taktical.co",
+            "comment": "Performance-focused agency offering data-driven Reddit marketing and advertising for B2B, SaaS, and e-commerce brands.[growthmarketingpro.com][foundationinc.co]"
+          },
+          {
+            "agency": "CAYK Marketing Inc.",
+            "domain": "cayk.ca",
+            "comment": "Data-driven digital agency running Reddit advertising with strong analytics and optimization; used by SaaS and other tech-adjacent clients.[foundationinc.co]"
+          },
+          {
+            "agency": "Out Origin",
+            "domain": "outorigin.com",
+            "comment": "Digital agency with affordable Reddit marketing and community operations, noted as good for early-stage startups and SaaS.[growthmarketingpro.com][foundationinc.co]"
+          },
+          {
+            "agency": "Growffic",
+            "domain": "growffic.com",
+            "comment": "US-based agency listing itself as best for organic Reddit marketing with community emphasis, including for tech brands.[growffic.com]"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "foundationinc.co",
+        "growthmarketingpro.com",
+        "accelerateddigitalmedia.com",
+        "goinflow.com",
+        "hotspexmedia.com",
+        "sociallyin.com",
+        "taktical.co",
+        "cayk.ca",
+        "outorigin.com",
+        "growffic.com"
+      ],
+      "domain_ranks": [
+        [
+          "foundationinc.co",
+          1
+        ],
+        [
+          "growthmarketingpro.com",
+          2
+        ],
+        [
+          "accelerateddigitalmedia.com",
+          3
+        ],
+        [
+          "goinflow.com",
+          4
+        ],
+        [
+          "hotspexmedia.com",
+          5
+        ],
+        [
+          "sociallyin.com",
+          6
+        ],
+        [
+          "taktical.co",
+          7
+        ],
+        [
+          "cayk.ca",
+          8
+        ],
+        [
+          "outorigin.com",
+          9
+        ],
+        [
+          "growffic.com",
+          10
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "top agencies for creating product documentation and knowledge bases for software products",
+      "raw": "{\n  \"query\": \"top agencies for creating product documentation and knowledge bases for software products\",\n  \"results\": [    {\n      \"agency\": \"Cherryleaf\",\n      \"domain\": \"cherryleaf.com\",\n      \"comment\": \"Boutique technical communication firm that creates end\u2011user documentation, online help, knowledge bases, API docs, and policies/procedures for software companies.[cherryleaf.com](https://www.cherryleaf.com/)[cherryleaf.com](https://www.cherryleaf.com/documentation_services)\"\n    },\n    {\n      \"agency\": \"Contiem\",\n      \"domain\": \"contiem.com\",\n      \"comment\": \"Global technical writing and content development company delivering software product documentation, online help systems, and knowledge bases, including governed documentation portals.[contiem.com](https://contiem.com/content-services/knowledge-bases/)[contiem.com](https://contiem.com/content-services/technical-writing/)\"\n    },\n    {\n      \"agency\": \"Fluid Topics\",\n      \"domain\": \"fluidtopics.com\",\n      \"comment\": \"Product knowledge platform vendor that implements documentation portals, in\u2011product help, and AI\u2011powered knowledge delivery for software and technical products; often engaged like an agency for portal and knowledge-base projects.[fluidtopics.com](https://www.fluidtopics.com/)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "top agencies for creating product documentation and knowledge bases for software products",
+        "results": [
+          {
+            "agency": "Cherryleaf",
+            "domain": "cherryleaf.com",
+            "comment": "Boutique technical communication firm that creates end\u2011user documentation, online help, knowledge bases, API docs, and policies/procedures for software companies.[cherryleaf.com](https://www.cherryleaf.com/)[cherryleaf.com](https://www.cherryleaf.com/documentation_services)"
+          },
+          {
+            "agency": "Contiem",
+            "domain": "contiem.com",
+            "comment": "Global technical writing and content development company delivering software product documentation, online help systems, and knowledge bases, including governed documentation portals.[contiem.com](https://contiem.com/content-services/knowledge-bases/)[contiem.com](https://contiem.com/content-services/technical-writing/)"
+          },
+          {
+            "agency": "Fluid Topics",
+            "domain": "fluidtopics.com",
+            "comment": "Product knowledge platform vendor that implements documentation portals, in\u2011product help, and AI\u2011powered knowledge delivery for software and technical products; often engaged like an agency for portal and knowledge-base projects.[fluidtopics.com](https://www.fluidtopics.com/)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "cherryleaf.com",
+        "contiem.com",
+        "fluidtopics.com"
+      ],
+      "domain_ranks": [
+        [
+          "cherryleaf.com",
+          1
+        ],
+        [
+          "contiem.com",
+          2
+        ],
+        [
+          "fluidtopics.com",
+          3
+        ]
+      ],
+      "matches": []
+    }
+  ]
+}

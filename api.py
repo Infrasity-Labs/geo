@@ -8,7 +8,8 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-from run import evaluate_models, load_prompts, load_targets, normalize_domain, resolve_model_configs
+from run import (TargetSpec, create_target_spec, evaluate_models, load_prompts,
+                 load_targets, normalize_domain, resolve_model_configs)
 
 BASE_DIR = Path(__file__).parent
 DEFAULT_PROMPTS_PATH = BASE_DIR / "config" / "prompts.txt"
@@ -38,7 +39,17 @@ def healthz() -> dict:
 @app.post("/evaluate")
 def evaluate(request: EvaluateRequest) -> dict:
     prompts = request.prompts or load_prompts(DEFAULT_PROMPTS_PATH)
-    targets = request.targets or load_targets(DEFAULT_TARGETS_PATH)
+    if request.targets:
+        targets: List[TargetSpec] = []
+        for raw in request.targets:
+            if isinstance(raw, str):
+                spec = create_target_spec(raw)
+                if spec:
+                    targets.append(spec)
+        if not targets:
+            raise HTTPException(status_code=400, detail="at least one valid target is required")
+    else:
+        targets = load_targets(DEFAULT_TARGETS_PATH)
     requested = {slug.strip() for slug in request.models or [] if slug and slug.strip()}
     try:
         model_configs = resolve_model_configs(requested)
@@ -65,7 +76,9 @@ def cite(request: QuickCitationRequest) -> dict:
     if not target_input:
         raise HTTPException(status_code=400, detail="domain or company is required")
 
-    target_domain = normalize_domain(target_input)
+    spec = create_target_spec(target_input)
+    if not spec:
+        raise HTTPException(status_code=400, detail="invalid target input")
     requested = {slug.strip() for slug in request.models or [] if slug and slug.strip()}
     try:
         model_configs = resolve_model_configs(requested)
@@ -76,9 +89,9 @@ def cite(request: QuickCitationRequest) -> dict:
     if not api_key:
         raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY is required to call OpenRouter.")
 
-    records = evaluate_models(prompts, [target_domain], api_key, model_configs)
+    records = evaluate_models(prompts, [spec], api_key, model_configs)
     return {
         "prompts": prompts,
-        "domain": target_domain,
+        "domain": spec.domain,
         "records": records,
     }

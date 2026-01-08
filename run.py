@@ -2,13 +2,15 @@ import json
 import os
 import re
 import time
+from collections import defaultdict
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 from urllib.parse import urlparse
 
-from dotenv import load_dotenv
 import requests
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -42,6 +44,15 @@ LOG_DIR = Path("logs")
 MASTER_LOG = LOG_DIR / "master_log.jsonl"
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 RANK_NA_TEXT = "rank n/a"
+URL_PATTERN = re.compile(r"https?://[^\s)\]]+")
+
+
+@dataclass
+class TargetSpec:
+    original: str
+    domain: str
+    url: str
+    has_path: bool
 
 
 def load_prompts(path: Path) -> List[str]:
@@ -49,12 +60,18 @@ def load_prompts(path: Path) -> List[str]:
         return [line.strip() for line in handle.readlines() if line.strip()]
 
 
-def load_targets(path: Path) -> List[str]:
+def load_targets(path: Path) -> List[TargetSpec]:
     with path.open("r", encoding="utf-8") as handle:
         data = json.load(handle)
     if not isinstance(data, list):
-        raise ValueError("targets.json must contain a JSON array of domain strings")
-    return [normalize_domain(item) for item in data if isinstance(item, str) and item.strip()]
+        raise ValueError("targets.json must contain a JSON array of domain or URL strings")
+    targets: List[TargetSpec] = []
+    for item in data:
+        if isinstance(item, str):
+            spec = create_target_spec(item)
+            if spec:
+                targets.append(spec)
+    return targets
 
 
 def normalize_domain(domain: str) -> str:
@@ -64,11 +81,85 @@ def normalize_domain(domain: str) -> str:
     cleaned = cleaned.rstrip("/")
     return cleaned
 
+def normalize_url(url: str) -> str:
+    cleaned = url.strip()
+    if not cleaned:
+        return ""
+    parsed = urlparse(cleaned)
+    if not parsed.scheme:
+        parsed = urlparse(f"https://{cleaned}")
+    if not parsed.netloc:
+        return ""
+    domain = normalize_domain(parsed.netloc)
+    path = parsed.path.rstrip("/")
+    normalized = domain
+    if path and path != "/":
+        normalized += path
+    if parsed.query:
+        normalized += f"?{parsed.query}"
+    if parsed.fragment:
+        normalized += f"#{parsed.fragment}"
+    return normalized
+
+
+def create_target_spec(entry: str) -> Optional[TargetSpec]:
+    cleaned = entry.strip()
+    if not cleaned:
+        return None
+    domain = domain_from_url(cleaned)
+    if not domain:
+        return None
+    normalized = normalize_url(cleaned)
+    has_path = bool(normalized and normalized != domain)
+    return TargetSpec(original=entry, domain=domain, url=normalized if has_path else "", has_path=has_path)
+
+
+def extract_urls_from_text(text: str) -> Set[str]:
+    if not text:
+        return set()
+    matches = URL_PATTERN.findall(text)
+    normalized_urls: Set[str] = set()
+    for match in matches:
+        normalized = normalize_url(match)
+        if normalized:
+            normalized_urls.add(normalized)
+    return normalized_urls
+
+
+def collect_domain_urls(payload: Dict) -> Dict[str, Set[str]]:
+    domain_urls: Dict[str, Set[str]] = defaultdict(set)
+    results = payload.get("results", [])
+    if not isinstance(results, list):
+        return {}
+    for item in results:
+        if not isinstance(item, dict):
+            continue
+        domain = normalize_domain(str(item.get("domain", "")))
+        if not domain:
+            continue
+        urls = extract_urls_from_text(item.get("comment", ""))
+        if urls:
+            domain_urls[domain].update(urls)
+    return dict(domain_urls)
+
+
+def build_target_index(targets: List[TargetSpec]) -> Dict[str, List[TargetSpec]]:
+    index: Dict[str, List[TargetSpec]] = defaultdict(list)
+    for target in targets:
+        index[target.domain].append(target)
+    return index
+
 
 def domain_from_url(url: str) -> str:
-    parsed = urlparse(url)
+    cleaned = url.strip()
+    if not cleaned:
+        return ""
+    parsed = urlparse(cleaned)
+    if not parsed.scheme:
+        parsed = urlparse(f"https://{cleaned}")
     netloc = parsed.netloc or parsed.path
-    return normalize_domain(netloc)
+    domain_candidate = netloc.split("/")[0]
+    return normalize_domain(domain_candidate)
 
 
 def extract_json_from_text(text: str) -> Tuple[Dict, bool]:
@@ -148,13 +239,37 @@ def collect_domains(payload: Dict) -> List[Tuple[str, int]]:
     return domains
 
 
-def match_targets(domains: List[Tuple[str, int]], targets: List[str]) -> List[Dict]:
+def match_targets(
+    domains: List[Tuple[str, int]],
+    targets: List[TargetSpec],
+    domain_urls: Dict[str, Set[str]],
+) -> List[Dict]:
+    index = build_target_index(targets)
     matches: Dict[str, Dict] = {}
     for domain, rank in domains:
-        if domain in targets:
-            entry = matches.setdefault(domain, {"domain": domain, "count": 0, "ranks": []})
-            entry["count"] += 1
-            entry["ranks"].append(rank)
+        if domain not in index:
+            continue
+        entry = matches.setdefault(
+            domain,
+            {
+                "domain": domain,
+                "count": 0,
+                "ranks": [],
+                "target_urls": [],
+                "exact_url_matches": [],
+            },
+        )
+        entry["count"] += 1
+        entry["ranks"].append(rank)
+    for domain, entry in matches.items():
+        specs = index.get(domain, [])
+        target_urls: List[str] = []
+        for spec in specs:
+            if spec.has_path and spec.url and spec.url not in target_urls:
+                target_urls.append(spec.url)
+        entry["target_urls"] = target_urls
+        available_urls = domain_urls.get(domain, set())
+        entry["exact_url_matches"] = [url for url in target_urls if url in available_urls]
     return list(matches.values())
 
 
@@ -168,7 +283,7 @@ def resolve_model_configs(requested_slugs: Optional[Set[str]] = None) -> List[Di
 
 def evaluate_models(
     prompts: List[str],
-    targets: List[str],
+    targets: List[TargetSpec],
     api_key: str,
     model_configs: List[Dict],
     *,
@@ -187,7 +302,8 @@ def evaluate_models(
         for prompt in prompts:
             raw, parsed, json_valid = perform_request(caller, prompt, api_key)
             domain_ranks = collect_domains(parsed)
-            matches = match_targets(domain_ranks, targets)
+            domain_urls = collect_domain_urls(parsed)
+            matches = match_targets(domain_ranks, targets, domain_urls)
             provider_results.append(
                 {
                     "prompt": prompt,
@@ -218,11 +334,7 @@ def print_provider_summary(record: Dict) -> None:
         if not matches:
             print(f"- prompt: {prompt} -> no target domains cited")
             continue
-        parts = []
-        for match in matches:
-            ranks = match.get("ranks", [])
-            rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
-            parts.append(f"{match.get('domain')} ({match.get('count')}x, {rank_str})")
+        parts = [describe_match(match) for match in matches]
         print(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
 
 
@@ -243,6 +355,28 @@ def format_provider_block(record: Dict) -> str:
     return "\n".join(lines)
 
 
+def describe_match(match: Dict, *, link_exact_urls: bool = False) -> str:
+    domain = match.get("domain", "")
+    count = match.get("count", 0)
+    ranks = match.get("ranks", [])
+    rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
+    pieces = [f"{domain} ({count}x, {rank_str})"]
+    exact_matches = match.get("exact_url_matches", []) or []
+    target_urls = match.get("target_urls", []) or []
+    if exact_matches:
+        formatted = (
+            [f"[{url}](https://{url})" for url in exact_matches]
+            if link_exact_urls
+            else exact_matches
+        )
+        pieces.append(f"exact URL(s) cited: {', '.join(formatted)}")
+    elif target_urls:
+        pieces.append("exact URL not found")
+    else:
+        pieces.append("no URL targets")
+    return "; ".join(pieces)
+
+
 def escape_pipe(text: str) -> str:
     return text.replace("|", "\\|")
 
@@ -259,16 +393,12 @@ def format_provider_table(record: Dict) -> str:
             status = "no target domains cited"
         else:
             domain_links = []
-            status_parts = []
             for match in matches:
                 domain = match.get("domain")
                 if domain:
                     domain_links.append(f"[{domain}](https://{domain})")
-                ranks = match.get("ranks", [])
-                rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
-                status_parts.append(f"cited {match.get('domain')} ({match.get('count')}x, {rank_str})")
             domain_cell = "<br>".join(domain_links)
-            status = "; ".join(status_parts)
+            status = "; ".join(describe_match(match, link_exact_urls=True) for match in matches)
         lines.append(f"| {prompt} | {domain_cell} | {status} |")
     return "\n".join(lines)
 

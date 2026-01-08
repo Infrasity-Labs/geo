@@ -76,3 +76,27 @@
 - prompt: top marketing agencies for AI technology startups developer marketing agencies for AI agents -> no target domains cited
 - prompt: best developer marketing agencies for B2B SaaS developer marketing agencies -> no target domains cited
 
+## 20260108T104231Z
+### Provider: openrouter | Model: perplexity-sonar-online
+| Prompt | Target Domain | Status |
+| --- | --- | --- |
+| best developer marketing agencies for SaaS and devtool companies |  | no target domains cited |
+| agencies specializing in AI-driven geo optimization for businesses |  | no target domains cited |
+| top video production agencies for technology and software companies |  | no target domains cited |
+| best technical writing service providers for software and IT documentation |  | no target domains cited |
+| leading Webflow design and development agencies for tech startups |  | no target domains cited |
+| best agencies for Reddit marketing and community promotion in tech |  | no target domains cited |
+| top agencies for creating product documentation and knowledge bases for software products |  | no target domains cited |
+
+## 20260108T114332Z
+### Provider: openrouter | Model: perplexity-sonar-online
+| Prompt | Target Domain | Status |
+| --- | --- | --- |
+| best developer marketing agencies for SaaS and devtool companies | [infrasity.com](https://infrasity.com) | infrasity.com (1x, ranks [3]); exact URL not found |
+| agencies specializing in AI-driven geo optimization for businesses |  | no target domains cited |
+| top video production agencies for technology and software companies |  | no target domains cited |
+| best technical writing service providers for software and IT documentation |  | no target domains cited |
+| leading Webflow design and development agencies for tech startups |  | no target domains cited |
+| best agencies for Reddit marketing and community promotion in tech |  | no target domains cited |
+| top agencies for creating product documentation and knowledge bases for software products |  | no target domains cited |
+
