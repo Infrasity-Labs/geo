@@ -162,10 +162,42 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add logs/*.json logs/*.jsonl logs/main_log.md || true
+          git add -f logs/*.json logs/*.jsonl logs/main_log.md || true
           if git diff --cached --quiet; then
             echo "No log changes to commit."
           else
             git commit -m "Update citation logs [skip ci]" || true
             git push origin HEAD:${GITHUB_REF#refs/heads/} || true
           fi
+
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: |
+          set -eo pipefail
+          summary_file="logs/last_summary.md"
+          if [ -f "$summary_file" ]; then
+            summary_text=$(cat "$summary_file")
+          else
+            summary_text=$(cat logs/main_log.md)
+          fi
+          export SUMMARY="$summary_text"
+          payload=$(python - <<'PY'
+          import json, os
+          summary = os.getenv('SUMMARY')
+          payload = {
+              'channel': 'C0A7JBT18N9',
+              'text': 'Citation check finished',
+              'blocks': [
+                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': '*Citation check finished*'}},
+                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': summary}}
+              ]
+          }
+          print(json.dumps(payload))
+          PY
+          )
+          curl -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data "$payload"

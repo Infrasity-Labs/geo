@@ -302,8 +302,9 @@ def evaluate_models(
         for prompt in prompts:
             raw, parsed, json_valid = perform_request(caller, prompt, api_key)
             domain_ranks = collect_domains(parsed)
-            domain_urls = collect_domain_urls(parsed)
-            matches = match_targets(domain_ranks, targets, domain_urls)
+            domain_urls_set = collect_domain_urls(parsed)
+            matches = match_targets(domain_ranks, targets, domain_urls_set)
+            domain_urls = {domain: sorted(urls) for domain, urls in domain_urls_set.items()}
             provider_results.append(
                 {
                     "prompt": prompt,
@@ -313,6 +314,7 @@ def evaluate_models(
                     "domains": [d for d, _ in domain_ranks],
                     "domain_ranks": domain_ranks,
                     "matches": matches,
+                    "domain_urls": domain_urls,
                 }
             )
         records.append(
@@ -382,9 +384,12 @@ def top_results(parsed: Dict, limit: int = 3) -> List[Tuple[str, str]]:
     return rows
 
 
-def _target_cell(matches: List[Dict]) -> str:
+def _target_cell(matches: List[Dict], domain_urls: Dict[str, List[str]]) -> str:
     if not matches:
-        return "—"
+        fallback_urls: List[str] = []
+        for urls in domain_urls.values():
+            fallback_urls.extend(urls)
+        return "<br>".join(fallback_urls) if fallback_urls else "—"
     target_bits: List[str] = []
     for match in matches:
         urls = match.get("exact_url_matches", []) or match.get("target_urls", [])
@@ -393,7 +398,12 @@ def _target_cell(matches: List[Dict]) -> str:
             target_bits.extend([f"https://{u}" for u in urls])
         elif domain:
             target_bits.append(f"https://{domain}")
-    return "<br>".join(target_bits) if target_bits else "—"
+    if not target_bits:
+        fallback_urls = []
+        for urls in domain_urls.values():
+            fallback_urls.extend(urls)
+        return "<br>".join(fallback_urls) if fallback_urls else "—"
+    return "<br>".join(target_bits)
 
 
 def _top3_cell(parsed: Dict) -> str:
@@ -412,7 +422,7 @@ def format_console_table(record: Dict) -> str:
     lines = ["| Prompt | Target citations | Top 3 results (domain – company) |", "| --- | --- | --- |"]
     for item in record.get("results", []):
         prompt = escape_pipe(item.get("prompt", ""))
-        target_cell = _target_cell(item.get("matches", []))
+        target_cell = _target_cell(item.get("matches", []), item.get("domain_urls", {}))
         top_cell = _top3_cell(item.get("parsed", {}))
         lines.append(f"| {prompt} | {target_cell} | {top_cell} |")
     return "\n".join(lines)
