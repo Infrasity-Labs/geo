@@ -1,11 +1,11 @@
 # LLM Citation Monitor
 
-Automated runner that queries OpenAI and Perplexity **search** APIs 3–4 times daily with a fixed prompt set, then tracks cited domains and logs results.
+Automated runner that queries OpenRouter search models 3–4 times daily with a fixed prompt set, then tracks cited domains and logs results.
 
 ## How it works
 
 - Prompts and target domains are read from external files so they can change without code edits.
-- Each prompt is sent in a fresh session to OpenAI (`gpt-4o-search-preview-2025-03-11`) via the Responses API with web search enabled, and to Perplexity Search API (ranked web results).
+- Each prompt is sent to the OpenRouter endpoints configured in `OPENROUTER_MODELS` (for example `gpt-oss-20b:free:online`, `claude-3.5-haiku`, `perplexity/sonar`).
 - Responses are validated as JSON; if invalid, a second attempt is made. Remaining failures are logged as raw text.
 - Domains are normalized, compared to the target list, and every run is written to timestamped JSON plus an append-only master log.
 - GitHub Actions runs on cron (`0 0,8,16,20 * * *`) and via manual dispatch.
@@ -20,10 +20,38 @@ Automated runner that queries OpenAI and Perplexity **search** APIs 3–4 times 
 
 ## Setup (local)
 
-1. Python 3.11+.
-2. `pip install requests`.
-3. Set environment variables: `OPENAI_API_KEY` and `PERPLEXITY_API_KEY`.
+1. Install Python 3.11+.
+2. `pip install -r requirements.txt`.
+3. Set `OPENROUTER_API_KEY` in your environment (and `MODEL_SLUGS` if you want to limit models).
 4. Run: `python run.py`.
+
+## HTTP API
+
+1. Make sure the prerequisites and `OPENROUTER_API_KEY` are configured as above.
+2. Start the server locally with `uvicorn api:app --host 0.0.0.0 --port 8000`.
+3. `GET /healthz` will report a basic `"status": "ok"` payload.
+4. `POST /evaluate` accepts JSON `prompts`, `targets`, and `models`. All fields are optional; the defaults are the files in `config/` and the models defined in `OPENROUTER_MODELS`.
+
+Example:
+
+```
+curl -X POST http://localhost:8000/evaluate \
+	-H "Content-Type: application/json" \
+	-d '{"models": ["openai/gpt-oss-20b:free:online"], "prompts": ["What agencies regulate clean energy?"]}'
+```
+
+### Simple citation lookup
+
+1. `POST /cite` accepts multiple `prompts` (defaulting to `config/prompts.txt` when omitted) and requires either `domain` or `company`. It normalizes the target and runs the same evaluation pipeline across all configured models unless you supply a `models` override.
+2. The response mirrors the CLI records so you get every model’s results for each prompt against that one domain.
+
+Example:
+
+```bash
+curl -X POST http://localhost:8000/cite \
+	-H "Content-Type: application/json" \
+	-d '{"prompts": ["top developer marketing agencies", "developer marketing agency for AI startups"], "domain": "infrasity.com"}'
+```
 
 ## Editing prompts or targets
 
@@ -39,8 +67,8 @@ Automated runner that queries OpenAI and Perplexity **search** APIs 3–4 times 
 
 ## Workflow notes
 
-- The workflow installs `requests`, runs `python run.py`, and uploads the `logs/` directory as an artifact.
-- Secrets required in repo settings: `OPENAI_API_KEY`, `PERPLEXITY_API_KEY`.
+- The workflow installs dependencies via `pip install --upgrade pip requests` (and can be switched to `pip install -r requirements.txt` if you add more packages), runs `python run.py`, and uploads the `logs/` directory as an artifact.
+- Secrets required in repo settings: `OPENROUTER_API_KEY`.
 
 ## Optional next steps
 
