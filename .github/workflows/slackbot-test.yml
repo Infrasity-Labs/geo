@@ -13,19 +13,8 @@ jobs:
           SLACK_CHANNEL: C0A7QE8K7R8
         run: |
           set -eo pipefail
-          payload=$(python - <<'PY'
-          import json, os
-          payload = {
-              'channel': os.environ['SLACK_CHANNEL'],
-              'text': 'Slack bot connectivity test',
-              'blocks': [
-                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': '*Slack bot connectivity test*'}},
-                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': 'If you see this message, the bot can post to the workspace.'}}
-              ]
-          }
-          print(json.dumps(payload))
-          PY
-          )
+          # Sample payload mirrors citation-check format to validate Slack schema
+          payload=$(python -c "import json; title='Citation check finished for citation-check-test'; summary='Sample summary for Slack schema validation.'; summary_block='\\`\\`\\`\\n'+summary+'\\n\\`\\`\\`'; payload={'channel':'%s','text':title,'blocks':[{'type':'section','text':{'type':'mrkdwn','text':f'*{title}*'}},{'type':'section','text':{'type':'mrkdwn','text':'Summary below.'}},{'type':'section','text':{'type':'mrkdwn','text':summary_block}}]}; print(json.dumps(payload))" "$SLACK_CHANNEL")
           curl -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H "Content-Type: application/json" \
