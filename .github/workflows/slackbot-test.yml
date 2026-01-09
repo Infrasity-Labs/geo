@@ -20,51 +20,64 @@ jobs:
           import textwrap
 
 
-          def format_table(md: str) -> str:
-            lines = md.replace('<br>', '\n').splitlines()
-            table_rows = []
-            prefix = []
-            in_table = False
-
-            for ln in lines:
-              st = ln.strip()
-              if st.startswith('|') and st.endswith('|') and '|' in st[1:-1]:
-                cells = [c.strip() for c in st.strip('|').split('|')]
-                if all(set(c) <= {'-', ':'} for c in cells):
-                  in_table = True
-                  continue
-                in_table = True
-                table_rows.append(cells)
-              else:
-                if not in_table:
-                  prefix.append(ln)
-
-            if not table_rows:
-              return md
-
-            widths = [max(len(row[i]) for row in table_rows) for i in range(len(table_rows[0]))]
-            table_lines = [' | '.join(row[i].ljust(widths[i]) for i in range(len(widths))) for row in table_rows]
-
-            body_parts = [ln for ln in prefix if ln.strip()]
-            if body_parts:
-              body_parts.append('')
-            body_parts.extend(table_lines)
-            return '\n'.join(body_parts)
+          def compact(text: str, limit: int = 120) -> str:
+            return text if len(text) <= limit else text[: limit - 1] + '…'
 
 
           title = 'Citation check finished for citation-check-test'
-          summary = textwrap.dedent('''
-          ## 20260109T130911Z
-          ### Provider: openrouter | Model: gpt-oss-20b-free-online
-          | Prompt | Target URL | Status | Other cited URLs |
-          | --- | --- | --- | --- |
-          | Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised | [https://infrasity.com/services/reddit-marketing-agency](https://infrasity.com/services/reddit-marketing-agency) | cited URL(s): https://infrasity.com/services/reddit-marketing-agency | https://theredditmarketingagency.com/lp-ahyanah<br>https://upvoteagency.com<br>https://discoveredlabs.com/services/reddit-marketing-agency |
-          | Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised | [https://infrasity.com/services/reddit-marketing-agency](https://infrasity.com/services/reddit-marketing-agency) | cited URL(s): https://infrasity.com/services/reddit-marketing-agency | https://foundationinc.co/services/reddit-agency<br>https://reddithero.com<br>https://singlegrain.com/search-everywhere-optimization/10-best-reddit-agencies-in-2025-complete-guide-for-b2b-success |
-          | Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised |  | no target URLs cited | https://getemall.com<br>https://roshdigital.co.il<br>https://moov.co.il |
-          ''').strip()
 
-          formatted = format_table(summary)
-          summary_block = f"```\n{formatted}\n```"
+          rows = [
+            {
+              'prompt': 'Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised',
+              'target': 'https://infrasity.com/services/reddit-marketing-agency',
+              'status': 'cited URL(s): https://infrasity.com/services/reddit-marketing-agency',
+              'other': [
+                'https://theredditmarketingagency.com/lp-ahyanah',
+                'https://upvoteagency.com',
+                'https://discoveredlabs.com/services/reddit-marketing-agency',
+              ],
+            },
+            {
+              'prompt': 'Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised',
+              'target': 'https://infrasity.com/services/reddit-marketing-agency',
+              'status': 'cited URL(s): https://infrasity.com/services/reddit-marketing-agency',
+              'other': [
+                'https://foundationinc.co/services/reddit-agency',
+                'https://reddithero.com',
+                'https://singlegrain.com/search-everywhere-optimization/10-best-reddit-agencies-in-2025-complete-guide-for-b2b-success',
+              ],
+            },
+            {
+              'prompt': 'Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised',
+              'target': '',
+              'status': 'no target URLs cited',
+              'other': [
+                'https://getemall.com',
+                'https://roshdigital.co.il',
+                'https://moov.co.il',
+              ],
+            },
+          ]
+
+          lines = [
+            '## 20260109T130911Z',
+            '### Provider: openrouter | Model: gpt-oss-20b-free-online',
+            '',
+          ]
+
+          for idx, row in enumerate(rows, start=1):
+            lines.append(f"*Entry {idx}*")
+            lines.append(f"• Prompt: {compact(row['prompt'])}")
+            lines.append(f"• Target: {row['target'] or '—'}")
+            lines.append(f"• Status: {row['status']}")
+            if row['other']:
+              lines.append("• Other URLs:")
+              for url in row['other']:
+                lines.append(f"    - {url}")
+            lines.append('')
+
+          summary_block = '\n'.join(lines).strip()
+
           payload = {
             'channel': os.environ['SLACK_CHANNEL'],
             'text': title,
