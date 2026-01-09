@@ -90,9 +90,10 @@ def normalize_url(url: str) -> str:
         parsed = urlparse(f"https://{cleaned}")
     if not parsed.netloc:
         return ""
+    scheme = parsed.scheme or "https"
     domain = normalize_domain(parsed.netloc)
     path = parsed.path.rstrip("/")
-    normalized = domain
+    normalized = f"{scheme}://{domain}"
     if path and path != "/":
         normalized += path
     if parsed.query:
@@ -100,6 +101,10 @@ def normalize_url(url: str) -> str:
     if parsed.fragment:
         normalized += f"#{parsed.fragment}"
     return normalized
+
+
+def strip_scheme(url: str) -> str:
+    return re.sub(r"^https?://", "", url)
 
 
 def create_target_spec(entry: str) -> Optional[TargetSpec]:
@@ -114,20 +119,22 @@ def create_target_spec(entry: str) -> Optional[TargetSpec]:
     return TargetSpec(original=entry, domain=domain, url=normalized if has_path else "", has_path=has_path)
 
 
-def extract_urls_from_text(text: str) -> Set[str]:
+def extract_urls_from_text(text: str) -> List[str]:
     if not text:
-        return set()
+        return []
     matches = URL_PATTERN.findall(text)
-    normalized_urls: Set[str] = set()
+    normalized_urls: List[str] = []
+    seen: Set[str] = set()
     for match in matches:
         normalized = normalize_url(match)
-        if normalized:
-            normalized_urls.add(normalized)
+        if normalized and normalized not in seen:
+            seen.add(normalized)
+            normalized_urls.append(normalized)
     return normalized_urls
 
 
-def collect_domain_urls(payload: Dict) -> Dict[str, Set[str]]:
-    domain_urls: Dict[str, Set[str]] = defaultdict(set)
+def collect_domain_urls(payload: Dict) -> Dict[str, List[str]]:
+    domain_urls: Dict[str, List[str]] = defaultdict(list)
     results = payload.get("results", [])
     if not isinstance(results, list):
         return {}
@@ -139,7 +146,9 @@ def collect_domain_urls(payload: Dict) -> Dict[str, Set[str]]:
             continue
         urls = extract_urls_from_text(item.get("comment", ""))
         if urls:
-            domain_urls[domain].update(urls)
+            for url in urls:
+                if url not in domain_urls[domain]:
+                    domain_urls[domain].append(url)
     return dict(domain_urls)
 
 
@@ -242,7 +251,7 @@ def collect_domains(payload: Dict) -> List[Tuple[str, int]]:
 def match_targets(
     domains: List[Tuple[str, int]],
     targets: List[TargetSpec],
-    domain_urls: Dict[str, Set[str]],
+    domain_urls: Dict[str, List[str]],
 ) -> List[Dict]:
     index = build_target_index(targets)
     matches: Dict[str, Dict] = {}
@@ -253,13 +262,12 @@ def match_targets(
             domain,
             {
                 "domain": domain,
-                "count": 0,
                 "ranks": [],
                 "target_urls": [],
-                "exact_url_matches": [],
+                "matched_urls": [],
+                "cited_urls": [],
             },
         )
-        entry["count"] += 1
         entry["ranks"].append(rank)
     for domain, entry in matches.items():
         specs = index.get(domain, [])
@@ -268,8 +276,17 @@ def match_targets(
             if spec.has_path and spec.url and spec.url not in target_urls:
                 target_urls.append(spec.url)
         entry["target_urls"] = target_urls
-        available_urls = domain_urls.get(domain, set())
-        entry["exact_url_matches"] = [url for url in target_urls if url in available_urls]
+        available_urls = domain_urls.get(domain, [])
+        entry["cited_urls"] = available_urls
+        if target_urls:
+            normalized_targets = {strip_scheme(url) for url in target_urls}
+            entry["matched_urls"] = [
+                url
+                for url in available_urls
+                if strip_scheme(url) in normalized_targets
+            ]
+        else:
+            entry["matched_urls"] = list(available_urls)
     return list(matches.values())
 
 
@@ -302,9 +319,9 @@ def evaluate_models(
         for prompt in prompts:
             raw, parsed, json_valid = perform_request(caller, prompt, api_key)
             domain_ranks = collect_domains(parsed)
-            domain_urls_set = collect_domain_urls(parsed)
-            matches = match_targets(domain_ranks, targets, domain_urls_set)
-            domain_urls = {domain: sorted(urls) for domain, urls in domain_urls_set.items()}
+            domain_urls_map = collect_domain_urls(parsed)
+            matches = match_targets(domain_ranks, targets, domain_urls_map)
+            domain_urls = {domain: list(urls) for domain, urls in domain_urls_map.items()}
             provider_results.append(
                 {
                     "prompt": prompt,
@@ -345,26 +362,23 @@ def format_provider_block(record: Dict) -> str:
         for match in matches:
             ranks = match.get("ranks", [])
             rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
-            parts.append(f"{match.get('domain')} ({match.get('count')}x, {rank_str})")
+            parts.append(f"{match.get('domain')} ({rank_str})")
         lines.append(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
     return "\n".join(lines)
 
 
-def describe_match(match: Dict, *, link_exact_urls: bool = False) -> str:
+def describe_match(match: Dict) -> str:
     domain = match.get("domain", "")
-    count = match.get("count", 0)
     ranks = match.get("ranks", [])
     rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
-    pieces = [f"{domain} ({count}x, {rank_str})"]
-    exact_matches = match.get("exact_url_matches", []) or []
+    pieces = [f"{domain} ({rank_str})"]
+    matched_urls = match.get("matched_urls", []) or []
+    cited_urls = match.get("cited_urls", []) or []
     target_urls = match.get("target_urls", []) or []
-    if exact_matches:
-        formatted = (
-            [f"[{url}](https://{url})" for url in exact_matches]
-            if link_exact_urls
-            else exact_matches
-        )
-        pieces.append(f"exact URL(s) cited: {', '.join(formatted)}")
+    if matched_urls:
+        pieces.append(f"cited URL(s): {', '.join(matched_urls)}")
+    elif cited_urls:
+        pieces.append(f"cited URL(s): {', '.join(cited_urls)}")
     elif target_urls:
         pieces.append("exact URL not found")
     else:
@@ -392,10 +406,10 @@ def _target_cell(matches: List[Dict], domain_urls: Dict[str, List[str]]) -> str:
         return "<br>".join(fallback_urls) if fallback_urls else "—"
     target_bits: List[str] = []
     for match in matches:
-        urls = match.get("exact_url_matches", []) or match.get("target_urls", [])
+        urls = match.get("matched_urls", []) or match.get("cited_urls", []) or match.get("target_urls", [])
         domain = match.get("domain", "")
         if urls:
-            target_bits.extend([f"https://{u}" for u in urls])
+            target_bits.extend(urls)
         elif domain:
             target_bits.append(f"https://{domain}")
     if not target_bits:
@@ -404,6 +418,19 @@ def _target_cell(matches: List[Dict], domain_urls: Dict[str, List[str]]) -> str:
             fallback_urls.extend(urls)
         return "<br>".join(fallback_urls) if fallback_urls else "—"
     return "<br>".join(target_bits)
+
+
+def other_cited_urls(domain_urls: Dict[str, List[str]], target_domains: Set[str], *, limit: int = 3) -> List[str]:
+    urls: List[str] = []
+    for domain, domain_list in domain_urls.items():
+        if domain in target_domains:
+            continue
+        for url in domain_list:
+            if url not in urls:
+                urls.append(url)
+            if len(urls) >= limit:
+                return urls[:limit]
+    return urls[:limit]
 
 
 def _top3_cell(parsed: Dict) -> str:
@@ -442,11 +469,15 @@ def escape_pipe(text: str) -> str:
 
 def format_provider_table(record: Dict) -> str:
     lines = [f"### Provider: {record.get('provider')} | Model: {record.get('model')}"]
-    lines.append("| Prompt | Target Domain | Status |")
-    lines.append("| --- | --- | --- |")
+    lines.append("| Prompt | Target Domain | Status | Other cited URLs |")
+    lines.append("| --- | --- | --- | --- |")
     for item in record.get("results", []):
         prompt = escape_pipe(item.get("prompt", ""))
         matches = item.get("matches", [])
+        domain_urls = item.get("domain_urls", {}) or {}
+        target_domains = {m.get("domain", "") for m in matches if m.get("domain")}
+        other_urls = other_cited_urls(domain_urls, target_domains)
+        other_cell = "<br>".join(other_urls) if other_urls else "—"
         if not matches:
             domain_cell = ""
             status = "no target domains cited"
@@ -457,8 +488,8 @@ def format_provider_table(record: Dict) -> str:
                 if domain:
                     domain_links.append(f"[{domain}](https://{domain})")
             domain_cell = "<br>".join(domain_links)
-            status = "; ".join(describe_match(match, link_exact_urls=True) for match in matches)
-        lines.append(f"| {prompt} | {domain_cell} | {status} |")
+            status = "; ".join(describe_match(match) for match in matches)
+        lines.append(f"| {prompt} | {domain_cell} | {status} | {other_cell} |")
     return "\n".join(lines)
 
 
