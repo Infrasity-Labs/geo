@@ -187,7 +187,7 @@ jobs:
           import json, os
           summary = os.getenv('SUMMARY')
           payload = {
-              'channel': 'C0A7JBT18N9',
+              'channel': 'C0A7QE8K7R8',
               'text': 'Citation check finished',
               'blocks': [
                   {'type': 'section', 'text': {'type': 'mrkdwn', 'text': '*Citation check finished*'}},
