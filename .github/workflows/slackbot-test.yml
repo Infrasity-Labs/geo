@@ -14,7 +14,25 @@ jobs:
         run: |
           set -eo pipefail
           # Sample payload mirrors citation-check format to validate Slack schema
-          payload=$(python -c "import json; title='Citation check finished for citation-check-test'; summary='Sample summary for Slack schema validation.'; summary_block='\\`\\`\\`\\n'+summary+'\\n\\`\\`\\`'; payload={'channel':'%s','text':title,'blocks':[{'type':'section','text':{'type':'mrkdwn','text':f'*{title}*'}},{'type':'section','text':{'type':'mrkdwn','text':'Summary below.'}},{'type':'section','text':{'type':'mrkdwn','text':summary_block}}]}; print(json.dumps(payload))" "$SLACK_CHANNEL")
+          payload=$(python - <<'PY'
+          import json, os
+
+          title = 'Citation check finished for citation-check-test'
+          summary = 'Sample summary for Slack schema validation.'
+          summary_block = "```\n" + summary + "\n```"
+          payload = {
+              'channel': os.environ['SLACK_CHANNEL'],
+              'text': title,
+              'blocks': [
+                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': f'*{title}*'}},
+                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': 'Summary below.'}},
+                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': summary_block}},
+              ],
+          }
+
+          print(json.dumps(payload))
+          PY
+          )
           curl -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H "Content-Type: application/json" \

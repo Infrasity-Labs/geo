@@ -188,7 +188,28 @@ jobs:
             summary_text=$(cat logs/main_log.md)
           fi
           export SUMMARY="$summary_text"
-          payload=$(python -c "import json, os; w=os.getenv('GITHUB_WORKFLOW','citation-check-devmarketing'); s=os.getenv('SUMMARY','').strip(); s=s.replace('<br>','\\n').replace('\\r\\n','\\n'); summary_text=s if s else 'No summary available.'; title=f'Citation check finished for {w}'; summary_block=f'\\`\\`\\`\\n{summary_text}\\n\\`\\`\\`'; payload={'channel':'C0A7QE8K7R8','text':title,'blocks':[{'type':'section','text':{'type':'mrkdwn','text':f'*{title}*'}},{'type':'section','text':{'type':'mrkdwn','text':'Summary below.'}},{'type':'section','text':{'type':'mrkdwn','text':summary_block}}]}; print(json.dumps(payload))")
+            payload=$(python - <<'PY'
+            import json, os
+
+            w = os.getenv('GITHUB_WORKFLOW', 'citation-check-devmarketing')
+            s = os.getenv('SUMMARY', '').strip()
+            s = s.replace('<br>', '\n').replace('\r\n', '\n')
+            summary_text = s if s else 'No summary available.'
+            title = f'Citation check finished for {w}'
+            summary_block = f"```\n{summary_text}\n```"
+            payload = {
+              'channel': 'C0A7QE8K7R8',
+              'text': title,
+              'blocks': [
+                {'type': 'section', 'text': {'type': 'mrkdwn', 'text': f'*{title}*'}},
+                {'type': 'section', 'text': {'type': 'mrkdwn', 'text': 'Summary below.'}},
+                {'type': 'section', 'text': {'type': 'mrkdwn', 'text': summary_block}},
+              ],
+            }
+
+            print(json.dumps(payload))
+            PY
+            )
           curl -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H "Content-Type: application/json" \
