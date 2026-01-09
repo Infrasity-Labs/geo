@@ -187,8 +187,61 @@ jobs:
           else
             summary_text=$(cat logs/main_log.md)
           fi
-          export SUMMARY="$summary_text"
-            payload=$(python -c $'import json, os\n\n'"'"'def format_table(md):\n    lines = md.splitlines()\n    table = []\n    prefix = []\n    in_table = False\n    for ln in lines:\n        st = ln.strip()\n        if st.startswith("|") and st.endswith("|") and "|" in st[1:-1]:\n            parts = [p.strip() for p in st.strip("|").split("|")]\n            if all(set(p) <= set("-:")):\n                in_table = True\n                continue\n            in_table = True\n            table.append(parts)\n        else:\n            if not in_table:\n                prefix.append(ln)\n    if not table:\n        return md\n    widths = [max(len(r[i]) for r in table) for i in range(len(table[0]))]\n    table_lines = [" | ".join(r[i].ljust(widths[i]) for i in range(len(widths))) for r in table]\n    body = "\\n".join([ln for ln in prefix if ln.strip()])\n    if body:\n        body += "\\n"\n    body += "\\n".join(table_lines)\n    return body\n\n'"'"'\nw=os.getenv("GITHUB_WORKFLOW","citation-check-fanout-countries")\ns=os.getenv("SUMMARY","").strip().replace("<br>","\\n").replace("\\r\\n","\\n")\nsummary_text=s if s else "No summary available."\nformatted=format_table(summary_text)\ntitle=f"Citation check finished for {w}"\nsummary_block=f"```\\n{formatted}\\n```"\npayload={"channel":"C0A7QE8K7R8","text":title,"blocks":[{"type":"section","text":{"type":"mrkdwn","text":f"*{title}*"}},{"type":"section","text":{"type":"mrkdwn","text":"Summary below."}},{"type":"section","text":{"type":"mrkdwn","text":summary_block}}]}\nprint(json.dumps(payload))')
+          payload=$(python - <<'PY'
+          import json, os
+
+
+          def format_table(md: str) -> str:
+              lines = md.splitlines()
+              table = []
+              prefix = []
+              in_table = False
+
+              for ln in lines:
+                  st = ln.strip()
+                  if st.startswith("|") and st.endswith("|") and "|" in st[1:-1]:
+                      parts = [p.strip() for p in st.strip("|").split("|")]
+                      if all(set(p) <= set("-:")):
+                          in_table = True
+                          continue
+                      in_table = True
+                      table.append(parts)
+                  else:
+                      if not in_table:
+                          prefix.append(ln)
+
+              if not table:
+                  return md
+
+              widths = [max(len(r[i]) for r in table) for i in range(len(table[0]))]
+              table_lines = [" | ".join(r[i].ljust(widths[i]) for i in range(len(widths))) for r in table]
+
+              body = "\n".join([ln for ln in prefix if ln.strip()])
+              if body:
+                  body += "\n"
+              body += "\n".join(table_lines)
+              return body
+
+
+          w = os.getenv("GITHUB_WORKFLOW", "citation-check-fanout-countries")
+          s = os.getenv("SUMMARY", "").strip().replace("<br>", "\n").replace("\r\n", "\n")
+          summary_text = s if s else "No summary available."
+          formatted = format_table(summary_text)
+          title = f"Citation check finished for {w}"
+          summary_block = f"```\n{formatted}\n```"
+          payload = {
+              "channel": "C0A7QE8K7R8",
+              "text": title,
+              "blocks": [
+                  {"type": "section", "text": {"type": "mrkdwn", "text": f"*{title}*"}},
+                  {"type": "section", "text": {"type": "mrkdwn", "text": "Summary below."}},
+                  {"type": "section", "text": {"type": "mrkdwn", "text": summary_block}},
+              ],
+          }
+
+          print(json.dumps(payload))
+          PY
+          )
           curl -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H "Content-Type: application/json" \
