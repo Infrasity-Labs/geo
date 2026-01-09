@@ -15,9 +15,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SYSTEM_MESSAGE = (
-    "You are doing an evaluation. For the given query, list relevant agencies with domain citations. "
-    "Citations MUST be domain names only (example.com). Do not invent domains. "
-    "If you are unsure about a domain, return \"unknown\" for that domain. "
+    "You are doing an evaluation. For the given query, list relevant sources with citations. "
+    "Citations MUST be full HTTPS URLs (including path if present). Do not invent URLs. "
+    "Include the root domain only in the `domain` field and the full citation URL in the `url` field. "
     "You MUST output valid JSON only, following this schema: \n\n"
     "{\n"
     "\"query\": \"...\",\n"
@@ -25,6 +25,7 @@ SYSTEM_MESSAGE = (
     "{\n"
     "\"agency\": \"\",\n"
     "\"domain\": \"\",\n"
+    "\"url\": \"\",\n"
     "\"comment\": \"\"\n"
     "}\n"
     "]\n"
@@ -141,10 +142,17 @@ def collect_domain_urls(payload: Dict) -> Dict[str, List[str]]:
     for item in results:
         if not isinstance(item, dict):
             continue
-        domain = normalize_domain(str(item.get("domain", "")))
+        raw_domain = str(item.get("domain", ""))
+        domain = normalize_domain(raw_domain)
+        primary_url = normalize_url(str(item.get("url", "")))
+        if not domain and primary_url:
+            domain = domain_from_url(primary_url)
         if not domain:
             continue
-        urls = extract_urls_from_text(item.get("comment", ""))
+        urls: List[str] = []
+        if primary_url:
+            urls.append(primary_url)
+        urls.extend(extract_urls_from_text(item.get("comment", "")))
         if urls:
             for url in urls:
                 if url not in domain_urls[domain]:
@@ -243,6 +251,10 @@ def collect_domains(payload: Dict) -> List[Tuple[str, int]]:
         for idx, item in enumerate(results, start=1):
             if isinstance(item, dict) and "domain" in item:
                 dom = normalize_domain(str(item.get("domain", "")))
+                if not dom:
+                    url_value = normalize_url(str(item.get("url", "")))
+                    if url_value:
+                        dom = domain_from_url(url_value)
                 if dom:
                     domains.append((dom, idx))
     return domains
@@ -392,9 +404,11 @@ def top_results(parsed: Dict, limit: int = 3) -> List[Tuple[str, str]]:
     for item in results[:limit]:
         if not isinstance(item, dict):
             continue
-        domain = normalize_domain(str(item.get("domain", "")))
+        url_value = normalize_url(str(item.get("url", "")))
+        domain = normalize_domain(str(item.get("domain", ""))) or domain_from_url(url_value) if url_value else ""
         agency = str(item.get("agency", "")).strip()
-        rows.append((domain, agency))
+        primary = url_value or domain
+        rows.append((primary, agency))
     return rows
 
 
@@ -469,7 +483,7 @@ def escape_pipe(text: str) -> str:
 
 def format_provider_table(record: Dict) -> str:
     lines = [f"### Provider: {record.get('provider')} | Model: {record.get('model')}"]
-    lines.append("| Prompt | Target Domain | Status | Other cited URLs |")
+    lines.append("| Prompt | Target URL | Status | Other cited URLs |")
     lines.append("| --- | --- | --- | --- |")
     for item in record.get("results", []):
         prompt = escape_pipe(item.get("prompt", ""))
@@ -482,12 +496,16 @@ def format_provider_table(record: Dict) -> str:
             domain_cell = ""
             status = "no target domains cited"
         else:
-            domain_links = []
+            url_links: List[str] = []
             for match in matches:
-                domain = match.get("domain")
-                if domain:
-                    domain_links.append(f"[{domain}](https://{domain})")
-            domain_cell = "<br>".join(domain_links)
+                urls = match.get("matched_urls", []) or match.get("cited_urls", []) or match.get("target_urls", [])
+                if urls:
+                    url_links.extend([f"[{u}]({u})" for u in urls])
+                else:
+                    domain = match.get("domain")
+                    if domain:
+                        url_links.append(f"[{domain}](https://{domain})")
+            domain_cell = "<br>".join(url_links)
             status = "; ".join(describe_match(match) for match in matches)
         lines.append(f"| {prompt} | {domain_cell} | {status} | {other_cell} |")
     return "\n".join(lines)
