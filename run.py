@@ -368,34 +368,37 @@ def format_provider_block(record: Dict) -> str:
         prompt = item.get("prompt", "")
         matches = item.get("matches", [])
         if not matches:
-            lines.append(f"- prompt: {prompt} -> no target domains cited")
+            lines.append(f"- prompt: {prompt} -> no target URLs cited")
             continue
         parts = []
         for match in matches:
-            ranks = match.get("ranks", [])
-            rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
-            parts.append(f"{match.get('domain')} ({rank_str})")
-        lines.append(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
+            urls = match.get("matched_urls", []) or match.get("cited_urls", []) or match.get("target_urls", [])
+            if urls:
+                parts.append(", ".join(urls))
+        if parts:
+            lines.append(f"- prompt: {prompt} -> cited: {', '.join(parts)}")
+        else:
+            lines.append(f"- prompt: {prompt} -> target URL not cited")
     return "\n".join(lines)
 
 
 def describe_match(match: Dict) -> str:
-    domain = match.get("domain", "")
-    ranks = match.get("ranks", [])
-    rank_str = f"ranks {ranks}" if ranks else RANK_NA_TEXT
-    pieces = [f"{domain} ({rank_str})"]
     matched_urls = match.get("matched_urls", []) or []
     cited_urls = match.get("cited_urls", []) or []
     target_urls = match.get("target_urls", []) or []
     if matched_urls:
-        pieces.append(f"cited URL(s): {', '.join(matched_urls)}")
-    elif cited_urls:
-        pieces.append(f"cited URL(s): {', '.join(cited_urls)}")
-    elif target_urls:
-        pieces.append("exact URL not found")
-    else:
-        pieces.append("no URL targets")
-    return "; ".join(pieces)
+        return f"cited URL(s): {', '.join(matched_urls)}"
+    if cited_urls:
+        return f"cited URL(s): {', '.join(cited_urls)}"
+    if target_urls:
+        return "target URL not cited"
+    return "no URL targets"
+
+
+def summarize_urls(match: Dict) -> Tuple[List[str], str]:
+    urls = match.get("matched_urls", []) or match.get("cited_urls", []) or match.get("target_urls", []) or []
+    status = describe_match(match)
+    return urls, status
 
 
 def top_results(parsed: Dict, limit: int = 3) -> List[Tuple[str, str]]:
@@ -460,16 +463,16 @@ def _top3_cell(parsed: Dict) -> str:
 
 
 def format_console_table(record: Dict) -> str:
-    lines = ["| Prompt | Target Found | Rank |", "| --- | --- | --- |"]
+    lines = ["| Prompt | Target URL | Rank |", "| --- | --- | --- |"]
     for item in record.get("results", []):
         prompt = escape_pipe(item.get("prompt", ""))
         matches = item.get("matches", [])
         if matches:
             match = matches[0]
-            domain = match.get("domain", "")
             ranks = match.get("ranks", [])
             rank_str = str(ranks[0]) if ranks else "—"
-            target_cell = f"✅ {domain}"
+            first_url = (match.get("matched_urls") or match.get("cited_urls") or match.get("target_urls") or [""])[0]
+            target_cell = f"✅ {first_url}" if first_url else "✅"
         else:
             target_cell = "❌"
             rank_str = "—"
@@ -494,19 +497,16 @@ def format_provider_table(record: Dict) -> str:
         other_cell = "<br>".join(other_urls) if other_urls else "—"
         if not matches:
             domain_cell = ""
-            status = "no target domains cited"
+            status = "no target URLs cited"
         else:
             url_links: List[str] = []
+            statuses: List[str] = []
             for match in matches:
-                urls = match.get("matched_urls", []) or match.get("cited_urls", []) or match.get("target_urls", [])
-                if urls:
-                    url_links.extend([f"[{u}]({u})" for u in urls])
-                else:
-                    domain = match.get("domain")
-                    if domain:
-                        url_links.append(f"[{domain}](https://{domain})")
+                urls, status_text = summarize_urls(match)
+                statuses.append(status_text)
+                url_links.extend([f"[{u}]({u})" for u in urls])
             domain_cell = "<br>".join(url_links)
-            status = "; ".join(describe_match(match) for match in matches)
+            status = "; ".join(statuses)
         lines.append(f"| {prompt} | {domain_cell} | {status} | {other_cell} |")
     return "\n".join(lines)
 
