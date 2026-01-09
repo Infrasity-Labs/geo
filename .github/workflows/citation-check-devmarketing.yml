@@ -188,26 +188,7 @@ jobs:
             summary_text=$(cat logs/main_log.md)
           fi
           export SUMMARY="$summary_text"
-          payload=$(python - <<'PY'
-          import json, os
-          summary = os.getenv('SUMMARY') or ''
-          summary = summary.replace('<br>', '\n')
-          summary = summary.replace('\r\n', '\n')
-          code_block = "```\n" + summary + "\n```"
-          payload = {
-              'channel': 'C0A7QE8K7R8',
-              'text': 'Citation check finished',
-              'blocks': [
-                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': '*Citation check finished*'}},
-                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': 'Summary below. Use the attachment for details.'}}
-              ],
-              'attachments': [
-                  {'color': '#00bfa5', 'text': code_block}
-              ]
-          }
-          print(json.dumps(payload))
-          PY
-          )
+          payload=$(python -c "import json, os; summary=os.getenv('SUMMARY',''); summary=summary.replace('<br>','\\n').replace('\\r\\n','\\n'); code='```\\n'+summary+'\\n```'; payload={'channel':'C0A7QE8K7R8','text':'Citation check finished','blocks':[{'type':'section','text':{'type':'mrkdwn','text':'*Citation check finished*'}},{'type':'section','text':{'type':'mrkdwn','text':'Summary below. Use the attachment for details.'}}],'attachments':[{'color':'#00bfa5','text':code}]}; print(json.dumps(payload))")
           curl -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H "Content-Type: application/json" \
