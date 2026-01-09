@@ -1,0 +1,32 @@
+name: Slackbot Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-connection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack test message
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL: C0A7QE8K7R8
+        run: |
+          set -eo pipefail
+          payload=$(python - <<'PY'
+          import json, os
+          payload = {
+              'channel': os.environ['SLACK_CHANNEL'],
+              'text': 'Slack bot connectivity test',
+              'blocks': [
+                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': '*Slack bot connectivity test*'}},
+                  {'type': 'section', 'text': {'type': 'mrkdwn', 'text': 'If you see this message, the bot can post to the workspace.'}}
+              ]
+          }
+          print(json.dumps(payload))
+          PY
+          )
+          curl -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data "$payload"
