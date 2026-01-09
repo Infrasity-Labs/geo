@@ -419,12 +419,20 @@ def _top3_cell(parsed: Dict) -> str:
 
 
 def format_console_table(record: Dict) -> str:
-    lines = ["| Prompt | Target citations | Top 3 results (domain – company) |", "| --- | --- | --- |"]
+    lines = ["| Prompt | Target Found | Rank |", "| --- | --- | --- |"]
     for item in record.get("results", []):
         prompt = escape_pipe(item.get("prompt", ""))
-        target_cell = _target_cell(item.get("matches", []), item.get("domain_urls", {}))
-        top_cell = _top3_cell(item.get("parsed", {}))
-        lines.append(f"| {prompt} | {target_cell} | {top_cell} |")
+        matches = item.get("matches", [])
+        if matches:
+            match = matches[0]
+            domain = match.get("domain", "")
+            ranks = match.get("ranks", [])
+            rank_str = str(ranks[0]) if ranks else "—"
+            target_cell = f"✅ {domain}"
+        else:
+            target_cell = "❌"
+            rank_str = "—"
+        lines.append(f"| {prompt} | {target_cell} | {rank_str} |")
     return "\n".join(lines)
 
 
