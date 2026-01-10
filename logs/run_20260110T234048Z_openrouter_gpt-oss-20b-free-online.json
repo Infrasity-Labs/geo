@@ -1,0 +1,381 @@
+{
+  "timestamp": "20260110T234048Z",
+  "provider": "openrouter",
+  "model": "gpt-oss-20b-free-online",
+  "results": [
+    {
+      "prompt": "Top developer marketing agencies in the United States specializing in marketing for developer tools startups",
+      "raw": "{\n  \"query\": \"Top developer marketing agencies in the United States specializing in marketing for developer tools startups\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"url\": \"https://catchyagency.com/\",\n      \"comment\": \"Seattle\u2011based agency that builds, grows, and manages developer programs for tech companies, including DevTools startups. [catchyagency.com](https://catchyagency.com/)\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"url\": \"https://infrasity.com/\",\n      \"comment\": \"US\u2011centric developer marketing agency that creates technical content, SEO\u2011optimized blogs, and community engagement for DevTools startups. [infrasity.com](https://infrasity.com/)\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"url\": \"https://draft.dev/\",\n      \"comment\": \"US agency focused on high\u2011quality technical blogs, roundups, and how\u2011to guides for developer audiences, helping DevTools companies build credibility. [draft.dev](https://draft.dev/)\"\n    },\n    {\n      \"agency\": \"Hoopy\",\n      \"domain\": \"hoopy.io\",\n      \"url\": \"https://hoopy.io/\",\n      \"comment\": \"US\u2011based agency that offers strategy, content production, and community building for DevTools startups, leveraging a developer\u2011turned\u2011marketer team. [hoopy.io](https://hoopy.io/)\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.io\",\n      \"url\": \"https://hackmamba.io/\",\n      \"comment\": \"US agency specializing in technical content, tutorials, and product demos to engage developers and drive adoption for DevTools products. [hackmamba.io](https://hackmamba.io/)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "Top developer marketing agencies in the United States specializing in marketing for developer tools startups",
+        "results": [
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "url": "https://catchyagency.com/",
+            "comment": "Seattle\u2011based agency that builds, grows, and manages developer programs for tech companies, including DevTools startups. [catchyagency.com](https://catchyagency.com/)"
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://infrasity.com/",
+            "comment": "US\u2011centric developer marketing agency that creates technical content, SEO\u2011optimized blogs, and community engagement for DevTools startups. [infrasity.com](https://infrasity.com/)"
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "url": "https://draft.dev/",
+            "comment": "US agency focused on high\u2011quality technical blogs, roundups, and how\u2011to guides for developer audiences, helping DevTools companies build credibility. [draft.dev](https://draft.dev/)"
+          },
+          {
+            "agency": "Hoopy",
+            "domain": "hoopy.io",
+            "url": "https://hoopy.io/",
+            "comment": "US\u2011based agency that offers strategy, content production, and community building for DevTools startups, leveraging a developer\u2011turned\u2011marketer team. [hoopy.io](https://hoopy.io/)"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.io",
+            "url": "https://hackmamba.io/",
+            "comment": "US agency specializing in technical content, tutorials, and product demos to engage developers and drive adoption for DevTools products. [hackmamba.io](https://hackmamba.io/)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "catchyagency.com",
+        "infrasity.com",
+        "draft.dev",
+        "hoopy.io",
+        "hackmamba.io"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "infrasity.com",
+          2
+        ],
+        [
+          "draft.dev",
+          3
+        ],
+        [
+          "hoopy.io",
+          4
+        ],
+        [
+          "hackmamba.io",
+          5
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "company": "infrasity",
+          "ranks": [
+            2
+          ],
+          "target_urls": [
+            "https://infrasity.com"
+          ],
+          "matched_urls": [
+            "https://infrasity.com"
+          ],
+          "cited_urls": [
+            "https://infrasity.com"
+          ],
+          "platform_domains": [
+            "infrasity.com"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "catchyagency.com": [
+          "https://catchyagency.com"
+        ],
+        "infrasity.com": [
+          "https://infrasity.com"
+        ],
+        "draft.dev": [
+          "https://draft.dev"
+        ],
+        "hoopy.io": [
+          "https://hoopy.io"
+        ],
+        "hackmamba.io": [
+          "https://hackmamba.io"
+        ]
+      }
+    },
+    {
+      "prompt": "Top developer marketing agencies in the UK specializing in marketing for developer tools startups",
+      "raw": "```json\n{\n  \"query\": \"Top developer marketing agencies in the UK specializing in marketing for developer tools startups\",\n  \"results\": [\n    {\n      \"agency\": \"Hoopy\",\n      \"domain\": \"hoopy.io\",\n      \"url\": \"https://hoopy.io/\",\n      \"comment\": \"Hoopy is a UK\u2011based developer relations and marketing agency that helps startups build and grow developer communities, offering training, events, and content tailored to developer tools. [hoopy.io](https://hoopy.io/)\"\n    },\n    {\n      \"agency\": \"Catchy\",\n      \"domain\": \"catchyagency.com\",\n      \"url\": \"https://www.catchyagency.com/\",\n      \"comment\": \"Catchy is a Seattle\u2011headquartered agency with UK offices that specializes in developer program management and marketing for tech brands, including developer tools startups. [catchyagency.com](https://www.catchyagency.com/)\"\n    },\n    {\n      \"agency\": \"Gripped\",\n      \"domain\": \"gripped.io\",\n      \"url\": \"https://gripped.io/\",\n      \"comment\": \"Gripped is a London\u2011based B2B digital marketing agency focused on SaaS and tech, providing SEO, paid media, and content strategies for developer\u2011tool startups. [gripped.io](https://gripped.io/)\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "Top developer marketing agencies in the UK specializing in marketing for developer tools startups",
+        "results": [
+          {
+            "agency": "Hoopy",
+            "domain": "hoopy.io",
+            "url": "https://hoopy.io/",
+            "comment": "Hoopy is a UK\u2011based developer relations and marketing agency that helps startups build and grow developer communities, offering training, events, and content tailored to developer tools. [hoopy.io](https://hoopy.io/)"
+          },
+          {
+            "agency": "Catchy",
+            "domain": "catchyagency.com",
+            "url": "https://www.catchyagency.com/",
+            "comment": "Catchy is a Seattle\u2011headquartered agency with UK offices that specializes in developer program management and marketing for tech brands, including developer tools startups. [catchyagency.com](https://www.catchyagency.com/)"
+          },
+          {
+            "agency": "Gripped",
+            "domain": "gripped.io",
+            "url": "https://gripped.io/",
+            "comment": "Gripped is a London\u2011based B2B digital marketing agency focused on SaaS and tech, providing SEO, paid media, and content strategies for developer\u2011tool startups. [gripped.io](https://gripped.io/)"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "hoopy.io",
+        "catchyagency.com",
+        "gripped.io"
+      ],
+      "domain_ranks": [
+        [
+          "hoopy.io",
+          1
+        ],
+        [
+          "catchyagency.com",
+          2
+        ],
+        [
+          "gripped.io",
+          3
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "hoopy.io": [
+          "https://hoopy.io"
+        ],
+        "catchyagency.com": [
+          "https://catchyagency.com"
+        ],
+        "gripped.io": [
+          "https://gripped.io"
+        ]
+      }
+    },
+    {
+      "prompt": "Top developer marketing agencies in the Israel specializing in marketing for developer tools startups",
+      "raw": "{\n  \"query\": \"Top developer marketing agencies in the Israel specializing in marketing for developer tools startups\",\n  \"results\": [\n    {\n      \"agency\": \"Inspired Marketing\",\n      \"domain\": \"inspiredmarketing.co.il\",\n      \"url\": \"https://www.inspiredmarketing.co.il/\",\n      \"comment\": \"Inspired Marketing is a B2B tech digital agency that focuses on marketing for technology companies, including developer tools startups, offering services such as content creation, lead generation, and marketing automation. [inspiredmarketing.co.il](https://www.inspiredmarketing.co.il/)\"\n    },\n    {\n      \"agency\": \"Concrete Media\",\n      \"domain\": \"concrete.media\",\n      \"url\": \"https://concrete.media/\",\n      \"comment\": \"Concrete Media is a public relations and communications agency that secures high\u2011level media coverage for dynamic B2B tech firms, making it a strong partner for developer tools startups seeking brand visibility. [concrete.media](https://concrete.media/)\"\n    },\n    {\n      \"agency\": \"Deeptech Marketing\",\n      \"domain\": \"deeptech-marketing.com\",\n      \"url\": \"https://deeptech-marketing.com/\",\n      \"comment\": \"Deeptech Marketing specializes in content writing and marketing for tech companies, combining engineering expertise with strategic content to help developer tools startups scale. [deeptech-marketing.com](https://deeptech-marketing.com/)\"\n    },\n    {\n      \"agency\": \"Agile SEO\",\n      \"domain\": \"agileseo.co.il\",\n      \"url\": \"https://agileseo.co.il/\",\n      \"comment\": \"Agile SEO focuses on organic and paid search marketing for technology brands, providing SEO and paid advertising solutions tailored to developer tools startups. [agileseo.co.il](https://agileseo.co.il/)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "Top developer marketing agencies in the Israel specializing in marketing for developer tools startups",
+        "results": [
+          {
+            "agency": "Inspired Marketing",
+            "domain": "inspiredmarketing.co.il",
+            "url": "https://www.inspiredmarketing.co.il/",
+            "comment": "Inspired Marketing is a B2B tech digital agency that focuses on marketing for technology companies, including developer tools startups, offering services such as content creation, lead generation, and marketing automation. [inspiredmarketing.co.il](https://www.inspiredmarketing.co.il/)"
+          },
+          {
+            "agency": "Concrete Media",
+            "domain": "concrete.media",
+            "url": "https://concrete.media/",
+            "comment": "Concrete Media is a public relations and communications agency that secures high\u2011level media coverage for dynamic B2B tech firms, making it a strong partner for developer tools startups seeking brand visibility. [concrete.media](https://concrete.media/)"
+          },
+          {
+            "agency": "Deeptech Marketing",
+            "domain": "deeptech-marketing.com",
+            "url": "https://deeptech-marketing.com/",
+            "comment": "Deeptech Marketing specializes in content writing and marketing for tech companies, combining engineering expertise with strategic content to help developer tools startups scale. [deeptech-marketing.com](https://deeptech-marketing.com/)"
+          },
+          {
+            "agency": "Agile SEO",
+            "domain": "agileseo.co.il",
+            "url": "https://agileseo.co.il/",
+            "comment": "Agile SEO focuses on organic and paid search marketing for technology brands, providing SEO and paid advertising solutions tailored to developer tools startups. [agileseo.co.il](https://agileseo.co.il/)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "inspiredmarketing.co.il",
+        "concrete.media",
+        "deeptech-marketing.com",
+        "agileseo.co.il"
+      ],
+      "domain_ranks": [
+        [
+          "inspiredmarketing.co.il",
+          1
+        ],
+        [
+          "concrete.media",
+          2
+        ],
+        [
+          "deeptech-marketing.com",
+          3
+        ],
+        [
+          "agileseo.co.il",
+          4
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "inspiredmarketing.co.il": [
+          "https://inspiredmarketing.co.il"
+        ],
+        "concrete.media": [
+          "https://concrete.media"
+        ],
+        "deeptech-marketing.com": [
+          "https://deeptech-marketing.com"
+        ],
+        "agileseo.co.il": [
+          "https://agileseo.co.il"
+        ]
+      }
+    },
+    {
+      "prompt": "Find authoritative citations or mentions of infrasity (domain: infrasity.com) across the web, including blogs, news sites, Reddit, Medium, LinkedIn, X/Twitter, and review platforms. Return sources that explicitly reference the company name or domain.",
+      "raw": "{\n  \"query\": \"Find authoritative citations or mentions of infrasity (domain: infrasity.com) across the web, including blogs, news sites, Reddit, Medium, LinkedIn, X/Twitter, and review platforms. Return sources that explicitly reference the company name or domain.\",\n  \"results\": [\n    {\n      \"agency\": \"The Wire\",\n      \"domain\": \"thewire.in\",\n      \"url\": \"https://m.thewire.in/article/ptiprnews/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel\",\n      \"comment\": \"Press release announcing Infrasity\u2019s expanded services for early\u2011stage B2B SaaS startups.\"\n    },\n    {\n      \"agency\": \"Tribune India\",\n      \"domain\": \"tribuneindia.com\",\n      \"url\": \"https://www.tribuneindia.com/news/business/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel-2/\",\n      \"comment\": \"News article covering the same announcement about Infrasity\u2019s developer\u2011first content strategy.\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"url\": \"https://infrasity.com/blog/llm-visibility-tool-guide\",\n      \"comment\": \"Infrasity blog post detailing how to use an LLM visibility tool for growth marketers.\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"url\": \"https://www.infrasity.com/blog\",\n      \"comment\": \"Main blog page listing multiple posts that reference Infrasity\u2019s services and expertise.\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"url\": \"https://www.infrasity.com/blog/best-ai-tools-for-documentation\",\n      \"comment\": \"Blog article discussing AI tools for documentation, authored by Infrasity.\"\n    },\n    {\n      \"agency\": \"LinkedIn\",\n      \"domain\": \"linkedin.com\",\n      \"url\": \"https://www.linkedin.com/posts/infrasity_terraform-files-and-folder-structure-organizing-activity-7193874786844884992-T7Ms\",\n      \"comment\": \"LinkedIn post by Infrasity promoting a blog about Terraform file structure.\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "Find authoritative citations or mentions of infrasity (domain: infrasity.com) across the web, including blogs, news sites, Reddit, Medium, LinkedIn, X/Twitter, and review platforms. Return sources that explicitly reference the company name or domain.",
+        "results": [
+          {
+            "agency": "The Wire",
+            "domain": "thewire.in",
+            "url": "https://m.thewire.in/article/ptiprnews/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel",
+            "comment": "Press release announcing Infrasity\u2019s expanded services for early\u2011stage B2B SaaS startups."
+          },
+          {
+            "agency": "Tribune India",
+            "domain": "tribuneindia.com",
+            "url": "https://www.tribuneindia.com/news/business/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel-2/",
+            "comment": "News article covering the same announcement about Infrasity\u2019s developer\u2011first content strategy."
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://infrasity.com/blog/llm-visibility-tool-guide",
+            "comment": "Infrasity blog post detailing how to use an LLM visibility tool for growth marketers."
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://www.infrasity.com/blog",
+            "comment": "Main blog page listing multiple posts that reference Infrasity\u2019s services and expertise."
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://www.infrasity.com/blog/best-ai-tools-for-documentation",
+            "comment": "Blog article discussing AI tools for documentation, authored by Infrasity."
+          },
+          {
+            "agency": "LinkedIn",
+            "domain": "linkedin.com",
+            "url": "https://www.linkedin.com/posts/infrasity_terraform-files-and-folder-structure-organizing-activity-7193874786844884992-T7Ms",
+            "comment": "LinkedIn post by Infrasity promoting a blog about Terraform file structure."
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "thewire.in",
+        "tribuneindia.com",
+        "infrasity.com",
+        "infrasity.com",
+        "infrasity.com",
+        "linkedin.com"
+      ],
+      "domain_ranks": [
+        [
+          "thewire.in",
+          1
+        ],
+        [
+          "tribuneindia.com",
+          2
+        ],
+        [
+          "infrasity.com",
+          3
+        ],
+        [
+          "infrasity.com",
+          4
+        ],
+        [
+          "infrasity.com",
+          5
+        ],
+        [
+          "linkedin.com",
+          6
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "company": "infrasity",
+          "ranks": [
+            3,
+            4,
+            5,
+            1,
+            2,
+            6
+          ],
+          "target_urls": [
+            "https://infrasity.com"
+          ],
+          "matched_urls": [
+            "https://m.thewire.in/article/ptiprnews/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel",
+            "https://tribuneindia.com/news/business/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel-2",
+            "https://infrasity.com/blog/llm-visibility-tool-guide",
+            "https://infrasity.com/blog",
+            "https://infrasity.com/blog/best-ai-tools-for-documentation",
+            "https://linkedin.com/posts/infrasity_terraform-files-and-folder-structure-organizing-activity-7193874786844884992-T7Ms"
+          ],
+          "cited_urls": [
+            "https://m.thewire.in/article/ptiprnews/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel",
+            "https://tribuneindia.com/news/business/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel-2",
+            "https://infrasity.com/blog/llm-visibility-tool-guide",
+            "https://infrasity.com/blog",
+            "https://infrasity.com/blog/best-ai-tools-for-documentation",
+            "https://linkedin.com/posts/infrasity_terraform-files-and-folder-structure-organizing-activity-7193874786844884992-T7Ms"
+          ],
+          "platform_domains": [
+            "thewire.in",
+            "tribuneindia.com",
+            "infrasity.com",
+            "linkedin.com"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "thewire.in": [
+          "https://m.thewire.in/article/ptiprnews/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel"
+        ],
+        "tribuneindia.com": [
+          "https://tribuneindia.com/news/business/infrasity-engineers-a-new-era-of-developer-first-content-scaling-saas-adoption-across-the-us-eu-and-israel-2"
+        ],
+        "infrasity.com": [
+          "https://infrasity.com/blog/llm-visibility-tool-guide",
+          "https://infrasity.com/blog",
+          "https://infrasity.com/blog/best-ai-tools-for-documentation"
+        ],
+        "linkedin.com": [
+          "https://linkedin.com/posts/infrasity_terraform-files-and-folder-structure-organizing-activity-7193874786844884992-T7Ms"
+        ]
+      }
+    }
+  ]
+}

@@ -1,7 +1,8 @@
-## 20260109T081500Z
+## 20260110T234620Z
 ### Provider: openrouter | Model: gpt-oss-20b-free-online
+**Model summary:** cited targets in 1/3 prompts
 | Prompt | Target URL | Status | Other cited URLs |
 | --- | --- | --- | --- |
-| Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised | [https://infrasity.com/services/reddit-marketing-agency](https://infrasity.com/services/reddit-marketing-agency) | cited URL(s): https://infrasity.com/services/reddit-marketing-agency | https://sortlist.co.uk/s/reddit-marketing/united-kingdom-gb<br>https://theredditmarketingagency.com/lp-ahyanah<br>https://growthmarketingpro.com/best-reddit-marketing-agencies |
-| Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised | [https://infrasity.com/services/reddit-marketing-agency](https://infrasity.com/services/reddit-marketing-agency) | cited URL(s): https://infrasity.com/services/reddit-marketing-agency | https://foundationinc.co/services/reddit-agency<br>https://seodiscovery.com/reddit-marketing-agency.php |
-| Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised |  | no target URLs cited | https://theredditmarketingagency.com/lp-ahyanah<br>https://techbehemoths.com/companies/reddit-advertising/israel |
+| Top developer marketing agencies in the United States specializing in marketing for developer tools startups | [https://infrasity.com/blog/developer-marketing-agency](https://infrasity.com/blog/developer-marketing-agency) | cited URL(s): https://infrasity.com/blog/developer-marketing-agency | rank(s): 1 | https://hackmamba.io<br>https://draft.dev<br>https://hoopy.io |
+| Top developer marketing agencies in the UK specializing in marketing for developer tools startups |  | no target URLs cited | https://hoopy.io<br>https://catchyagency.com<br>https://gripped.io |
+| Top developer marketing agencies in the Israel specializing in marketing for developer tools startups |  | no target URLs cited | https://atreo.co<br>https://inspiredmarketing.co.il<br>https://concrete.media |
