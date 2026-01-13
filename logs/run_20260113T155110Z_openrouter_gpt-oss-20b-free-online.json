@@ -1,0 +1,52 @@
+{
+  "timestamp": "20260113T155110Z",
+  "provider": "openrouter",
+  "model": "gpt-oss-20b-free-online",
+  "results": [
+    {
+      "prompt": "Top developer marketing agencies in the United States specializing in marketing for developer tools startups",
+      "raw": "{\"error\":{\"message\":\"User not found.\",\"code\":401}}",
+      "parsed": {
+        "error": {
+          "message": "User not found.",
+          "code": 401
+        }
+      },
+      "json_valid": true,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": [],
+      "domain_urls": {}
+    },
+    {
+      "prompt": "Top developer marketing agencies in the UK specializing in marketing for developer tools startups",
+      "raw": "{\"error\":{\"message\":\"User not found.\",\"code\":401}}",
+      "parsed": {
+        "error": {
+          "message": "User not found.",
+          "code": 401
+        }
+      },
+      "json_valid": true,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": [],
+      "domain_urls": {}
+    },
+    {
+      "prompt": "Top developer marketing agencies in the Israel specializing in marketing for developer tools startups",
+      "raw": "{\"error\":{\"message\":\"User not found.\",\"code\":401}}",
+      "parsed": {
+        "error": {
+          "message": "User not found.",
+          "code": 401
+        }
+      },
+      "json_valid": true,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": [],
+      "domain_urls": {}
+    }
+  ]
+}
