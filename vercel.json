@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "buildCommand": "cd dashboard && npm install && npm run build",
+  "outputDirectory": "dashboard/dist",
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.9"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

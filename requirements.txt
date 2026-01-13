@@ -4,4 +4,4 @@ requests
 pytest
 httpx
 python-dotenv
-aiosqlite
+aiosqlitemangum
