@@ -1,0 +1,56 @@
+{
+  "clusters": [
+    {
+      "id": "fanout",
+      "name": "Fanout",
+      "description": "Multi-vertical prompts covering developer marketing, content, docs, and Reddit",
+      "prompts_file": "prompts_fanout.txt",
+      "targets_file": "targets_fanout.json",
+      "workflow": "citation-check-fanout.yml"
+    },
+    {
+      "id": "devmarketing", 
+      "name": "Developer Marketing",
+      "description": "Marketing agencies specializing in developer audiences",
+      "prompts_file": "prompts_devmarketing.txt",
+      "targets_file": "targets_fanout.json",
+      "workflow": "citation-check-devmarketing.yml"
+    },
+    {
+      "id": "geo",
+      "name": "Geo",
+      "description": "Geographic-specific marketing services",
+      "prompts_file": "prompts_geo.txt",
+      "targets_file": "targets_geo.json",
+      "workflow": "citation-check-geo.yml"
+    },
+    {
+      "id": "fanout-countries",
+      "name": "Fanout Countries",
+      "description": "Country-specific developer marketing agencies",
+      "prompts_file": "prompts_fanout_countries.txt",
+      "targets_file": "targets_fanout.json",
+      "workflow": "citation-check-fanout-countries.yml"
+    }
+  ],
+  "models": [
+    {
+      "id": "perplexity",
+      "name": "perplexity-sonar-online",
+      "slug": "perplexity/sonar:online",
+      "provider": "openrouter"
+    },
+    {
+      "id": "claude",
+      "name": "claude-3.5-haiku-online",
+      "slug": "anthropic/claude-3.5-haiku:online",
+      "provider": "openrouter"
+    },
+    {
+      "id": "gpt",
+      "name": "gpt-oss-20b-free-online",
+      "slug": "openai/gpt-oss-20b:free:online",
+      "provider": "openrouter"
+    }
+  ]
+}
