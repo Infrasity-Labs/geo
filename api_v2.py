@@ -98,18 +98,37 @@ def get_runs_by_cluster(cluster_id: str, clusters_config: dict) -> List[dict]:
     if not prompts_file:
         return []
     
-    cluster_prompts = set(p.lower() for p in load_prompts_from_file(prompts_file))
+    cluster_prompts = set(p.lower().strip() for p in load_prompts_from_file(prompts_file) if p.strip())
     
     runs = []
     for log_file in get_log_files():
         log_data = parse_log_file(log_file)
         
         # Filter results to only include prompts from this cluster
+        # Use fuzzy matching - check if prompt contains any cluster prompt keywords
         cluster_results = []
         for result in log_data.get("results", []):
-            prompt = result.get("prompt", "")
-            if prompt.lower() in cluster_prompts:
+            prompt = result.get("prompt", "").lower().strip()
+            
+            # Exact match first
+            if prompt in cluster_prompts:
                 cluster_results.append(result)
+            else:
+                # Fuzzy match - check if any cluster prompt is a substring or vice versa
+                matched = False
+                for cp in cluster_prompts:
+                    # Check if cluster prompt is in result prompt or result prompt is in cluster prompt
+                    if cp in prompt or prompt in cp:
+                        matched = True
+                        break
+                    # Also check for key terms (e.g., "developer marketing", "B2B SaaS")
+                    key_terms = ["developer marketing", "b2b saas", "ai startups", "developer tools"]
+                    if any(term in prompt and term in cp for term in key_terms):
+                        matched = True
+                        break
+                
+                if matched:
+                    cluster_results.append(result)
         
         if cluster_results:
             runs.append({
@@ -210,34 +229,113 @@ def get_cluster_detail(cluster_id: str):
             matches = result.get("matches", [])
             cited = len(matches) > 0
             
+            # Collect all cited URLs and ranks from all matches
             cited_urls = []
-            rank = None
-            if matches:
-                cited_urls = matches[0].get("cited_urls", []) or matches[0].get("matched_urls", [])
-                ranks = matches[0].get("ranks", [])
-                rank = ranks[0] if ranks else None
+            all_ranks = []
+            target_urls = []
             
-            # Get other URLs from domain_urls
+            if matches:
+                for match in matches:
+                    # Get cited URLs
+                    match_cited = match.get("cited_urls", []) or match.get("matched_urls", [])
+                    for url in match_cited:
+                        if url not in cited_urls:
+                            cited_urls.append(url)
+                    
+                    # Get target URLs
+                    match_targets = match.get("target_urls", [])
+                    for url in match_targets:
+                        if url not in target_urls:
+                            target_urls.append(url)
+                    
+                    # Get ranks
+                    match_ranks = match.get("ranks", [])
+                    all_ranks.extend(match_ranks)
+            
+            # Get other URLs from domain_urls (not in cited URLs)
             other_urls = []
             domain_urls = result.get("domain_urls", {})
             for domain, urls in domain_urls.items():
                 for url in urls:
-                    if url not in cited_urls:
+                    # Normalize URL for comparison
+                    url_normalized = url.rstrip('/')
+                    cited_normalized = [u.rstrip('/') for u in cited_urls]
+                    if url_normalized not in cited_normalized:
                         other_urls.append(url)
             
+            # Remove duplicates from other_urls
+            seen = set()
+            unique_other_urls = []
+            for url in other_urls:
+                url_norm = url.rstrip('/')
+                if url_norm not in seen:
+                    seen.add(url_norm)
+                    unique_other_urls.append(url)
+            
+            # Format status
+            if cited and cited_urls:
+                status = f"cited URL(s): {', '.join(cited_urls)}"
+                if all_ranks:
+                    ranks_str = ', '.join(map(str, sorted(set(all_ranks))))
+                    status += f"\nrank(s): {ranks_str}"
+            else:
+                status = "no target URLs cited"
+            
+            # Target URL column shows target_urls, Status shows cited_urls
             model_data["results"].append({
                 "prompt": result.get("prompt"),
                 "cited": cited,
-                "cited_urls": cited_urls,
-                "rank": rank,
-                "other_urls": other_urls[:5],  # Limit to 5
-                "status": f"cited URL(s): {', '.join(cited_urls)}" if cited else "no target URLs cited"
+                "target_urls": target_urls if target_urls else [],  # For Target URL column
+                "cited_urls": cited_urls,  # For Status column (all cited URLs)
+                "ranks": sorted(set(all_ranks)) if all_ranks else None,
+                "other_urls": unique_other_urls[:10],  # Limit to 10
+                "status": status
             })
         
         runs_by_timestamp[ts]["models"].append(model_data)
     
     # Sort by timestamp descending and get latest
     sorted_runs = sorted(runs_by_timestamp.values(), key=lambda x: x["timestamp"], reverse=True)
+    latest_run = sorted_runs[0] if sorted_runs else None
+    
+    # Always include all models from config, even if they don't have runs
+    all_models = config.get("models", [])
+    model_map = {m["name"]: m for m in all_models}
+    
+    # If we have a latest run, ensure all models are represented
+    if latest_run:
+        existing_models = {m["model"]: m for m in latest_run.get("models", [])}
+        
+        # Add missing models with empty results
+        for model_config in all_models:
+            model_name = model_config["name"]
+            if model_name not in existing_models:
+                latest_run["models"].append({
+                    "model": model_name,
+                    "provider": model_config["provider"],
+                    "results": [],
+                    "cited_count": 0,
+                    "total_count": 0
+                })
+        
+        # Sort models: GPT, Claude, Perplexity
+        model_order = ["gpt-oss-20b-free-online", "claude-3.5-haiku-online", "perplexity-sonar-online"]
+        latest_run["models"].sort(key=lambda m: model_order.index(m["model"]) if m["model"] in model_order else 999)
+    else:
+        # Create placeholder for all models
+        latest_run = {
+            "timestamp": None,
+            "models": [
+                {
+                    "model": m["name"],
+                    "provider": m["provider"],
+                    "results": [],
+                    "cited_count": 0,
+                    "total_count": 0
+                }
+                for m in all_models
+            ]
+        }
     
     return {
         "cluster": {
@@ -249,7 +347,8 @@ def get_cluster_detail(cluster_id: str):
         "prompts": prompts,
         "targets": targets,
         "runs": sorted_runs[:10],  # Last 10 runs
-        "latest_run": sorted_runs[0] if sorted_runs else None
+        "latest_run": latest_run,
+        "all_models": all_models
     }
 
 
