@@ -14,7 +14,16 @@ from pydantic import BaseModel
 
 load_dotenv()
 
+# In Vercel serverless, __file__ might be in a different location
+# Try to find the repo root by looking for config/ or .git
 BASE_DIR = Path(__file__).parent
+# If we're in api/ directory (serverless), go up one level
+if BASE_DIR.name == "api" or (BASE_DIR / "api").exists():
+    BASE_DIR = BASE_DIR.parent
+# If config doesn't exist here, try current working directory (Vercel uses repo root)
+if not (BASE_DIR / "config").exists():
+    BASE_DIR = Path.cwd()
+
 CONFIG_DIR = BASE_DIR / "config"
 LOGS_DIR = BASE_DIR / "logs"
 
