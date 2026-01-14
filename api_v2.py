@@ -77,6 +77,9 @@ def load_targets_from_file(filename: str) -> List[str]:
 def get_log_files():
     """Get all log files sorted by timestamp (newest first)."""
     if not LOGS_DIR.exists():
+        # Debug: log the issue
+        import logging
+        logging.error(f"LOGS_DIR does not exist: {LOGS_DIR}, BASE_DIR: {BASE_DIR}, cwd: {Path.cwd()}")
         return []
     
     log_files = list(LOGS_DIR.glob("run_*.json"))
@@ -163,7 +166,22 @@ def get_runs_by_cluster(cluster_id: str, clusters_config: dict) -> List[dict]:
 
 @app.get("/api/healthz")
 def healthz():
-    return {"status": "ok", "version": "2.0"}
+    """Health check endpoint with debug info."""
+    config_exists = (CONFIG_DIR / "clusters.json").exists()
+    logs_exists = LOGS_DIR.exists()
+    log_count = len(list(LOGS_DIR.glob("run_*.json"))) if logs_exists else 0
+    
+    return {
+        "status": "ok",
+        "version": "2.0",
+        "base_dir": str(BASE_DIR),
+        "config_dir": str(CONFIG_DIR),
+        "logs_dir": str(LOGS_DIR),
+        "config_exists": config_exists,
+        "logs_exists": logs_exists,
+        "log_files_count": log_count,
+        "cwd": str(Path.cwd())
+    }
 
 
 @app.get("/api/clusters")
