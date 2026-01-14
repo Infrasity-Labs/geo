@@ -71,14 +71,12 @@ function buildClusterDetail(cluster, runs) {
         filteredResults.push(res);
       }
     }
-    if (filteredResults.length) {
-      clusterRuns.push({
-        timestamp: run.timestamp,
-        model: run.model,
-        provider: run.provider,
-        results: filteredResults,
-      });
-    }
+    clusterRuns.push({
+      timestamp: run.timestamp,
+      model: run.model,
+      provider: run.provider,
+      results: filteredResults,
+    });
   }
 
   const runsByTs = {};
@@ -184,8 +182,7 @@ async function main() {
   const clustersResponse = [];
 
   for (const cluster of clusters) {
-    const runsForCluster = runs.filter(r => r.results && r.results.length);
-    const detail = buildClusterDetail(cluster, runsForCluster);
+    const detail = buildClusterDetail(cluster, runs);
     clusterDetails[cluster.id] = detail;
 
     // compute prompt_count and citation rate
