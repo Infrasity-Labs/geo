@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-14T06:42:43.742Z",
+  "generated_at": "2026-01-14T07:31:30.098Z",
   "clusters": [
     {
       "id": "fanout",
@@ -1950,5 +1950,103 @@
         }
       ]
     }
-  }
+  },
+  "runs": [
+    {
+      "timestamp": "20260113T160759Z",
+      "model": "perplexity-sonar-online",
+      "provider": "openrouter",
+      "file": "run_20260113T160759Z_openrouter_perplexity-sonar-online.json"
+    },
+    {
+      "timestamp": "20260113T160446Z",
+      "model": "claude-3.5-haiku-online",
+      "provider": "openrouter",
+      "file": "run_20260113T160446Z_openrouter_claude-3.5-haiku-online.json"
+    },
+    {
+      "timestamp": "20260113T160308Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260113T160308Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260113T155935Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260113T155935Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260113T155110Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260113T155110Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260110T234620Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260110T234620Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260110T234048Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260110T234048Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260109T081500Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260109T081500Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260109T075724Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260109T075724Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260109T064433Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260109T064433Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260108T135421Z",
+      "model": "perplexity-sonar-online",
+      "provider": "openrouter",
+      "file": "run_20260108T135421Z_openrouter_perplexity-sonar-online.json"
+    },
+    {
+      "timestamp": "20260108T133819Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260108T133819Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260108T114332Z",
+      "model": "perplexity-sonar-online",
+      "provider": "openrouter",
+      "file": "run_20260108T114332Z_openrouter_perplexity-sonar-online.json"
+    },
+    {
+      "timestamp": "20260107T081100Z",
+      "model": "claude-3.5-haiku-online",
+      "provider": "openrouter",
+      "file": "run_20260107T081100Z_openrouter_claude-3.5-haiku-online.json"
+    },
+    {
+      "timestamp": "20260107T081100Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260107T081100Z_openrouter_gpt-oss-20b-free-online.json"
+    },
+    {
+      "timestamp": "20260107T081100Z",
+      "model": "perplexity-sonar-online",
+      "provider": "openrouter",
+      "file": "run_20260107T081100Z_openrouter_perplexity-sonar-online.json"
+    }
+  ]
 }

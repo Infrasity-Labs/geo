@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useCallback, useEffect, useState } from 'react'
 
-const API_BASE = '/api'
+const DATA_URL = '/data.json'
 
 function useTheme() {
 	const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
@@ -17,47 +17,37 @@ export default function App() {
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
 	const [clusters, setClusters] = useState([])
+	const [clusterDetails, setClusterDetails] = useState({})
 	const [selectedCluster, setSelectedCluster] = useState(null)
 	const [clusterDetail, setClusterDetail] = useState(null)
 
-	const fetchClusters = useCallback(async () => {
+	const loadSnapshot = useCallback(async () => {
 		setLoading(true)
 		try {
-			const res = await fetch(`${API_BASE}/clusters`, { cache: 'no-store' })
-			if (!res.ok) throw new Error(`API error ${res.status}`)
-			const payload = await res.json()
-			setClusters(payload.clusters || [])
+			const res = await fetch(DATA_URL, { cache: 'no-store' })
+			if (!res.ok) throw new Error(`Snapshot load failed ${res.status}`)
+			const snapshot = await res.json()
+			setClusters(snapshot.clusters || [])
+			setClusterDetails(snapshot.cluster_details || {})
 			setError(null)
 		} catch (err) {
-			console.error('Failed to fetch clusters', err)
-			setError('Unable to load data from logs')
+			console.error('Failed to load snapshot', err)
+			setError('Unable to load local data')
 			setClusters([])
+			setClusterDetails({})
 		}
 		setLoading(false)
 	}, [])
 
-	const fetchClusterDetail = useCallback(async (clusterId) => {
-		try {
-			const res = await fetch(`${API_BASE}/clusters/${clusterId}`, { cache: 'no-store' })
-			if (!res.ok) throw new Error(`API error ${res.status}`)
-			setClusterDetail(await res.json())
-			setError(null)
-		} catch (err) {
-			console.error('Failed to fetch cluster detail', err)
-			setError('Unable to load data from logs')
-			setClusterDetail(null)
-		}
-	}, [])
-
-	useEffect(() => { fetchClusters() }, [fetchClusters])
+	useEffect(() => { loadSnapshot() }, [loadSnapshot])
 
 	useEffect(() => {
-		if (selectedCluster) {
-			fetchClusterDetail(selectedCluster)
+		if (selectedCluster && clusterDetails[selectedCluster]) {
+			setClusterDetail(clusterDetails[selectedCluster])
 		} else {
 			setClusterDetail(null)
 		}
-	}, [selectedCluster, fetchClusterDetail])
+	}, [selectedCluster, clusterDetails])
 
 	const totalPrompts = clusters.reduce((sum, c) => sum + (c.prompt_count || 0), 0)
 
@@ -144,20 +134,28 @@ function OverviewView({ clusters, onSelect }) {
 
 function ClusterDetailView({ detail, onBack }) {
 	const cluster = detail?.cluster
-	const latestRun = detail?.latest_run
+	const runs = detail?.runs || []
 	const allModels = detail?.all_models || []
-	const models = latestRun?.models || []
 	const workflowFile = cluster?.workflow || `citation-check-${cluster?.id}.yml`
 
 	if (!cluster) return null
 
 	const modelOrder = ['gpt-oss-20b-free-online', 'claude-3.5-haiku-online', 'perplexity-sonar-online']
-	const allModelsData = modelOrder.map((modelName) => {
-		const existing = models.find((m) => m.model === modelName)
-		if (existing) return existing
-		const cfg = allModels.find((m) => m.name === modelName)
-		return { model: modelName, provider: cfg?.provider || 'openrouter', results: [], cited_count: 0, total_count: 0 }
-	})
+
+	const augmentModels = (models = []) => {
+		const present = new Set(models.map((m) => m.model))
+		const full = [...models]
+		allModels.forEach((m) => {
+			if (!present.has(m.name)) {
+				full.push({ model: m.name, provider: m.provider, results: [], cited_count: 0, total_count: 0 })
+			}
+		})
+		return full.sort((a, b) => {
+			const ia = modelOrder.indexOf(a.model)
+			const ib = modelOrder.indexOf(b.model)
+			return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
+		})
+	}
 
 	return (
 		<div>
@@ -168,32 +166,43 @@ function ClusterDetailView({ detail, onBack }) {
 				<div className="workflow-meta">on: workflow_dispatch</div>
 			</div>
 
-			<div className="pipeline">
-				{allModelsData.map((m, i) => {
-					const shortName = getShortModelName(m.model)
-					const hasData = m.results && m.results.length > 0
-					return (
-						<React.Fragment key={m.model || i}>
-							{i > 0 && <span className="pipeline-connector">•</span>}
-							<div className={`pipeline-step ${hasData ? 'success' : ''}`}>
-								<span className={`step-icon ${hasData ? 'success' : 'pending'}`}>{hasData ? '✓' : '○'}</span>
-								<span className="step-name">run-{shortName}-...</span>
-								<span className="step-time">{hasData ? '1m 30s' : '-'}</span>
-							</div>
-						</React.Fragment>
-					)
-				})}
-				<span className="pipeline-connector">•</span>
-				<div className={`pipeline-step ${models.length > 0 ? 'success' : ''}`}>
-					<span className={`step-icon ${models.length > 0 ? 'success' : 'pending'}`}>{models.length > 0 ? '✓' : '○'}</span>
-					<span className="step-name">commit-logs-...</span>
-					<span className="step-time">{models.length > 0 ? '5s' : '-'}</span>
-				</div>
-			</div>
+			{runs.length === 0 && (
+				<div className="error-box" style={{ marginTop: 16 }}>No runs found for this cluster yet.</div>
+			)}
 
-			{allModelsData.map((modelData, index) => (
-				<JobSummary key={modelData.model || index} modelData={modelData} clusterId={cluster.id} timestamp={latestRun?.timestamp} />
-			))}
+			{runs.map((run, idx) => {
+				const runModels = augmentModels(run.models || [])
+				return (
+					<div key={run.timestamp || idx} style={{ marginTop: 24 }}>
+						<div className="pipeline">
+							{runModels.map((m, i) => {
+								const shortName = getShortModelName(m.model)
+								const hasData = m.results && m.results.length > 0
+								return (
+									<React.Fragment key={m.model || i}>
+										{i > 0 && <span className="pipeline-connector">•</span>}
+										<div className={`pipeline-step ${hasData ? 'success' : ''}`}>
+											<span className={`step-icon ${hasData ? 'success' : 'pending'}`}>{hasData ? '✓' : '○'}</span>
+											<span className="step-name">run-{shortName}-...</span>
+											<span className="step-time">{hasData ? '1m 30s' : '-'}</span>
+										</div>
+									</React.Fragment>
+								)
+							})}
+							<span className="pipeline-connector">•</span>
+							<div className={`pipeline-step ${runModels.length > 0 ? 'success' : ''}`}>
+								<span className={`step-icon ${runModels.length > 0 ? 'success' : 'pending'}`}>{runModels.length > 0 ? '✓' : '○'}</span>
+								<span className="step-name">commit-logs-...</span>
+								<span className="step-time">{runModels.length > 0 ? '5s' : '-'}</span>
+							</div>
+						</div>
+
+						{runModels.map((modelData, modelIdx) => (
+							<JobSummary key={`${run.timestamp || idx}-${modelData.model || modelIdx}`} modelData={modelData} clusterId={cluster.id} timestamp={run.timestamp} />
+						))}
+					</div>
+				)
+			})}
 		</div>
 	)
 }

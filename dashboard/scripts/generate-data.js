@@ -37,8 +37,9 @@ async function loadRuns() {
   for (const f of files) {
     if (!f.startsWith('run_') || !f.endsWith('.json')) continue;
     const payload = await readJson(path.join(logsDir, f));
-    runs.push(payload);
+    runs.push({ ...payload, __file: f });
   }
+  // Newest first to mirror dashboard expectation
   runs.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
   return runs;
 }
@@ -124,7 +125,7 @@ function buildClusterDetail(cluster, runs) {
     },
     prompts,
     targets,
-    runs: sortedRuns.slice(0, 10),
+    runs: sortedRuns, // include all runs for full visibility
     latest_run: latestRun || {
       timestamp: null,
       models: allModels.map(m => ({
@@ -206,6 +207,10 @@ async function main() {
     generated_at: new Date().toISOString(),
     clusters: clustersResponse,
     cluster_details: clusterDetails,
+    // Lightweight run index for quick inspection
+    runs: runs.map(r => ({ timestamp: r.timestamp, model: r.model, provider: r.provider, file: r.__file })),
+    // Full run payloads for complete visibility in the dashboard data
+    all_runs: runs,
   };
 
   await fs.mkdir(path.dirname(outPath), { recursive: true });
