@@ -17,11 +17,20 @@ load_dotenv()
 # In Vercel serverless, __file__ might be in a different location
 # Try to find the repo root by looking for config/ or .git
 BASE_DIR = Path(__file__).parent
-# If we're in api/ directory (serverless), go up one level
-if BASE_DIR.name == "api" or (BASE_DIR / "api").exists():
-    BASE_DIR = BASE_DIR.parent
-# If config doesn't exist here, try current working directory (Vercel uses repo root)
-if not (BASE_DIR / "config").exists():
+
+# Try multiple strategies to find the repo root
+possible_dirs = [
+    BASE_DIR,  # Current file location
+    BASE_DIR.parent,  # One level up
+    Path.cwd(),  # Current working directory (Vercel uses repo root)
+]
+
+for dir_path in possible_dirs:
+    if (dir_path / "config").exists() and (dir_path / "logs").exists():
+        BASE_DIR = dir_path
+        break
+else:
+    # Fallback: use current working directory
     BASE_DIR = Path.cwd()
 
 CONFIG_DIR = BASE_DIR / "config"
