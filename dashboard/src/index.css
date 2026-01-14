@@ -434,11 +434,11 @@ a:hover {
 }
 
 .sidebar-nav h3 {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 8px;
+  color: var(--text);
+  margin-bottom: 12px;
+  padding: 0 8px;
 }
 
 .nav-list {
@@ -467,8 +467,17 @@ a:hover {
 }
 
 .nav-item.active {
-  background: var(--bg);
-  font-weight: 600;
+  background: var(--blue);
+  color: white;
+  font-weight: 500;
+}
+
+.nav-item.active .nav-meta {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-item.active .rate {
+  color: white;
 }
 
 .nav-item .nav-meta {
@@ -623,4 +632,77 @@ a:hover {
 
 .btn-primary:hover {
   background: #1a7030;
+}
+
+/* Cluster Detail Header */
+.cluster-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cluster-detail-header .back-btn {
+  margin-bottom: 0;
+}
+
+.cluster-detail-header .header-actions {
+  margin-top: 0;
+}
+
+.cluster-detail-header .btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.cluster-detail-header .btn-primary:hover {
+  background: #0856c7;
+}
+
+/* Model Runs */
+.model-runs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.model-run-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.model-run-btn:hover {
+  background: var(--bg-inset);
+  border-color: var(--border-muted);
+}
+
+.run-duration {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+/* Run Timestamp Header */
+.run-timestamp-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.run-timestamp-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 }
