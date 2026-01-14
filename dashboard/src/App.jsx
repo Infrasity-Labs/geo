@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useCallback, useEffect, useState } from 'react'
 
-const DATA_URL = '/data.json'
-
 function useTheme() {
 	const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
 	useEffect(() => {
@@ -17,37 +15,46 @@ export default function App() {
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState(null)
 	const [clusters, setClusters] = useState([])
-	const [clusterDetails, setClusterDetails] = useState({})
 	const [selectedCluster, setSelectedCluster] = useState(null)
 	const [clusterDetail, setClusterDetail] = useState(null)
 
-	const loadSnapshot = useCallback(async () => {
+	const loadClusters = useCallback(async () => {
 		setLoading(true)
 		try {
-			const res = await fetch(DATA_URL, { cache: 'no-store' })
-			if (!res.ok) throw new Error(`Snapshot load failed ${res.status}`)
-			const snapshot = await res.json()
-			setClusters(snapshot.clusters || [])
-			setClusterDetails(snapshot.cluster_details || {})
+			const res = await fetch('/api/clusters', { cache: 'no-store' })
+			if (!res.ok) throw new Error(`API load failed ${res.status}`)
+			const data = await res.json()
+			setClusters(data.clusters || [])
 			setError(null)
 		} catch (err) {
-			console.error('Failed to load snapshot', err)
-			setError('Unable to load local data')
+			console.error('Failed to load clusters', err)
+			setError('Unable to load data')
 			setClusters([])
-			setClusterDetails({})
 		}
 		setLoading(false)
 	}, [])
 
-	useEffect(() => { loadSnapshot() }, [loadSnapshot])
+	const loadClusterDetail = useCallback(async (clusterId) => {
+		try {
+			const res = await fetch(`/api/clusters/${clusterId}`, { cache: 'no-store' })
+			if (!res.ok) throw new Error(`API load failed ${res.status}`)
+			const data = await res.json()
+			setClusterDetail(data)
+		} catch (err) {
+			console.error('Failed to load cluster detail', err)
+			setClusterDetail(null)
+		}
+	}, [])
+
+	useEffect(() => { loadClusters() }, [loadClusters])
 
 	useEffect(() => {
-		if (selectedCluster && clusterDetails[selectedCluster]) {
-			setClusterDetail(clusterDetails[selectedCluster])
+		if (selectedCluster) {
+			loadClusterDetail(selectedCluster)
 		} else {
 			setClusterDetail(null)
 		}
-	}, [selectedCluster, clusterDetails])
+	}, [selectedCluster, loadClusterDetail])
 
 	const totalPrompts = clusters.reduce((sum, c) => sum + (c.prompt_count || 0), 0)
 
@@ -134,7 +141,7 @@ function OverviewView({ clusters, onSelect }) {
 
 function ClusterDetailView({ detail, onBack }) {
 	const cluster = detail?.cluster
-	const runs = detail?.runs || []
+	const latestRun = detail?.latest_run || null
 	const allModels = detail?.all_models || []
 	const workflowFile = cluster?.workflow || `citation-check-${cluster?.id}.yml`
 
@@ -142,19 +149,68 @@ function ClusterDetailView({ detail, onBack }) {
 
 	const modelOrder = ['gpt-oss-20b-free-online', 'claude-3.5-haiku-online', 'perplexity-sonar-online']
 
-	const augmentModels = (models = []) => {
-		const present = new Set(models.map((m) => m.model))
-		const full = [...models]
-		allModels.forEach((m) => {
-			if (!present.has(m.name)) {
-				full.push({ model: m.name, provider: m.provider, results: [], cited_count: 0, total_count: 0 })
+	// Get models from latest run, ensuring exactly three models are present (one for each)
+	// Deduplicate by model name to avoid showing the same model multiple times
+	const getModelsForDisplay = () => {
+		if (!latestRun || !latestRun.models) {
+			// If no latest run, return empty placeholders for all 3 models
+			return modelOrder.map(modelName => {
+				const modelConfig = allModels.find(m => m.name === modelName)
+				return modelConfig ? {
+					model: modelName,
+					provider: modelConfig.provider,
+					results: [],
+					cited_count: 0,
+					total_count: 0
+				} : null
+			}).filter(Boolean).slice(0, 3)
+		}
+
+		const models = latestRun.models || []
+		
+		// Deduplicate: keep only the first occurrence of each model
+		const seen = new Set()
+		const uniqueModels = []
+		for (const m of models) {
+			if (m && m.model && !seen.has(m.model) && modelOrder.includes(m.model)) {
+				seen.add(m.model)
+				uniqueModels.push(m)
+			}
+		}
+		
+		// Add missing models as empty placeholders - but only the three we need
+		modelOrder.forEach((modelName) => {
+			if (!seen.has(modelName)) {
+				const modelConfig = allModels.find(m => m.name === modelName)
+				if (modelConfig) {
+					uniqueModels.push({ 
+						model: modelName, 
+						provider: modelConfig.provider, 
+						results: [], 
+						cited_count: 0, 
+						total_count: 0 
+					})
+				}
 			}
 		})
-		return full.sort((a, b) => {
-			const ia = modelOrder.indexOf(a.model)
-			const ib = modelOrder.indexOf(b.model)
-			return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib)
-		})
+		
+		// Sort by model order and ensure exactly 3 models
+		return uniqueModels
+			.filter(m => m && m.model && modelOrder.includes(m.model))
+			.sort((a, b) => {
+				const ia = modelOrder.indexOf(a.model)
+				const ib = modelOrder.indexOf(b.model)
+				return ia - ib
+			})
+			.slice(0, 3) // Ensure we only return exactly 3
+	}
+
+	const displayModels = getModelsForDisplay()
+	const timestamp = latestRun?.timestamp || null
+
+	// Ensure we only have exactly 3 models
+	if (displayModels.length !== 3) {
+		console.warn(`Expected 3 models, got ${displayModels.length}:`, displayModels.map(m => m.model))
 	}
 
 	return (
@@ -166,43 +222,47 @@ function ClusterDetailView({ detail, onBack }) {
 				<div className="workflow-meta">on: workflow_dispatch</div>
 			</div>
 
-			{runs.length === 0 && (
+			{!latestRun && (
 				<div className="error-box" style={{ marginTop: 16 }}>No runs found for this cluster yet.</div>
 			)}
 
-			{runs.map((run, idx) => {
-				const runModels = augmentModels(run.models || [])
-				return (
-					<div key={run.timestamp || idx} style={{ marginTop: 24 }}>
-						<div className="pipeline">
-							{runModels.map((m, i) => {
-								const shortName = getShortModelName(m.model)
-								const hasData = m.results && m.results.length > 0
-								return (
-									<React.Fragment key={m.model || i}>
-										{i > 0 && <span className="pipeline-connector">•</span>}
-										<div className={`pipeline-step ${hasData ? 'success' : ''}`}>
-											<span className={`step-icon ${hasData ? 'success' : 'pending'}`}>{hasData ? '✓' : '○'}</span>
-											<span className="step-name">run-{shortName}-...</span>
-											<span className="step-time">{hasData ? '1m 30s' : '-'}</span>
-										</div>
-									</React.Fragment>
-								)
-							})}
-							<span className="pipeline-connector">•</span>
-							<div className={`pipeline-step ${runModels.length > 0 ? 'success' : ''}`}>
-								<span className={`step-icon ${runModels.length > 0 ? 'success' : 'pending'}`}>{runModels.length > 0 ? '✓' : '○'}</span>
-								<span className="step-name">commit-logs-...</span>
-								<span className="step-time">{runModels.length > 0 ? '5s' : '-'}</span>
-							</div>
+			{latestRun && displayModels.length > 0 && (
+				<>
+					<div className="pipeline">
+						{displayModels.slice(0, 3).map((m, i) => {
+							const shortName = getShortModelName(m.model)
+							const hasData = m.results && m.results.length > 0
+							return (
+								<React.Fragment key={`pipeline-${m.model || i}`}>
+									{i > 0 && <span className="pipeline-connector">•</span>}
+									<div className={`pipeline-step ${hasData ? 'success' : ''}`}>
+										<span className={`step-icon ${hasData ? 'success' : 'pending'}`}>{hasData ? '✓' : '○'}</span>
+										<span className="step-name">run-{shortName}-...</span>
+										<span className="step-time">{hasData ? '1m 30s' : '-'}</span>
+									</div>
+								</React.Fragment>
+							)
+						})}
+						<span className="pipeline-connector">•</span>
+						<div className={`pipeline-step ${displayModels.some(m => m.results && m.results.length > 0) ? 'success' : ''}`}>
+							<span className={`step-icon ${displayModels.some(m => m.results && m.results.length > 0) ? 'success' : 'pending'}`}>
+								{displayModels.some(m => m.results && m.results.length > 0) ? '✓' : '○'}
+							</span>
+							<span className="step-name">commit-logs-...</span>
+							<span className="step-time">{displayModels.some(m => m.results && m.results.length > 0) ? '5s' : '-'}</span>
 						</div>
-
-						{runModels.map((modelData, modelIdx) => (
-							<JobSummary key={`${run.timestamp || idx}-${modelData.model || modelIdx}`} modelData={modelData} clusterId={cluster.id} timestamp={run.timestamp} />
-						))}
 					</div>
-				)
-			})}
+
+					{displayModels.slice(0, 3).map((modelData, modelIdx) => (
+						<JobSummary 
+							key={`job-${modelData.model || modelIdx}`} 
+							modelData={modelData} 
+							clusterId={cluster.id} 
+							timestamp={timestamp} 
+						/>
+					))}
+				</>
+			)}
 		</div>
 	)
 }

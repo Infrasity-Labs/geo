@@ -225,13 +225,34 @@ function buildClusterDetail(clusterId) {
       runsByTimestamp.set(targetTs, { timestamp: targetTs, models: [] })
     }
     
-    runsByTimestamp.get(targetTs).models.push({
-      model: run.model,
-      provider: run.provider,
-      results: run.results,
-      cited_count: run.results.filter((r) => r.cited).length,
-      total_count: run.results.length
-    })
+    // Check if this model already exists in this group - if so, merge results instead of duplicating
+    const existingGroup = runsByTimestamp.get(targetTs)
+    const existingModelIndex = existingGroup.models.findIndex(m => m.model === run.model)
+    
+    if (existingModelIndex >= 0) {
+      // Merge with existing model - keep the one with more results or later timestamp
+      const existing = existingGroup.models[existingModelIndex]
+      if (run.results.length > existing.results.length) {
+        // Replace with the run that has more results
+        existingGroup.models[existingModelIndex] = {
+          model: run.model,
+          provider: run.provider,
+          results: run.results,
+          cited_count: run.results.filter((r) => r.cited).length,
+          total_count: run.results.length
+        }
+      }
+      // Otherwise keep the existing one
+    } else {
+      // Add new model
+      existingGroup.models.push({
+        model: run.model,
+        provider: run.provider,
+        results: run.results,
+        cited_count: run.results.filter((r) => r.cited).length,
+        total_count: run.results.length
+      })
+    }
   })
 
   const sortedRuns = Array.from(runsByTimestamp.values()).sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''))
@@ -239,11 +260,11 @@ function buildClusterDetail(clusterId) {
 
   const allModels = config.models || []
   
-  // Deduplicate models - keep only the first occurrence of each model
+  // Deduplicate models - keep only the first occurrence of each model (safety check)
   const seen = new Set()
   const uniqueModels = []
   for (const m of latestRun.models) {
-    if (m.model && !seen.has(m.model)) {
+    if (m && m.model && !seen.has(m.model)) {
       seen.add(m.model)
       uniqueModels.push(m)
     }
