@@ -13,7 +13,13 @@
   ],
   "functions": {
     "api/index.py": {
-      "includeFiles": "{config/**,logs/**}"
+      "includeFiles": [
+        "api_v2.py",
+        "run.py",
+        "models.py",
+        "config/**",
+        "logs/**"
+      ]
     }
   }
 }

@@ -1,8 +1,7 @@
 """Vercel entrypoint for FastAPI app.
 
-Expose the FastAPI `app` directly; Vercel's Python runtime now auto-wraps ASGI
-apps without requiring Mangum. Keeping it minimal avoids handler type errors
-seen in the platform shim.
+We expose both the ASGI `app` (for local use) and a `handler` wrapped with
+Mangum so Vercel's Python runtime can invoke the FastAPI app on AWS Lambda.
 """
 
 import sys
@@ -12,7 +11,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Export the FastAPI app directly for Vercel's ASGI support
+from mangum import Mangum
 from api_v2 import app  # noqa: E402  # isort: skip
 
-# Backwards-compatible alias expected by Vercel
-handler = app
+# Vercel looks for `handler` in Python functions; Mangum adapts ASGI to Lambda.
+handler = Mangum(app)
+
+__all__ = ["app", "handler"]
