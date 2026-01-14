@@ -14,23 +14,28 @@ from pydantic import BaseModel
 
 load_dotenv()
 
-# In Vercel serverless, __file__ might be in a different location
-# Try to find the repo root by looking for config/ or .git
+# In Vercel serverless, files are in /var/task or similar
+# Try to find the repo root by looking for config/ or logs/
 BASE_DIR = Path(__file__).parent
 
 # Try multiple strategies to find the repo root
 possible_dirs = [
-    BASE_DIR,  # Current file location
-    BASE_DIR.parent,  # One level up
-    Path.cwd(),  # Current working directory (Vercel uses repo root)
+    BASE_DIR,  # Current file location (api_v2.py is in repo root)
+    BASE_DIR.parent,  # One level up (if api_v2.py was in a subdir)
+    Path.cwd(),  # Current working directory (Vercel uses /var/task)
+    Path("/var/task"),  # Vercel's default serverless function directory
 ]
 
+BASE_DIR = None
 for dir_path in possible_dirs:
-    if (dir_path / "config").exists() and (dir_path / "logs").exists():
+    config_path = dir_path / "config" / "clusters.json"
+    logs_path = dir_path / "logs"
+    if config_path.exists() and logs_path.exists():
         BASE_DIR = dir_path
         break
-else:
-    # Fallback: use current working directory
+
+if BASE_DIR is None:
+    # Last resort: use current working directory
     BASE_DIR = Path.cwd()
 
 CONFIG_DIR = BASE_DIR / "config"
@@ -167,21 +172,37 @@ def get_runs_by_cluster(cluster_id: str, clusters_config: dict) -> List[dict]:
 @app.get("/api/healthz")
 def healthz():
     """Health check endpoint with debug info."""
-    config_exists = (CONFIG_DIR / "clusters.json").exists()
-    logs_exists = LOGS_DIR.exists()
-    log_count = len(list(LOGS_DIR.glob("run_*.json"))) if logs_exists else 0
-    
-    return {
-        "status": "ok",
-        "version": "2.0",
-        "base_dir": str(BASE_DIR),
-        "config_dir": str(CONFIG_DIR),
-        "logs_dir": str(LOGS_DIR),
-        "config_exists": config_exists,
-        "logs_exists": logs_exists,
-        "log_files_count": log_count,
-        "cwd": str(Path.cwd())
-    }
+    try:
+        config_exists = (CONFIG_DIR / "clusters.json").exists()
+        logs_exists = LOGS_DIR.exists()
+        log_count = len(list(LOGS_DIR.glob("run_*.json"))) if logs_exists else 0
+        
+        # List some files for debugging
+        config_files = list(CONFIG_DIR.glob("*.json")) if CONFIG_DIR.exists() else []
+        log_files = list(LOGS_DIR.glob("run_*.json"))[:5] if logs_exists else []
+        
+        return {
+            "status": "ok",
+            "version": "2.0",
+            "base_dir": str(BASE_DIR),
+            "config_dir": str(CONFIG_DIR),
+            "logs_dir": str(LOGS_DIR),
+            "config_exists": config_exists,
+            "logs_exists": logs_exists,
+            "log_files_count": log_count,
+            "cwd": str(Path.cwd()),
+            "config_files": [str(f.name) for f in config_files],
+            "sample_log_files": [str(f.name) for f in log_files],
+            "__file__": str(__file__)
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "base_dir": str(BASE_DIR) if BASE_DIR else "None",
+            "cwd": str(Path.cwd()),
+            "__file__": str(__file__)
+        }
 
 
 @app.get("/api/clusters")
