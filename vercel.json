@@ -13,7 +13,10 @@
   ],
   "functions": {
     "api/index.py": {
-      "includeFiles": "{config/**,logs/**}"
+      "includeFiles": [
+        "config/**",
+        "logs/**"
+      ]
     }
   }
 }
