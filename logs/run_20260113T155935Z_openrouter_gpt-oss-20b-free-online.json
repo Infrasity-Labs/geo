@@ -1,0 +1,274 @@
+{
+  "timestamp": "20260113T155935Z",
+  "provider": "openrouter",
+  "model": "gpt-oss-20b-free-online",
+  "results": [
+    {
+      "prompt": "Top developer marketing agencies in the United States specializing in marketing for developer tools startups",
+      "raw": "{\n  \"query\": \"Top developer marketing agencies in the United States specializing in marketing for developer tools startups\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"url\": \"https://www.catchyagency.com/\",\n      \"comment\": \"A Seattle\u2011based agency that builds, grows, and manages developer programs for tech companies, including dev\u2011tool startups. See [catchyagency.com](https://www.catchyagency.com/).\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"url\": \"https://www.infrasity.com/\",\n      \"comment\": \"Specializes in technical content and community building for DevTools startups, offering SEO\u2011 and LLM\u2011optimized blogs, docs, and outreach. See [infrasity.com](https://www.infrasity.com/).\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.io\",\n      \"url\": \"https://hackmamba.io/\",\n      \"comment\": \"Focuses on SEO\u2011optimized technical articles, tutorials, and demos for developer audiences, helping startups drive awareness and conversions. See [hackmamba.io](https://hackmamba.io/).\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"url\": \"https://draft.dev/\",\n      \"comment\": \"A content\u2011creation agency run by engineers that produces deep technical blogs, guides, and whitepapers for dev\u2011tool companies, with data\u2011driven performance tracking. See [draft.dev](https://draft.dev/).\"\n    },\n    {\n      \"agency\": \"Hoopy\",\n      \"domain\": \"hoopy.io\",\n      \"url\": \"https://hoopy.io/\",\n      \"comment\": \"Provides strategy, content, and community engagement for DevTools startups, leveraging a developer\u2011turned\u2011marketer team. See [hoopy.io](https://hoopy.io/).\"\n    },\n    {\n      \"agency\": \"Scale Advisors\",\n      \"domain\": \"scale.dev\",\n      \"url\": \"https://scale.dev/\",\n      \"comment\": \"Offers end\u2011to\u2011end developer marketing services\u2014DevRel, content, community, and GTM\u2014for AI and DevTools founders, led by former Apollo GraphQL community lead. See [scale.dev](https://scale.dev/).\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "Top developer marketing agencies in the United States specializing in marketing for developer tools startups",
+        "results": [
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "url": "https://www.catchyagency.com/",
+            "comment": "A Seattle\u2011based agency that builds, grows, and manages developer programs for tech companies, including dev\u2011tool startups. See [catchyagency.com](https://www.catchyagency.com/)."
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://www.infrasity.com/",
+            "comment": "Specializes in technical content and community building for DevTools startups, offering SEO\u2011 and LLM\u2011optimized blogs, docs, and outreach. See [infrasity.com](https://www.infrasity.com/)."
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.io",
+            "url": "https://hackmamba.io/",
+            "comment": "Focuses on SEO\u2011optimized technical articles, tutorials, and demos for developer audiences, helping startups drive awareness and conversions. See [hackmamba.io](https://hackmamba.io/)."
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "url": "https://draft.dev/",
+            "comment": "A content\u2011creation agency run by engineers that produces deep technical blogs, guides, and whitepapers for dev\u2011tool companies, with data\u2011driven performance tracking. See [draft.dev](https://draft.dev/)."
+          },
+          {
+            "agency": "Hoopy",
+            "domain": "hoopy.io",
+            "url": "https://hoopy.io/",
+            "comment": "Provides strategy, content, and community engagement for DevTools startups, leveraging a developer\u2011turned\u2011marketer team. See [hoopy.io](https://hoopy.io/)."
+          },
+          {
+            "agency": "Scale Advisors",
+            "domain": "scale.dev",
+            "url": "https://scale.dev/",
+            "comment": "Offers end\u2011to\u2011end developer marketing services\u2014DevRel, content, community, and GTM\u2014for AI and DevTools founders, led by former Apollo GraphQL community lead. See [scale.dev](https://scale.dev/)."
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "catchyagency.com",
+        "infrasity.com",
+        "hackmamba.io",
+        "draft.dev",
+        "hoopy.io",
+        "scale.dev"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "infrasity.com",
+          2
+        ],
+        [
+          "hackmamba.io",
+          3
+        ],
+        [
+          "draft.dev",
+          4
+        ],
+        [
+          "hoopy.io",
+          5
+        ],
+        [
+          "scale.dev",
+          6
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "company": "infrasity",
+          "ranks": [
+            2
+          ],
+          "target_urls": [
+            "https://infrasity.com"
+          ],
+          "matched_urls": [
+            "https://infrasity.com"
+          ],
+          "cited_urls": [
+            "https://infrasity.com"
+          ],
+          "platform_domains": [
+            "infrasity.com"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "catchyagency.com": [
+          "https://catchyagency.com"
+        ],
+        "infrasity.com": [
+          "https://infrasity.com"
+        ],
+        "hackmamba.io": [
+          "https://hackmamba.io"
+        ],
+        "draft.dev": [
+          "https://draft.dev"
+        ],
+        "hoopy.io": [
+          "https://hoopy.io"
+        ],
+        "scale.dev": [
+          "https://scale.dev"
+        ]
+      }
+    },
+    {
+      "prompt": "Top developer marketing agencies in the UK specializing in marketing for developer tools startups",
+      "raw": "{\n  \"query\": \"Top developer marketing agencies in the UK specializing in marketing for developer tools startups\",\n  \"results\": [\n    {\n      \"agency\": \"Hoopy\",\n      \"domain\": \"hoopy.io\",\n      \"url\": \"https://hoopy.io/\",\n      \"comment\": \"Hoopy is a UK\u2011based developer relations and marketing agency that focuses on engaging software developers and building credible content for developer tools startups. It offers training, events, and resources tailored to the developer community. [hoopy.io](https://hoopy.io/)\"\n    },\n    {\n      \"agency\": \"Catchy\",\n      \"domain\": \"catchyagency.com\",\n      \"url\": \"https://www.catchyagency.com/\",\n      \"comment\": \"Catchy is a UK\u2011present marketing services firm that builds, grows, and manages developer programs for innovative tech companies, including developer tools startups. It provides strategy, content, and community building. [catchyagency.com](https://www.catchyagency.com/)\"\n    },\n    {\n      \"agency\": \"Gripped\",\n      \"domain\": \"gripped.io\",\n      \"url\": \"https://gripped.io/\",\n      \"comment\": \"Gripped is a London\u2011based B2B digital marketing agency that serves SaaS and tech businesses, offering content marketing, SEO, paid media, and sales enablement\u2014services highly relevant to developer tools startups. [gripped.io](https://gripped.io/)\"\n    },\n    {\n      \"agency\": \"Digital Litmus\",\n      \"domain\": \"digitallitmus.com\",\n      \"url\": \"https://www.digitallitmus.com/blog/best-saas-marketing-agencies-uk\",\n      \"comment\": \"Digital Litmus is a UK agency specializing in SaaS marketing, with expertise in product\u2011led growth, content, SEO, and paid campaigns\u2014key areas for marketing developer tools startups. [digitallitmus.com](https://www.digitallitmus.com/blog/best-saas-marketing-agencies-uk)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "Top developer marketing agencies in the UK specializing in marketing for developer tools startups",
+        "results": [
+          {
+            "agency": "Hoopy",
+            "domain": "hoopy.io",
+            "url": "https://hoopy.io/",
+            "comment": "Hoopy is a UK\u2011based developer relations and marketing agency that focuses on engaging software developers and building credible content for developer tools startups. It offers training, events, and resources tailored to the developer community. [hoopy.io](https://hoopy.io/)"
+          },
+          {
+            "agency": "Catchy",
+            "domain": "catchyagency.com",
+            "url": "https://www.catchyagency.com/",
+            "comment": "Catchy is a UK\u2011present marketing services firm that builds, grows, and manages developer programs for innovative tech companies, including developer tools startups. It provides strategy, content, and community building. [catchyagency.com](https://www.catchyagency.com/)"
+          },
+          {
+            "agency": "Gripped",
+            "domain": "gripped.io",
+            "url": "https://gripped.io/",
+            "comment": "Gripped is a London\u2011based B2B digital marketing agency that serves SaaS and tech businesses, offering content marketing, SEO, paid media, and sales enablement\u2014services highly relevant to developer tools startups. [gripped.io](https://gripped.io/)"
+          },
+          {
+            "agency": "Digital Litmus",
+            "domain": "digitallitmus.com",
+            "url": "https://www.digitallitmus.com/blog/best-saas-marketing-agencies-uk",
+            "comment": "Digital Litmus is a UK agency specializing in SaaS marketing, with expertise in product\u2011led growth, content, SEO, and paid campaigns\u2014key areas for marketing developer tools startups. [digitallitmus.com](https://www.digitallitmus.com/blog/best-saas-marketing-agencies-uk)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "hoopy.io",
+        "catchyagency.com",
+        "gripped.io",
+        "digitallitmus.com"
+      ],
+      "domain_ranks": [
+        [
+          "hoopy.io",
+          1
+        ],
+        [
+          "catchyagency.com",
+          2
+        ],
+        [
+          "gripped.io",
+          3
+        ],
+        [
+          "digitallitmus.com",
+          4
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "hoopy.io": [
+          "https://hoopy.io"
+        ],
+        "catchyagency.com": [
+          "https://catchyagency.com"
+        ],
+        "gripped.io": [
+          "https://gripped.io"
+        ],
+        "digitallitmus.com": [
+          "https://digitallitmus.com/blog/best-saas-marketing-agencies-uk"
+        ]
+      }
+    },
+    {
+      "prompt": "Top developer marketing agencies in the Israel specializing in marketing for developer tools startups",
+      "raw": "```json\n{\n  \"query\": \"Top developer marketing agencies in Israel specializing in marketing for developer tools startups\",\n  \"results\": [\n    {\n      \"agency\": \"Inspired Marketing\",\n      \"domain\": \"inspiredmarketing.co.il\",\n      \"url\": \"https://www.inspiredmarketing.co.il/\",\n      \"comment\": \"A B2B tech marketing agency headquartered in Israel that serves tech startups, including developer tools, with services such as lead generation, SEO, and marketing automation. [inspiredmarketing.co.il](https://www.inspiredmarketing.co.il/)\"\n    },\n    {\n      \"agency\": \"Concrete Media\",\n      \"domain\": \"concrete.media\",\n      \"url\": \"https://concrete.media/\",\n      \"comment\": \"A tech PR agency based in Tel Aviv that specializes in high\u2011level media coverage for B2B tech companies, including developer\u2011tool startups. [concrete.media](https://concrete.media/)\"\n    },\n    {\n      \"agency\": \"Clutch Digital Marketing Directory\",\n      \"domain\": \"clutch.co\",\n      \"url\": \"https://clutch.co/il/agencies/digital-marketing\",\n      \"comment\": \"Clutch\u2019s Israeli digital\u2011marketing agency directory lists top agencies, many of which work with developer\u2011tool startups. [clutch.co](https://clutch.co/il/agencies/digital-marketing)\"\n    },\n    {\n      \"agency\": \"HubSpot Marketplace Israel\",\n      \"domain\": \"hubspot.com\",\n      \"url\": \"https://ecosystem.hubspot.com/marketplace/solutions/israel\",\n      \"comment\": \"HubSpot\u2019s marketplace lists Israeli solutions partners, including agencies that specialize in B2B tech and developer\u2011tool marketing. [hubspot.com](https://ecosystem.hubspot.com/marketplace/solutions/israel)\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "Top developer marketing agencies in Israel specializing in marketing for developer tools startups",
+        "results": [
+          {
+            "agency": "Inspired Marketing",
+            "domain": "inspiredmarketing.co.il",
+            "url": "https://www.inspiredmarketing.co.il/",
+            "comment": "A B2B tech marketing agency headquartered in Israel that serves tech startups, including developer tools, with services such as lead generation, SEO, and marketing automation. [inspiredmarketing.co.il](https://www.inspiredmarketing.co.il/)"
+          },
+          {
+            "agency": "Concrete Media",
+            "domain": "concrete.media",
+            "url": "https://concrete.media/",
+            "comment": "A tech PR agency based in Tel Aviv that specializes in high\u2011level media coverage for B2B tech companies, including developer\u2011tool startups. [concrete.media](https://concrete.media/)"
+          },
+          {
+            "agency": "Clutch Digital Marketing Directory",
+            "domain": "clutch.co",
+            "url": "https://clutch.co/il/agencies/digital-marketing",
+            "comment": "Clutch\u2019s Israeli digital\u2011marketing agency directory lists top agencies, many of which work with developer\u2011tool startups. [clutch.co](https://clutch.co/il/agencies/digital-marketing)"
+          },
+          {
+            "agency": "HubSpot Marketplace Israel",
+            "domain": "hubspot.com",
+            "url": "https://ecosystem.hubspot.com/marketplace/solutions/israel",
+            "comment": "HubSpot\u2019s marketplace lists Israeli solutions partners, including agencies that specialize in B2B tech and developer\u2011tool marketing. [hubspot.com](https://ecosystem.hubspot.com/marketplace/solutions/israel)"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "inspiredmarketing.co.il",
+        "concrete.media",
+        "clutch.co",
+        "hubspot.com"
+      ],
+      "domain_ranks": [
+        [
+          "inspiredmarketing.co.il",
+          1
+        ],
+        [
+          "concrete.media",
+          2
+        ],
+        [
+          "clutch.co",
+          3
+        ],
+        [
+          "hubspot.com",
+          4
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "inspiredmarketing.co.il": [
+          "https://inspiredmarketing.co.il"
+        ],
+        "concrete.media": [
+          "https://concrete.media"
+        ],
+        "clutch.co": [
+          "https://clutch.co/il/agencies/digital-marketing"
+        ],
+        "hubspot.com": [
+          "https://ecosystem.hubspot.com/marketplace/solutions/israel"
+        ]
+      }
+    }
+  ]
+}

@@ -56,7 +56,7 @@ def evaluate(request: EvaluateRequest) -> dict:
     except ValueError as exc:  # pragma: no cover - defensive
         raise HTTPException(status_code=400, detail=str(exc))
 
-    api_key = os.environ.get("OPENROUTER_API_KEY")
+    api_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
     if not api_key:
         raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY is required to call OpenRouter.")
 
@@ -85,7 +85,7 @@ def cite(request: QuickCitationRequest) -> dict:
     except ValueError as exc:  # pragma: no cover - defensive
         raise HTTPException(status_code=400, detail=str(exc))
 
-    api_key = os.environ.get("OPENROUTER_API_KEY")
+    api_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
     if not api_key:
         raise HTTPException(status_code=500, detail="OPENROUTER_API_KEY is required to call OpenRouter.")
 

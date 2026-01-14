@@ -6,7 +6,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 from urllib.parse import urlparse
 
 import requests
@@ -241,18 +241,38 @@ def call_openrouter_search(prompt: str, api_key: str, model_slug: str) -> str:
     return message
 
 
-def perform_request(call_fn, prompt: str, api_key: str) -> Tuple[str, Dict, bool]:
+def perform_request(call_fn, prompt: str, api_key: str) -> Tuple[str, Dict[str, Any], bool]:
     last_raw = ""
+    parsed_payload: Dict[str, Any] = {}
+    json_valid = False
     for attempt in range(MAX_ATTEMPTS):
         try:
             raw = call_fn(prompt, api_key)
             last_raw = raw if isinstance(raw, str) else json.dumps(raw)
-            parsed, valid = extract_json_from_text(last_raw)
-            if parsed:
-                return last_raw, parsed, valid
+            parsed_payload, json_valid = extract_json_from_text(last_raw)
+            error_block = parsed_payload.get("error") if isinstance(parsed_payload, dict) else None
+            if isinstance(error_block, dict):
+                code = error_block.get("code")
+                message = str(error_block.get("message", "")).strip()
+                if code == 401 or "user not found" in message.lower():
+                    raise EnvironmentError(
+                        "OpenRouter rejected the API key (401 'User not found'). "
+                        "Check OPENROUTER_API_KEY in your environment or dashboard and retry."
+                    )
+            if parsed_payload:
+                return last_raw, parsed_payload, json_valid
         except requests.HTTPError as exc:  # type: ignore[var-annotated]
             status = exc.response.status_code if exc.response else None
             last_raw = exc.response.text if exc.response is not None else last_raw
+            parsed_payload, json_valid = extract_json_from_text(last_raw)
+            if status == 401:
+                error_body = parsed_payload.get("error") if isinstance(parsed_payload, dict) else None
+                message = error_body.get("message") if isinstance(error_body, dict) else ""
+                detail = message or "openrouter.ai rejected the API key"
+                raise EnvironmentError(
+                    f"OpenRouter API key invalid (401): {detail}. "
+                    "Verify OPENROUTER_API_KEY and try again."
+                ) from exc
             if status == 429 and attempt + 1 < MAX_ATTEMPTS:
                 time.sleep(RETRY_DELAY_SECONDS)
                 continue
@@ -262,7 +282,7 @@ def perform_request(call_fn, prompt: str, api_key: str) -> Tuple[str, Dict, bool
                 time.sleep(RETRY_DELAY_SECONDS)
                 continue
         break
-    return last_raw, {}, False
+    return last_raw, parsed_payload, json_valid
 
 
 def collect_domains(payload: Dict) -> List[Tuple[str, int]]:
@@ -627,7 +647,7 @@ def run_once(prompts_path: Path, targets_path: Path) -> None:
     targets = load_targets(targets_path)
     prompts = load_prompts(prompts_path)
 
-    api_key = os.environ.get("OPENROUTER_API_KEY")
+    api_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
     if not api_key:
         raise EnvironmentError("OPENROUTER_API_KEY is required")
 
