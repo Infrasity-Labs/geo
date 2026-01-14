@@ -260,11 +260,35 @@ def get_cluster_detail(cluster_id: str):
     # Get runs for this cluster
     runs = get_runs_by_cluster(cluster_id, config)
     
-    # Group runs by timestamp
+    # Group runs by timestamp (or by workflow run - runs within 10 minutes are grouped)
+    # Sort runs by timestamp first
+    runs_sorted = sorted(runs, key=lambda x: x.get("timestamp", ""))
+    
     runs_by_timestamp = {}
-    for run in runs:
+    for run in runs_sorted:
         ts = run.get("timestamp")
-        if ts not in runs_by_timestamp:
+        
+        # Try to find existing group within 10 minutes (for GitHub Actions workflow runs)
+        # Use the earliest timestamp as the group key
+        grouped_ts = None
+        for existing_ts in sorted(runs_by_timestamp.keys()):
+            # Parse timestamps and check if within 10 minutes
+            try:
+                ts_dt = datetime.strptime(ts, "%Y%m%dT%H%M%SZ")
+                existing_dt = datetime.strptime(existing_ts, "%Y%m%dT%H%M%SZ")
+                diff = abs((ts_dt - existing_dt).total_seconds())
+                if diff < 600:  # 10 minutes
+                    # Use the earlier timestamp as the group key
+                    grouped_ts = existing_ts if existing_dt < ts_dt else ts
+                    # If we're using an earlier timestamp, update the group
+                    if grouped_ts == existing_ts:
+                        break
+            except:
+                pass
+        
+        if grouped_ts and grouped_ts in runs_by_timestamp:
+            ts = grouped_ts
+        elif ts not in runs_by_timestamp:
             runs_by_timestamp[ts] = {
                 "timestamp": ts,
                 "models": []
