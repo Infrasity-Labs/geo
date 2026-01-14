@@ -87,13 +87,13 @@ export default function App() {
 					</div>
 				</div>
 				<div className="sidebar-nav">
-					<h3>Workflows</h3>
+					<h3>Service Vertical</h3>
 					<nav className="nav-list">
 						<button className={`nav-item ${selectedCluster === null ? 'active' : ''}`} onClick={() => setSelectedCluster(null)}>
 							<span>📋</span>
 							<div>
-								<div>All Clusters</div>
-								<div className="nav-meta">{totalPrompts} prompts</div>
+								<div>All Cluster</div>
+								<div className="nav-meta">{totalPrompts} prompt</div>
 							</div>
 						</button>
 						{clusters.map((c) => (
@@ -101,7 +101,7 @@ export default function App() {
 								<span>📁</span>
 								<div>
 									<div>{c.name}</div>
-									<div className="nav-meta">{c.prompt_count} prompts · <span className="rate">{c.citation_rate}%</span></div>
+									<div className="nav-meta">{c.prompt_count} prompt • <span className="rate">{c.citation_rate}%</span></div>
 								</div>
 							</button>
 						))}
@@ -215,11 +215,12 @@ function ClusterDetailView({ detail, onBack }) {
 
 	return (
 		<div>
-			<button className="back-btn" onClick={onBack}>← All workflows</button>
-
-			<div className="workflow-header">
-				<div className="workflow-title">{workflowFile}</div>
-				<div className="workflow-meta">on: workflow_dispatch</div>
+			<div className="cluster-detail-header">
+				<button className="back-btn" onClick={onBack}>← Back</button>
+				<div className="header-actions">
+					<button className="btn-primary">Add Prompt</button>
+					<button className="btn-primary">Run All Model</button>
+				</div>
 			</div>
 
 			{!latestRun && (
@@ -228,30 +229,24 @@ function ClusterDetailView({ detail, onBack }) {
 
 			{latestRun && displayModels.length > 0 && (
 				<>
-					<div className="pipeline">
+					<div className="model-runs">
 						{displayModels.slice(0, 3).map((m, i) => {
 							const shortName = getShortModelName(m.model)
 							const hasData = m.results && m.results.length > 0
 							return (
-								<React.Fragment key={`pipeline-${m.model || i}`}>
-									{i > 0 && <span className="pipeline-connector">•</span>}
-									<div className={`pipeline-step ${hasData ? 'success' : ''}`}>
-										<span className={`step-icon ${hasData ? 'success' : 'pending'}`}>{hasData ? '✓' : '○'}</span>
-										<span className="step-name">run-{shortName}-...</span>
-										<span className="step-time">{hasData ? '1m 30s' : '-'}</span>
-									</div>
-								</React.Fragment>
+								<button key={`run-${m.model || i}`} className="model-run-btn">
+									<span>run-{shortName}-{cluster.id}</span>
+									{hasData && <span className="run-duration">2m 57s</span>}
+								</button>
 							)
 						})}
-						<span className="pipeline-connector">•</span>
-						<div className={`pipeline-step ${displayModels.some(m => m.results && m.results.length > 0) ? 'success' : ''}`}>
-							<span className={`step-icon ${displayModels.some(m => m.results && m.results.length > 0) ? 'success' : 'pending'}`}>
-								{displayModels.some(m => m.results && m.results.length > 0) ? '✓' : '○'}
-							</span>
-							<span className="step-name">commit-logs-...</span>
-							<span className="step-time">{displayModels.some(m => m.results && m.results.length > 0) ? '5s' : '-'}</span>
-						</div>
 					</div>
+
+					{timestamp && (
+						<div className="run-timestamp-header">
+							<h2>{timestamp}</h2>
+						</div>
+					)}
 
 					{displayModels.slice(0, 3).map((modelData, modelIdx) => (
 						<JobSummary 
