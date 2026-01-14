@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const API_BASE = '/api'
 const SNAPSHOT_URL = '/data.json'
@@ -18,33 +18,43 @@ export default function App() {
   const [clusters, setClusters] = useState([])
   const [selectedCluster, setSelectedCluster] = useState(null)
   const [clusterDetail, setClusterDetail] = useState(null)
+  const snapshotRef = useRef(null)
 
   const fetchClusters = useCallback(async () => {
     setLoading(true)
+
+    // Load snapshot first so UI renders even if API is down
+    try {
+      const snap = await fetch(SNAPSHOT_URL).then(r => r.json())
+      snapshotRef.current = snap
+      setClusters(snap.clusters || [])
+    } catch (err) {
+      console.warn('Snapshot load failed', err)
+    }
+
+    // Try live API to refresh with latest data
     try {
       const res = await fetch(`${API_BASE}/clusters`)
       if (res.ok) {
-        setClusters((await res.json()).clusters || [])
+        const payload = await res.json()
+        setClusters(payload.clusters || [])
         setLoading(false)
         return
       }
     } catch (err) {
-      console.warn('API clusters fetch failed, falling back to snapshot', err)
+      console.warn('API clusters fetch failed, using snapshot', err)
     }
 
-    // Fallback to static snapshot built at deploy time
-    try {
-      const snap = await fetch(SNAPSHOT_URL).then(r => r.json())
-      setClusters(snap.clusters || [])
-      // stash snapshot for detail fallback
-      window.__SNAPSHOT = snap
-    } catch (err) {
-      console.error('Snapshot fetch failed:', err)
-    }
     setLoading(false)
   }, [])
 
   const fetchClusterDetail = useCallback(async (clusterId) => {
+    // Try snapshot immediately if we have it cached
+    const snap = snapshotRef.current
+    if (snap?.cluster_details?.[clusterId]) {
+      setClusterDetail(snap.cluster_details[clusterId])
+    }
+
     try {
       const res = await fetch(`${API_BASE}/clusters/${clusterId}`)
       if (res.ok) {
@@ -52,13 +62,7 @@ export default function App() {
         return
       }
     } catch (err) {
-      console.warn('API cluster detail fetch failed, falling back to snapshot', err)
-    }
-
-    // Fallback to snapshot if available
-    const snap = window.__SNAPSHOT
-    if (snap && snap.cluster_details && snap.cluster_details[clusterId]) {
-      setClusterDetail(snap.cluster_details[clusterId])
+      console.warn('API cluster detail fetch failed, keeping snapshot', err)
     }
   }, [])
 
