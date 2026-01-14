@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 const API_BASE = '/api'
-const SHOULD_CALL_API = !import.meta.env.DEV || import.meta.env.VITE_USE_API === 'true'
 
 function useTheme() {
 	const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
@@ -24,15 +23,14 @@ export default function App() {
 	const fetchClusters = useCallback(async () => {
 		setLoading(true)
 		try {
-			if (!SHOULD_CALL_API) throw new Error('API disabled')
-			const res = await fetch(`${API_BASE}/clusters`)
+			const res = await fetch(`${API_BASE}/clusters`, { cache: 'no-store' })
 			if (!res.ok) throw new Error(`API error ${res.status}`)
 			const payload = await res.json()
 			setClusters(payload.clusters || [])
 			setError(null)
 		} catch (err) {
 			console.error('Failed to fetch clusters', err)
-			setError('Unable to load data from API')
+			setError('Unable to load data from logs')
 			setClusters([])
 		}
 		setLoading(false)
@@ -40,14 +38,13 @@ export default function App() {
 
 	const fetchClusterDetail = useCallback(async (clusterId) => {
 		try {
-			if (!SHOULD_CALL_API) throw new Error('API disabled')
-			const res = await fetch(`${API_BASE}/clusters/${clusterId}`)
+			const res = await fetch(`${API_BASE}/clusters/${clusterId}`, { cache: 'no-store' })
 			if (!res.ok) throw new Error(`API error ${res.status}`)
 			setClusterDetail(await res.json())
 			setError(null)
 		} catch (err) {
 			console.error('Failed to fetch cluster detail', err)
-			setError('Unable to load data from API')
+			setError('Unable to load data from logs')
 			setClusterDetail(null)
 		}
 	}, [])
@@ -55,8 +52,11 @@ export default function App() {
 	useEffect(() => { fetchClusters() }, [fetchClusters])
 
 	useEffect(() => {
-		if (selectedCluster) fetchClusterDetail(selectedCluster)
-		else setClusterDetail(null)
+		if (selectedCluster) {
+			fetchClusterDetail(selectedCluster)
+		} else {
+			setClusterDetail(null)
+		}
 	}, [selectedCluster, fetchClusterDetail])
 
 	const totalPrompts = clusters.reduce((sum, c) => sum + (c.prompt_count || 0), 0)
