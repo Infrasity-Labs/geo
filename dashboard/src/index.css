@@ -325,6 +325,18 @@ a:hover {
   color: var(--text-muted);
 }
 
+.col-rank {
+  min-width: 80px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.rank-value {
+  color: var(--text);
+  font-weight: 500;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
 .col-other {
   max-width: 300px;
 }

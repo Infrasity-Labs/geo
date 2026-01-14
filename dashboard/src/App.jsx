@@ -249,6 +249,7 @@ function JobSummary({ modelData, clusterId, timestamp }) {
                     <th>Prompt</th>
                     <th>Target URL</th>
                     <th>Status</th>
+                    <th>Rank</th>
                     <th>Other cited URLs</th>
                   </tr>
                 </thead>
@@ -295,23 +296,23 @@ function ResultRow({ result }) {
       </td>
       <td className="col-status">
         {cited && citedUrls.length > 0 ? (
-          <div>
-            <span className="status-cited">
-              cited URL(s): {citedUrls.map((url, i) => (
-                <span key={i}>
-                  {i > 0 && ', '}
-                  <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
-                </span>
-              ))}
-            </span>
-            {ranks.length > 0 && (
-              <div className="rank-badge">
-                rank(s): {ranks.join(', ')}
-              </div>
-            )}
-          </div>
+          <span className="status-cited">
+            cited URL(s): {citedUrls.map((url, i) => (
+              <span key={i}>
+                {i > 0 && ', '}
+                <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+              </span>
+            ))}
+          </span>
         ) : (
           <span className="status-not-cited">no target URLs cited</span>
+        )}
+      </td>
+      <td className="col-rank">
+        {ranks && ranks.length > 0 ? (
+          <span className="rank-value">{ranks.join(', ')}</span>
+        ) : (
+          <span style={{ color: 'var(--text-muted)' }}>—</span>
         )}
       </td>
       <td className="col-other">

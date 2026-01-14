@@ -16,27 +16,47 @@ load_dotenv()
 
 # In Vercel serverless, files are in /var/task or similar
 # Try to find the repo root by looking for config/ or logs/
-BASE_DIR = Path(__file__).parent
+# When api/index.py imports api_v2, __file__ will be the path to api_v2.py
+_original_file = Path(__file__)
 
 # Try multiple strategies to find the repo root
 possible_dirs = [
-    BASE_DIR,  # Current file location (api_v2.py is in repo root)
-    BASE_DIR.parent,  # One level up (if api_v2.py was in a subdir)
+    _original_file.parent,  # api_v2.py is in repo root, so parent is repo root
+    _original_file.parent.parent,  # If api_v2.py was in a subdir
     Path.cwd(),  # Current working directory (Vercel uses /var/task)
     Path("/var/task"),  # Vercel's default serverless function directory
+    Path("/var/task/api").parent,  # If api/index.py is the entry point
 ]
 
 BASE_DIR = None
 for dir_path in possible_dirs:
-    config_path = dir_path / "config" / "clusters.json"
-    logs_path = dir_path / "logs"
-    if config_path.exists() and logs_path.exists():
-        BASE_DIR = dir_path
-        break
+    if dir_path is None:
+        continue
+    try:
+        config_path = dir_path / "config" / "clusters.json"
+        logs_path = dir_path / "logs"
+        if config_path.exists() and logs_path.exists():
+            BASE_DIR = dir_path
+            break
+    except Exception:
+        continue
 
 if BASE_DIR is None:
     # Last resort: use current working directory
     BASE_DIR = Path.cwd()
+    # Log warning - this will help debug in Vercel
+    import sys
+    print(f"WARNING: Could not find config/ and logs/ directories.", file=sys.stderr)
+    print(f"Tried directories: {[str(d) for d in possible_dirs]}", file=sys.stderr)
+    print(f"Using BASE_DIR: {BASE_DIR}", file=sys.stderr)
+    print(f"__file__: {_original_file}", file=sys.stderr)
+    print(f"cwd: {Path.cwd()}", file=sys.stderr)
+    # Try to list what's in cwd to help debug
+    try:
+        cwd_contents = [f.name for f in Path.cwd().iterdir()][:10]
+        print(f"Contents of cwd: {cwd_contents}", file=sys.stderr)
+    except Exception:
+        pass
 
 CONFIG_DIR = BASE_DIR / "config"
 LOGS_DIR = BASE_DIR / "logs"
@@ -173,13 +193,32 @@ def get_runs_by_cluster(cluster_id: str, clusters_config: dict) -> List[dict]:
 def healthz():
     """Health check endpoint with debug info."""
     try:
-        config_exists = (CONFIG_DIR / "clusters.json").exists()
+        config_exists = CONFIG_DIR.exists() and (CONFIG_DIR / "clusters.json").exists()
         logs_exists = LOGS_DIR.exists()
-        log_count = len(list(LOGS_DIR.glob("run_*.json"))) if logs_exists else 0
+        log_count = 0
+        config_files = []
+        log_files = []
         
-        # List some files for debugging
-        config_files = list(CONFIG_DIR.glob("*.json")) if CONFIG_DIR.exists() else []
-        log_files = list(LOGS_DIR.glob("run_*.json"))[:5] if logs_exists else []
+        if logs_exists:
+            try:
+                log_count = len(list(LOGS_DIR.glob("run_*.json")))
+                log_files = list(LOGS_DIR.glob("run_*.json"))[:5]
+            except Exception:
+                pass
+        
+        if CONFIG_DIR.exists():
+            try:
+                config_files = list(CONFIG_DIR.glob("*.json"))
+            except Exception:
+                pass
+        
+        # Try to list what's in BASE_DIR
+        base_dir_contents = []
+        if BASE_DIR and BASE_DIR.exists():
+            try:
+                base_dir_contents = [f.name for f in BASE_DIR.iterdir()][:20]
+            except Exception:
+                pass
         
         return {
             "status": "ok",
@@ -193,15 +232,21 @@ def healthz():
             "cwd": str(Path.cwd()),
             "config_files": [str(f.name) for f in config_files],
             "sample_log_files": [str(f.name) for f in log_files],
-            "__file__": str(__file__)
+            "__file__": str(Path(__file__)),
+            "base_dir_contents": base_dir_contents,
+            "clusters_loaded": bool(load_clusters_config().get("clusters"))
         }
     except Exception as e:
+        import traceback
         return {
             "status": "error",
             "error": str(e),
+            "traceback": traceback.format_exc(),
             "base_dir": str(BASE_DIR) if BASE_DIR else "None",
+            "config_dir": str(CONFIG_DIR) if 'CONFIG_DIR' in globals() else "None",
+            "logs_dir": str(LOGS_DIR) if 'LOGS_DIR' in globals() else "None",
             "cwd": str(Path.cwd()),
-            "__file__": str(__file__)
+            "__file__": str(Path(__file__))
         }
 
 
