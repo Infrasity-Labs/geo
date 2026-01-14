@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api/index.js"
     },
     {
       "source": "/(.*)",
@@ -12,8 +12,8 @@
     }
   ],
   "functions": {
-    "api/index.py": {
-      "includeFiles": "{api_v2.py,run.py,models.py,config/**,logs/**}"
+    "api/index.js": {
+      "includeFiles": "{config/**,logs/**}"
     }
   }
 }
