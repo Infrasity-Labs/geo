@@ -37,8 +37,9 @@ async function loadRuns() {
   for (const f of files) {
     if (!f.startsWith('run_') || !f.endsWith('.json')) continue;
     const payload = await readJson(path.join(logsDir, f));
-    runs.push(payload);
+    runs.push({ ...payload, __file: f });
   }
+  // Newest first to mirror dashboard expectation
   runs.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
   return runs;
 }
@@ -71,23 +72,57 @@ function buildClusterDetail(cluster, runs) {
         filteredResults.push(res);
       }
     }
-    if (filteredResults.length) {
-      clusterRuns.push({
-        timestamp: run.timestamp,
-        model: run.model,
-        provider: run.provider,
-        results: filteredResults,
-      });
-    }
+    clusterRuns.push({
+      timestamp: run.timestamp,
+      model: run.model,
+      provider: run.provider,
+      results: filteredResults,
+    });
   }
 
+  // Group runs by timestamp, considering runs within 10 minutes as one logical workflow run
+  // This matches the API's grouping logic - use the earliest timestamp as the group key
   const runsByTs = {};
-  for (const r of clusterRuns) {
+  
+  // Sort runs by timestamp first (earliest first) for proper grouping
+  const sortedClusterRuns = [...clusterRuns].sort((a, b) => (a.timestamp || '').localeCompare(b.timestamp || ''));
+  
+  for (const r of sortedClusterRuns) {
     const ts = r.timestamp;
-    runsByTs[ts] = runsByTs[ts] || { timestamp: ts, models: [] };
+    if (!ts) continue;
+    
+    // Try to find existing group within 10 minutes
+    let groupedTs = null;
+    for (const existingTs of Object.keys(runsByTs).sort()) {
+      try {
+        const tsDate = new Date(ts.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/, '$1-$2-$3T$4:$5:$6Z'));
+        const existingDate = new Date(existingTs.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/, '$1-$2-$3T$4:$5:$6Z'));
+        const diffMs = Math.abs(tsDate - existingDate);
+        if (diffMs < 600000) { // 10 minutes in milliseconds
+          // Always use the earlier timestamp as the group key
+          groupedTs = tsDate < existingDate ? ts : existingTs;
+          // If we need to use an earlier timestamp, we need to move the existing group
+          if (groupedTs === ts && groupedTs !== existingTs) {
+            // Move existing group to new key
+            runsByTs[ts] = runsByTs[existingTs];
+            runsByTs[ts].timestamp = ts;
+            delete runsByTs[existingTs];
+          }
+          break;
+        }
+      } catch (e) {
+        // If date parsing fails, just use the timestamp as-is
+      }
+    }
+    
+    const targetTs = groupedTs || ts;
+    if (!runsByTs[targetTs]) {
+      runsByTs[targetTs] = { timestamp: targetTs, models: [] };
+    }
+    
     const results = r.results || [];
     const citedCount = results.reduce((acc, item) => acc + ((item.matches && item.matches.length) ? 1 : 0), 0);
-    runsByTs[ts].models.push({
+    runsByTs[targetTs].models.push({
       model: r.model,
       provider: r.provider,
       results: results.map(res => formatResult(res)),
@@ -96,25 +131,44 @@ function buildClusterDetail(cluster, runs) {
     });
   }
 
+  // Sort by timestamp descending and get the latest
   const sortedRuns = Object.values(runsByTs).sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
   const latestRun = sortedRuns[0] || null;
   const allModels = cluster.__allModels || [];
 
   if (latestRun) {
-    const existing = new Set(latestRun.models.map(m => m.model));
-    for (const m of allModels) {
-      if (!existing.has(m.name)) {
-        latestRun.models.push({
-          model: m.name,
-          provider: m.provider,
-          results: [],
-          cited_count: 0,
-          total_count: 0,
-        });
+    // Deduplicate models - keep only the first occurrence of each model
+    const seen = new Set();
+    const uniqueModels = [];
+    for (const m of latestRun.models) {
+      if (m.model && !seen.has(m.model)) {
+        seen.add(m.model);
+        uniqueModels.push(m);
       }
     }
+    
+    // Add missing models as empty placeholders
     const order = ['gpt-oss-20b-free-online', 'claude-3.5-haiku-online', 'perplexity-sonar-online'];
-    latestRun.models.sort((a, b) => order.indexOf(a.model) - order.indexOf(b.model));
+    for (const modelName of order) {
+      if (!seen.has(modelName)) {
+        const modelConfig = allModels.find(m => m.name === modelName);
+        if (modelConfig) {
+          uniqueModels.push({
+            model: modelName,
+            provider: modelConfig.provider,
+            results: [],
+            cited_count: 0,
+            total_count: 0,
+          });
+        }
+      }
+    }
+    
+    // Sort by model order and ensure exactly 3 models
+    latestRun.models = uniqueModels
+      .filter(m => order.includes(m.model))
+      .sort((a, b) => order.indexOf(a.model) - order.indexOf(b.model))
+      .slice(0, 3);
   }
 
   return {
@@ -126,7 +180,7 @@ function buildClusterDetail(cluster, runs) {
     },
     prompts,
     targets,
-    runs: sortedRuns.slice(0, 10),
+    runs: sortedRuns, // include all runs for full visibility
     latest_run: latestRun || {
       timestamp: null,
       models: allModels.map(m => ({
@@ -184,8 +238,7 @@ async function main() {
   const clustersResponse = [];
 
   for (const cluster of clusters) {
-    const runsForCluster = runs.filter(r => r.results && r.results.length);
-    const detail = buildClusterDetail(cluster, runsForCluster);
+    const detail = buildClusterDetail(cluster, runs);
     clusterDetails[cluster.id] = detail;
 
     // compute prompt_count and citation rate
@@ -209,6 +262,10 @@ async function main() {
     generated_at: new Date().toISOString(),
     clusters: clustersResponse,
     cluster_details: clusterDetails,
+    // Lightweight run index for quick inspection
+    runs: runs.map(r => ({ timestamp: r.timestamp, model: r.model, provider: r.provider, file: r.__file })),
+    // Full run payloads for complete visibility in the dashboard data
+    all_runs: runs,
   };
 
   await fs.mkdir(path.dirname(outPath), { recursive: true });
