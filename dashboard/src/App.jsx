@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 const API_BASE = '/api'
 const SNAPSHOT_URL = '/data.json'
+const SHOULD_CALL_API = !import.meta.env.DEV || import.meta.env.VITE_USE_API === 'true'
 
 function useTheme() {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
@@ -33,16 +34,18 @@ export default function App() {
     }
 
     // Try live API to refresh with latest data
-    try {
-      const res = await fetch(`${API_BASE}/clusters`)
-      if (res.ok) {
-        const payload = await res.json()
-        setClusters(payload.clusters || [])
-        setLoading(false)
-        return
+    if (SHOULD_CALL_API) {
+      try {
+        const res = await fetch(`${API_BASE}/clusters`)
+        if (res.ok) {
+          const payload = await res.json()
+          setClusters(payload.clusters || [])
+          setLoading(false)
+          return
+        }
+      } catch (err) {
+        console.warn('API clusters fetch failed, using snapshot', err)
       }
-    } catch (err) {
-      console.warn('API clusters fetch failed, using snapshot', err)
     }
 
     setLoading(false)
@@ -55,14 +58,16 @@ export default function App() {
       setClusterDetail(snap.cluster_details[clusterId])
     }
 
-    try {
-      const res = await fetch(`${API_BASE}/clusters/${clusterId}`)
-      if (res.ok) {
-        setClusterDetail(await res.json())
-        return
+    if (SHOULD_CALL_API) {
+      try {
+        const res = await fetch(`${API_BASE}/clusters/${clusterId}`)
+        if (res.ok) {
+          setClusterDetail(await res.json())
+          return
+        }
+      } catch (err) {
+        console.warn('API cluster detail fetch failed, keeping snapshot', err)
       }
-    } catch (err) {
-      console.warn('API cluster detail fetch failed, keeping snapshot', err)
     }
   }, [])
 
