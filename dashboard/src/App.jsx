@@ -11,11 +11,10 @@ function useTheme() {
     localStorage.setItem('theme', theme)
   }, [theme])
   return { theme, toggleTheme: () => setTheme(t => t === 'light' ? 'dark' : 'light') }
-}
+import { useCallback, useEffect, useState } from 'react'
 
 export default function App() {
-  const { theme, toggleTheme } = useTheme()
-  const [loading, setLoading] = useState(true)
+const SHOULD_CALL_API = !import.meta.env.DEV || import.meta.env.VITE_USE_API === 'true'
   const [clusters, setClusters] = useState([])
   const [selectedCluster, setSelectedCluster] = useState(null)
   const [clusterDetail, setClusterDetail] = useState(null)
@@ -23,28 +22,22 @@ export default function App() {
 
   const fetchClusters = useCallback(async () => {
     setLoading(true)
-
+  const [error, setError] = useState(null)
     // Load snapshot first so UI renders even if API is down
     try {
       const snap = await fetch(SNAPSHOT_URL).then(r => r.json())
       snapshotRef.current = snap
-      setClusters(snap.clusters || [])
-    } catch (err) {
-      console.warn('Snapshot load failed', err)
-    }
-
-    // Try live API to refresh with latest data
-    if (SHOULD_CALL_API) {
-      try {
-        const res = await fetch(`${API_BASE}/clusters`)
-        if (res.ok) {
-          const payload = await res.json()
-          setClusters(payload.clusters || [])
-          setLoading(false)
-          return
+        try {
+          const res = await fetch(`${API_BASE}/clusters`)
+          if (res.ok) {
+            const payload = await res.json()
+            setClusters(payload.clusters || [])
+            setLoading(false)
+            return
+          }
+        } catch (err) {
+          console.warn('API clusters fetch failed, using snapshot', err)
         }
-      } catch (err) {
-        console.warn('API clusters fetch failed, using snapshot', err)
       }
     }
 
@@ -53,20 +46,17 @@ export default function App() {
 
   const fetchClusterDetail = useCallback(async (clusterId) => {
     // Try snapshot immediately if we have it cached
-    const snap = snapshotRef.current
-    if (snap?.cluster_details?.[clusterId]) {
-      setClusterDetail(snap.cluster_details[clusterId])
-    }
-
     if (SHOULD_CALL_API) {
-      try {
-        const res = await fetch(`${API_BASE}/clusters/${clusterId}`)
-        if (res.ok) {
-          setClusterDetail(await res.json())
-          return
+      if (SHOULD_CALL_API) {
+        try {
+          const res = await fetch(`${API_BASE}/clusters/${clusterId}`)
+          if (res.ok) {
+            setClusterDetail(await res.json())
+            return
+          }
+        } catch (err) {
+          console.warn('API cluster detail fetch failed, keeping snapshot', err)
         }
-      } catch (err) {
-        console.warn('API cluster detail fetch failed, keeping snapshot', err)
       }
     }
   }, [])
