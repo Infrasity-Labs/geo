@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const API_BASE = '/api'
+const SNAPSHOT_URL = '/data.json'
 
 function useTheme() {
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
@@ -22,9 +23,23 @@ export default function App() {
     setLoading(true)
     try {
       const res = await fetch(`${API_BASE}/clusters`)
-      if (res.ok) setClusters((await res.json()).clusters || [])
+      if (res.ok) {
+        setClusters((await res.json()).clusters || [])
+        setLoading(false)
+        return
+      }
     } catch (err) {
-      console.error('Failed to fetch clusters:', err)
+      console.warn('API clusters fetch failed, falling back to snapshot', err)
+    }
+
+    // Fallback to static snapshot built at deploy time
+    try {
+      const snap = await fetch(SNAPSHOT_URL).then(r => r.json())
+      setClusters(snap.clusters || [])
+      // stash snapshot for detail fallback
+      window.__SNAPSHOT = snap
+    } catch (err) {
+      console.error('Snapshot fetch failed:', err)
     }
     setLoading(false)
   }, [])
@@ -32,14 +47,23 @@ export default function App() {
   const fetchClusterDetail = useCallback(async (clusterId) => {
     try {
       const res = await fetch(`${API_BASE}/clusters/${clusterId}`)
-      if (res.ok) setClusterDetail(await res.json())
+      if (res.ok) {
+        setClusterDetail(await res.json())
+        return
+      }
     } catch (err) {
-      console.error('Failed to fetch cluster detail:', err)
+      console.warn('API cluster detail fetch failed, falling back to snapshot', err)
+    }
+
+    // Fallback to snapshot if available
+    const snap = window.__SNAPSHOT
+    if (snap && snap.cluster_details && snap.cluster_details[clusterId]) {
+      setClusterDetail(snap.cluster_details[clusterId])
     }
   }, [])
 
   useEffect(() => { fetchClusters() }, [fetchClusters])
-  
+
   useEffect(() => {
     if (selectedCluster) fetchClusterDetail(selectedCluster)
     else setClusterDetail(null)
@@ -67,8 +91,8 @@ export default function App() {
         <div className="sidebar-nav">
           <h3>Workflows</h3>
           <nav className="nav-list">
-            <button 
-              className={`nav-item ${!selectedCluster ? 'active' : ''}`} 
+            <button
+              className={`nav-item ${!selectedCluster ? 'active' : ''}`}
               onClick={() => setSelectedCluster(null)}
             >
               <span>📋</span>
@@ -78,9 +102,9 @@ export default function App() {
               </div>
             </button>
             {clusters.map(c => (
-              <button 
-                key={c.id} 
-                className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`} 
+              <button
+                key={c.id}
+                className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
                 onClick={() => setSelectedCluster(c.id)}
               >
                 <span>📁</span>
@@ -98,9 +122,9 @@ export default function App() {
         {loading ? (
           <div className="loading"><div className="spinner"></div> Loading...</div>
         ) : selectedCluster && clusterDetail ? (
-          <ClusterDetailView 
-            detail={clusterDetail} 
-            onBack={() => setSelectedCluster(null)} 
+          <ClusterDetailView
+            detail={clusterDetail}
+            onBack={() => setSelectedCluster(null)}
           />
         ) : (
           <OverviewView clusters={clusters} onSelect={setSelectedCluster} />
@@ -141,7 +165,7 @@ function ClusterDetailView({ detail, onBack }) {
   const allModels = detail?.all_models || []
   const models = latestRun?.models || []
   const workflowFile = cluster?.workflow || `citation-check-${cluster?.id}.yml`
-  
+
   if (!cluster) return null
 
   // Ensure we always have all three models (GPT, Claude, Perplexity)
@@ -149,7 +173,7 @@ function ClusterDetailView({ detail, onBack }) {
   const allModelsData = modelOrder.map(modelName => {
     const existing = models.find(m => m.model === modelName)
     if (existing) return existing
-    
+
     // Find model config
     const modelConfig = allModels.find(m => m.name === modelName)
     return {
@@ -164,7 +188,7 @@ function ClusterDetailView({ detail, onBack }) {
   return (
     <div>
       <button className="back-btn" onClick={onBack}>← All workflows</button>
-      
+
       {/* Workflow Header - like GitHub Actions */}
       <div className="workflow-header">
         <div className="workflow-title">{workflowFile}</div>
@@ -201,8 +225,8 @@ function ClusterDetailView({ detail, onBack }) {
 
       {/* Job Summaries - one per model, always show all three */}
       {allModelsData.map((modelData, index) => (
-        <JobSummary 
-          key={modelData.model || index} 
+        <JobSummary
+          key={modelData.model || index}
           modelData={modelData}
           clusterId={cluster.id}
           timestamp={latestRun?.timestamp}
@@ -214,21 +238,21 @@ function ClusterDetailView({ detail, onBack }) {
 
 function JobSummary({ modelData, clusterId, timestamp }) {
   const [isOpen, setIsOpen] = useState(true)
-  
+
   const shortName = getShortModelName(modelData.model)
   const jobTitle = `run-${shortName}-${clusterId} summary`
   const hasResults = modelData.results && modelData.results.length > 0
 
   return (
     <div className="job-section">
-      <div 
+      <div
         className={`job-header ${isOpen ? 'open' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className={`job-expand ${isOpen ? 'open' : ''}`}>▶</span>
         <span className="job-title">{jobTitle}</span>
       </div>
-      
+
       {isOpen && (
         <div className="job-content">
           {hasResults ? (
@@ -280,7 +304,7 @@ function ResultRow({ result }) {
   const citedUrls = result.cited_urls || []  // For Status column
   const otherUrls = result.other_urls || []
   const ranks = result.ranks || []
-  
+
   return (
     <tr className={cited ? 'row-cited' : ''}>
       <td className="col-prompt">{result.prompt}</td>
