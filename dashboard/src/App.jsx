@@ -576,7 +576,7 @@ function ResultRow({ result }) {
             {citedUrls.map((url, i) => (
               <a key={i} href={url} target="_blank" rel="noopener noreferrer">{getDomain(url)}</a>
             ))}
-            {ranks.length > 0 && <div className="status-rank">rank(s): {ranks.join(', ')}</div>}
+            {ranks.length > 0 && <div className="status-rank">rank(s): <span className="rank-numbers">{ranks.join(', ')}</span></div>}
           </div>
         ) : (
           <span className="status-not-cited">no target URLs cited</span>

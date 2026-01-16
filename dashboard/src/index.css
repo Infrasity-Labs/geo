@@ -572,24 +572,32 @@ a:hover {
 
 .status-cited {
   color: var(--green);
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .status-cited a {
   color: var(--accent);
   display: block;
-  margin-top: 2px;
-}
-
-.status-rank {
-  color: var(--text-muted);
-  font-size: 12px;
   margin-top: 4px;
 }
 
+.status-rank {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.rank-numbers {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .status-not-cited {
-  color: var(--text-muted);
-  font-size: 13px;
+  color: var(--red);
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .col-other {
