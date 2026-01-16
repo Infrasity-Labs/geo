@@ -1,23 +1,14 @@
 /* eslint-disable react/prop-types */
 import React, { useCallback, useEffect, useState } from 'react'
 
-function useTheme() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    localStorage.setItem('theme', theme)
-  }, [theme])
-  return { theme, toggleTheme: () => setTheme(t => (t === 'light' ? 'dark' : 'light')) }
-}
-
 export default function App() {
-  const { theme, toggleTheme } = useTheme()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [clusters, setClusters] = useState([])
   const [clusterDetails, setClusterDetails] = useState({})
   const [selectedCluster, setSelectedCluster] = useState(null)
   const [activeTab, setActiveTab] = useState('clusters')
+  const [showAddPrompt, setShowAddPrompt] = useState(false)
 
   const loadData = useCallback(async () => {
     setLoading(true)
@@ -43,23 +34,23 @@ export default function App() {
     ? Math.round(clusters.reduce((sum, c) => sum + (c.citation_rate || 0), 0) / clusters.length) 
     : 0
   const topCluster = clusters.reduce((top, c) => (!top || c.citation_rate > top.citation_rate) ? c : top, null)
-
-  // Calculate trends (mock data based on citation rates)
   const trendsUp = clusters.reduce((sum, c) => sum + Math.round((c.citation_rate || 0) * 0.6), 0)
   const trendsDown = clusters.reduce((sum, c) => sum + Math.round((100 - (c.citation_rate || 0)) * 0.3), 0)
-
-  const handleRefresh = () => {
-    loadData()
-  }
 
   let content
   if (loading) {
     content = <LoadingState />
   } else if (error) {
-    content = <div className="error-box">{error}</div>
+    content = <div className="empty-state">{error}</div>
   } else if (selectedCluster) {
     const detail = clusterDetails[selectedCluster]
-    content = <ClusterDetailView detail={detail} onBack={() => setSelectedCluster(null)} />
+    content = (
+      <ClusterDetailView 
+        detail={detail} 
+        onBack={() => setSelectedCluster(null)} 
+        onAddPrompt={() => setShowAddPrompt(true)}
+      />
+    )
   } else {
     content = (
       <OverviewView 
@@ -73,18 +64,18 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onSelect={setSelectedCluster}
+        onAddPrompt={() => setShowAddPrompt(true)}
       />
     )
   }
 
   return (
     <div className="app-container">
-      {/* Header */}
       <header className="header">
         <div className="header-left">
           <div className="logo">
             <div className="logo-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M3 3v18h18" />
                 <path d="M18 17V9" />
                 <path d="M13 17V5" />
@@ -98,8 +89,8 @@ export default function App() {
           </div>
         </div>
         <div className="header-right">
-          <button className="btn-icon" onClick={handleRefresh}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <button className="header-btn" onClick={loadData}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
               <path d="M3 3v5h5" />
               <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
@@ -107,72 +98,74 @@ export default function App() {
             </svg>
             Refresh
           </button>
-          <button className="btn-icon" onClick={toggleTheme}>
-            {theme === 'dark' ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
-            )}
+          <button className="header-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
           </button>
         </div>
       </header>
 
       <div className="layout">
-        {/* Sidebar */}
         <aside className="sidebar">
-          <div className="sidebar-section">
-            <h3 className="sidebar-title">Service Verticals</h3>
-            <nav className="sidebar-nav">
+          <div className="sidebar-title">SERVICE VERTICALS</div>
+          <nav className="sidebar-nav">
+            <button 
+              className={`nav-item ${selectedCluster === null ? 'active' : ''}`}
+              onClick={() => setSelectedCluster(null)}
+            >
+              <span className="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                </svg>
+              </span>
+              <div className="nav-content">
+                <span className="nav-label">All Clusters</span>
+                <span className="nav-meta">{totalPrompts} prompts</span>
+              </div>
+            </button>
+            {clusters.map((c) => (
               <button 
-                className={`nav-item ${selectedCluster === null ? 'active' : ''}`}
-                onClick={() => setSelectedCluster(null)}
+                key={c.id} 
+                className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
+                onClick={() => setSelectedCluster(c.id)}
               >
                 <span className="nav-icon">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="3" width="7" height="7" />
-                    <rect x="14" y="3" width="7" height="7" />
-                    <rect x="14" y="14" width="7" height="7" />
-                    <rect x="3" y="14" width="7" height="7" />
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                   </svg>
                 </span>
                 <div className="nav-content">
-                  <span className="nav-label">All Clusters</span>
-                  <span className="nav-meta">{totalPrompts} prompts</span>
+                  <span className="nav-label">{c.name}</span>
+                  <span className="nav-meta">
+                    {c.prompt_count} prompts • <span className="rate">{c.citation_rate}%</span>
+                  </span>
                 </div>
               </button>
-              {clusters.map((c) => (
-                <button 
-                  key={c.id} 
-                  className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
-                  onClick={() => setSelectedCluster(c.id)}
-                >
-                  <span className="nav-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                    </svg>
-                  </span>
-                  <div className="nav-content">
-                    <span className="nav-label">{c.name}</span>
-                    <span className="nav-meta">
-                      {c.prompt_count} prompts • <span className="rate">{c.citation_rate}%</span>
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </nav>
-          </div>
+            ))}
+          </nav>
         </aside>
 
-        {/* Main Content */}
         <main className="main">
           {content}
         </main>
       </div>
+
+      {showAddPrompt && (
+        <AddPromptModal 
+          clusters={clusters}
+          selectedCluster={selectedCluster}
+          onClose={() => setShowAddPrompt(false)}
+          onSubmit={(data) => {
+            console.log('Adding prompt:', data)
+            setShowAddPrompt(false)
+          }}
+        />
+      )}
     </div>
   )
 }
@@ -186,17 +179,26 @@ function LoadingState() {
   )
 }
 
-function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, topCluster, trendsUp, trendsDown, activeTab, setActiveTab, onSelect }) {
+function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, topCluster, trendsUp, trendsDown, activeTab, setActiveTab, onSelect, onAddPrompt }) {
   return (
-    <div className="overview">
-      {/* Page Header */}
+    <div>
       <div className="page-header">
-        <div>
-          <h2 className="page-title">Overview</h2>
-          <p className="page-subtitle">Monitor citation performance across all service verticals</p>
+        <div className="page-header-left">
+          <div className="page-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 3v18h18" />
+              <path d="M18 17V9" />
+              <path d="M13 17V5" />
+              <path d="M8 17v-3" />
+            </svg>
+          </div>
+          <div>
+            <h1 className="page-title">Overview</h1>
+            <p className="page-subtitle">Monitor citation performance across all service verticals</p>
+          </div>
         </div>
         <div className="page-actions">
-          <button className="btn btn-primary">
+          <button className="btn btn-primary" onClick={onAddPrompt}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
@@ -212,13 +214,12 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-header">
             <span className="stat-label">Total Prompts</span>
             <span className="stat-icon blue">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </span>
@@ -231,7 +232,7 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
           <div className="stat-header">
             <span className="stat-label">Avg Citation</span>
             <span className="stat-icon green">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
               </svg>
             </span>
@@ -244,7 +245,7 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
           <div className="stat-header">
             <span className="stat-label">Top Cluster</span>
             <span className="stat-icon purple">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
               </svg>
             </span>
@@ -257,7 +258,7 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
           <div className="stat-header">
             <span className="stat-label">Trends</span>
             <span className="stat-icon orange">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="12" y1="20" x2="12" y2="10" />
                 <line x1="18" y1="20" x2="18" y2="4" />
                 <line x1="6" y1="20" x2="6" y2="16" />
@@ -272,40 +273,28 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="tabs">
-        <button 
-          className={`tab ${activeTab === 'clusters' ? 'active' : ''}`}
-          onClick={() => setActiveTab('clusters')}
-        >
+        <button className={`tab ${activeTab === 'clusters' ? 'active' : ''}`} onClick={() => setActiveTab('clusters')}>
           Clusters
         </button>
-        <button 
-          className={`tab ${activeTab === 'prompts' ? 'active' : ''}`}
-          onClick={() => setActiveTab('prompts')}
-        >
+        <button className={`tab ${activeTab === 'prompts' ? 'active' : ''}`} onClick={() => setActiveTab('prompts')}>
           Prompts
         </button>
-        <button 
-          className={`tab ${activeTab === 'tips' ? 'active' : ''}`}
-          onClick={() => setActiveTab('tips')}
-        >
+        <button className={`tab ${activeTab === 'tips' ? 'active' : ''}`} onClick={() => setActiveTab('tips')}>
           Tips
         </button>
       </div>
 
-      {/* Cluster Cards */}
       {activeTab === 'clusters' && (
         <div className="cluster-grid">
           {clusters.map((c) => {
-            const detail = clusterDetails[c.id]
             const trends = Math.round((c.citation_rate || 0) * 1.5 + (c.prompt_count || 0) * 2)
             return (
               <div key={c.id} className="cluster-card" onClick={() => onSelect(c.id)}>
                 <div className="cluster-card-header">
                   <h3 className="cluster-card-title">{c.name}</h3>
                   <span className="cluster-card-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
                     </svg>
                   </span>
@@ -331,39 +320,6 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
         </div>
       )}
 
-      {activeTab === 'prompts' && (
-        <div className="prompts-list">
-          {clusters.map((c) => {
-            const detail = clusterDetails[c.id]
-            const prompts = detail?.prompts || []
-            return prompts.slice(0, 3).map((prompt, idx) => (
-              <div key={`${c.id}-${idx}`} className="prompt-item">
-                <span className="prompt-cluster">{c.name}</span>
-                <span className="prompt-text">{prompt}</span>
-              </div>
-            ))
-          })}
-        </div>
-      )}
-
-      {activeTab === 'tips' && (
-        <div className="tips-section">
-          <div className="tip-card">
-            <h4>💡 Improve Citation Rates</h4>
-            <p>Use specific, targeted prompts that include your brand name and key services.</p>
-          </div>
-          <div className="tip-card">
-            <h4>📊 Track Trends</h4>
-            <p>Monitor citation performance over time to identify patterns and opportunities.</p>
-          </div>
-          <div className="tip-card">
-            <h4>🎯 Target Keywords</h4>
-            <p>Include relevant industry keywords in your prompts for better visibility.</p>
-          </div>
-        </div>
-      )}
-
-      {/* Performance Comparison */}
       <div className="performance-section">
         <h3 className="section-title">Cluster Performance Comparison</h3>
         <div className="performance-list">
@@ -374,10 +330,7 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
                 <span className="performance-rank">#{idx + 1}</span>
                 <span className="performance-name">{c.name}</span>
                 <div className="performance-bar-container">
-                  <div 
-                    className="performance-bar" 
-                    style={{ width: `${c.citation_rate || 0}%` }}
-                  ></div>
+                  <div className="performance-bar" style={{ width: `${c.citation_rate || 0}%` }}></div>
                 </div>
                 <span className="performance-rate">{c.citation_rate}%</span>
                 <span className="performance-prompts">{c.prompt_count} prompts</span>
@@ -389,7 +342,7 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
   )
 }
 
-function ClusterDetailView({ detail, onBack }) {
+function ClusterDetailView({ detail, onBack, onAddPrompt }) {
   const cluster = detail?.cluster
   const latestRun = detail?.latest_run || null
   const allModels = detail?.all_models || []
@@ -409,7 +362,7 @@ function ClusterDetailView({ detail, onBack }) {
           cited_count: 0,
           total_count: 0
         } : null
-      }).filter(Boolean).slice(0, 3)
+      }).filter(Boolean)
     }
 
     const models = latestRun.models || []
@@ -440,67 +393,74 @@ function ClusterDetailView({ detail, onBack }) {
     return uniqueModels
       .filter(m => m && m.model && modelOrder.includes(m.model))
       .sort((a, b) => modelOrder.indexOf(a.model) - modelOrder.indexOf(b.model))
-      .slice(0, 3)
   }
 
   const displayModels = getModelsForDisplay()
   const timestamp = latestRun?.timestamp || null
 
   return (
-    <div className="cluster-detail">
-      {/* Header */}
-      <div className="detail-header">
-        <button className="btn btn-ghost" onClick={onBack}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back
-        </button>
-        <div className="detail-title-section">
-          <h2 className="detail-title">{cluster.name}</h2>
-          <p className="detail-subtitle">{cluster.description}</p>
+    <div>
+      <button className="back-btn" onClick={onBack}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        Back
+      </button>
+
+      <div className="page-header">
+        <div className="page-header-left">
+          <div className="page-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            </svg>
+          </div>
+          <div>
+            <h1 className="page-title">{cluster.name}</h1>
+            <p className="page-subtitle">{cluster.description}</p>
+          </div>
         </div>
-        <div className="detail-actions">
-          <button className="btn btn-primary">
+        <div className="page-actions">
+          <button className="btn btn-primary" onClick={onAddPrompt}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
             Add Prompt
           </button>
+          <button className="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            Run All Models
+          </button>
         </div>
       </div>
 
-      {/* Run Actions */}
-      <div className="run-section">
-        <button className="btn btn-secondary btn-lg">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-          Run All Models
-        </button>
-        <div className="model-buttons">
-          {displayModels.map((m, i) => {
-            const shortName = getShortModelName(m.model)
-            const hasData = m.results && m.results.length > 0
-            const durations = ['1m 12s', '1m 50s', '2m 27s']
-            return (
-              <button key={m.model} className="model-btn">
-                <span className="model-btn-name">run-{shortName}-{cluster.id}</span>
-                {hasData && <span className="model-btn-duration">{durations[i]}</span>}
-              </button>
-            )
-          })}
+      {/* Pipeline */}
+      <div className="pipeline">
+        {displayModels.map((m, i) => {
+          const shortName = getShortModelName(m.model)
+          const hasData = m.results && m.results.length > 0
+          const durations = ['2m 15s', '2m 27s', '1m 8s']
+          return (
+            <React.Fragment key={m.model}>
+              <div className={`pipeline-step ${i === 0 ? 'active' : ''}`}>
+                <span className="status-dot"></span>
+                <span className="step-name">run-{shortName}-{cluster.id}</span>
+                {hasData && <span className="step-time">⏱ {durations[i]}</span>}
+              </div>
+              {i < displayModels.length - 1 && <div className="pipeline-connector"></div>}
+            </React.Fragment>
+          )
+        })}
+        <div className="pipeline-connector"></div>
+        <div className="pipeline-step">
+          <span className="status-dot"></span>
+          <span className="step-name">commit-logs-{cluster.id}</span>
+          <span className="step-time">4s</span>
         </div>
       </div>
-
-      {/* Timestamp */}
-      {timestamp && (
-        <div className="run-timestamp">
-          <h3>{formatTimestamp(timestamp)}</h3>
-        </div>
-      )}
 
       {/* Model Results */}
       {!latestRun && (
@@ -510,13 +470,18 @@ function ClusterDetailView({ detail, onBack }) {
       )}
 
       {latestRun && displayModels.map((modelData) => (
-        <JobSection key={modelData.model} modelData={modelData} clusterId={cluster.id} />
+        <JobSection 
+          key={modelData.model} 
+          modelData={modelData} 
+          clusterId={cluster.id}
+          timestamp={timestamp}
+        />
       ))}
     </div>
   )
 }
 
-function JobSection({ modelData, clusterId }) {
+function JobSection({ modelData, clusterId, timestamp }) {
   const [isOpen, setIsOpen] = useState(true)
   const shortName = getShortModelName(modelData.model)
   const hasResults = modelData.results && modelData.results.length > 0
@@ -526,35 +491,48 @@ function JobSection({ modelData, clusterId }) {
   return (
     <div className="job-section">
       <button className="job-header" onClick={() => setIsOpen(!isOpen)}>
+        <div className="job-header-left">
+          <span className="job-title">run-{shortName}-{clusterId} summary</span>
+        </div>
         <span className={`job-chevron ${isOpen ? 'open' : ''}`}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="9 18 15 12 9 6" />
+            <polyline points="6 9 12 15 18 9" />
           </svg>
         </span>
-        <span className="job-title">run-{shortName}-{clusterId} summary</span>
-        <span className="job-stats">{citedCount}/{totalCount} cited</span>
       </button>
 
       {isOpen && (
         <div className="job-content">
           {hasResults ? (
-            <table className="results-table">
-              <thead>
-                <tr>
-                  <th>Prompt</th>
-                  <th>Target URL</th>
-                  <th>Status</th>
-                  <th>Other URLs</th>
-                </tr>
-              </thead>
-              <tbody>
-                {modelData.results.map((result, idx) => (
-                  <ResultRow key={idx} result={result} />
-                ))}
-              </tbody>
-            </table>
+            <>
+              <div className="run-info">
+                <div className="run-timestamp">{formatTimestamp(timestamp)}</div>
+                <div className="run-meta">
+                  <span><strong>Provider:</strong> {modelData.provider || 'openrouter'}</span>
+                  <span><strong>Model:</strong> {modelData.model}</span>
+                </div>
+                <div className="run-summary">
+                  <strong>Model summary:</strong> cited targets in {citedCount}/{totalCount} prompts
+                </div>
+              </div>
+              <table className="results-table">
+                <thead>
+                  <tr>
+                    <th>Prompt</th>
+                    <th>Target URL</th>
+                    <th>Status</th>
+                    <th>Other cited URLs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {modelData.results.map((result, idx) => (
+                    <ResultRow key={idx} result={result} />
+                  ))}
+                </tbody>
+              </table>
+            </>
           ) : (
-            <div className="empty-results">
+            <div className="empty-state">
               <p>No results available. Run this model to see citation data.</p>
             </div>
           )}
@@ -572,64 +550,141 @@ function ResultRow({ result }) {
   const ranks = result.ranks || []
 
   return (
-    <tr className={cited ? 'cited' : ''}>
+    <tr>
       <td className="col-prompt">{result.prompt}</td>
       <td className="col-target">
         {targetUrls.length > 0 ? (
           targetUrls.map((url, i) => (
-            <a key={i} href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+            <a key={i} href={url} target="_blank" rel="noopener noreferrer">
+              {getDomain(url)}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
           ))
         ) : (
-          <span className="muted">—</span>
+          <span style={{ color: 'var(--text-muted)' }}>—</span>
         )}
       </td>
       <td className="col-status">
         {cited && citedUrls.length ? (
-          <span className="status-cited">
-            <span className="status-badge success">Cited</span>
-            {ranks.length > 0 && <span className="rank-badge">Rank {ranks.join(', ')}</span>}
-          </span>
+          <div className="status-cited">
+            <div>cited URL(s):</div>
+            {citedUrls.map((url, i) => (
+              <a key={i} href={url} target="_blank" rel="noopener noreferrer">{getDomain(url)}</a>
+            ))}
+            {ranks.length > 0 && <div className="status-rank">rank(s): {ranks.join(', ')}</div>}
+          </div>
         ) : (
-          <span className="status-badge muted">Not cited</span>
+          <span className="status-not-cited">no target URLs cited</span>
         )}
       </td>
       <td className="col-other">
         {otherUrls.length > 0 ? (
           otherUrls.slice(0, 3).map((url, i) => (
-            <a key={i} href={url} target="_blank" rel="noopener noreferrer">{truncateUrl(url)}</a>
+            <a key={i} href={url} target="_blank" rel="noopener noreferrer">{getDomain(url)}</a>
           ))
         ) : (
-          <span className="muted">—</span>
+          <span style={{ color: 'var(--text-muted)' }}>—</span>
         )}
       </td>
     </tr>
   )
 }
 
+function AddPromptModal({ clusters, selectedCluster, onClose, onSubmit }) {
+  const [prompt, setPrompt] = useState('')
+  const [cluster, setCluster] = useState(selectedCluster || (clusters[0]?.id || ''))
+  const [targetUrl, setTargetUrl] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!prompt.trim()) return
+    setIsSubmitting(true)
+    await new Promise(resolve => setTimeout(resolve, 500))
+    onSubmit({ prompt: prompt.trim(), cluster, targetUrl: targetUrl.trim() || null })
+    setIsSubmitting(false)
+  }
+
+  return (
+    <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-header">
+          <h2 className="modal-title">Add New Prompt</h2>
+          <button className="modal-close" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Prompt Text</label>
+              <textarea
+                className="form-textarea"
+                placeholder="Enter your prompt text..."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                rows={4}
+                autoFocus
+              />
+              <p className="form-hint">Enter the search query or prompt you want to track.</p>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Cluster</label>
+              <select className="form-select" value={cluster} onChange={(e) => setCluster(e.target.value)}>
+                {clusters.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Target URL <span className="form-optional">(optional)</span></label>
+              <input
+                type="url"
+                className="form-input"
+                placeholder="https://example.com/page"
+                value={targetUrl}
+                onChange={(e) => setTargetUrl(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn btn-primary" disabled={!prompt.trim() || isSubmitting}>
+              {isSubmitting ? <><span className="btn-spinner"></span> Adding...</> : 'Add Prompt'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
 function getShortModelName(model) {
   if (!model) return 'unknown'
-  if (model.includes('gpt')) return 'gpt-oss'
-  if (model.includes('claude')) return 'claude'
   if (model.includes('perplexity') || model.includes('sonar')) return 'perplexity'
+  if (model.includes('claude')) return 'claude'
+  if (model.includes('gpt')) return 'gpt'
   return model.split('/').pop()?.split(':')[0] || model
 }
 
 function formatTimestamp(ts) {
   if (!ts) return ''
-  try {
-    const match = ts.match(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/)
-    if (match) {
-      const [, year, month, day, hour, min] = match
-      return `${year}-${month}-${day} ${hour}:${min} UTC`
-    }
-    return ts
-  } catch {
-    return ts
-  }
+  return ts
 }
 
-function truncateUrl(url) {
+function getDomain(url) {
   if (!url) return ''
-  const clean = url.replace(/^https?:\/\//, '')
-  return clean.length > 40 ? clean.slice(0, 40) + '...' : clean
+  try {
+    const u = new URL(url)
+    return u.hostname.replace('www.', '')
+  } catch {
+    return url.replace(/^https?:\/\//, '').split('/')[0]
+  }
 }
