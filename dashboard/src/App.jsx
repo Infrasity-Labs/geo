@@ -459,12 +459,6 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
             </React.Fragment>
           )
         })}
-        <div className="pipeline-connector"></div>
-        <div className="pipeline-step">
-          <span className="status-dot"></span>
-          <span className="step-name">commit-logs-{cluster.id}</span>
-          <span className="step-time">4s</span>
-        </div>
       </div>
 
       {/* Model Results */}
