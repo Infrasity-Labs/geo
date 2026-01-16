@@ -243,6 +243,21 @@ a:hover {
   color: var(--green);
 }
 
+.nav-models {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  padding-left: 8px;
+}
+
+.nav-item.active .nav-models .model-logo {
+  opacity: 1;
+}
+
+.nav-models .model-logo {
+  opacity: 0.7;
+}
+
 /* Main Content */
 .main {
   flex: 1;
@@ -397,6 +412,23 @@ a:hover {
   background: var(--green);
 }
 
+.model-logo {
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.model-logo.perplexity {
+  filter: drop-shadow(0 1px 2px rgba(32, 178, 170, 0.3));
+}
+
+.model-logo.claude {
+  filter: drop-shadow(0 1px 2px rgba(212, 165, 116, 0.3));
+}
+
+.model-logo.gpt {
+  filter: drop-shadow(0 1px 2px rgba(16, 163, 127, 0.3));
+}
+
 .pipeline-step .step-name {
   font-weight: 500;
   color: var(--text-primary);
@@ -468,36 +500,12 @@ a:hover {
 
 /* Run Info */
 .run-info {
-  margin-bottom: 20px;
-}
-
-.run-timestamp {
-  font-size: 18px;
-  font-weight: 600;
-  font-family: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-}
-
-.run-meta {
-  display: flex;
-  gap: 24px;
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-
-.run-meta strong {
-  color: var(--text-primary);
-  font-weight: 500;
+  margin-bottom: 24px;
 }
 
 .run-summary {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.run-summary strong {
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
@@ -509,10 +517,10 @@ a:hover {
 
 .results-table th {
   text-align: left;
-  padding: 12px 16px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-muted);
+  padding: 16px 16px 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
   border-bottom: 1px solid var(--border);
   background: transparent;
 }

@@ -145,6 +145,11 @@ export default function App() {
                     {c.prompt_count} prompts • <span className="rate">{c.citation_rate}%</span>
                   </span>
                 </div>
+                <div className="nav-models">
+                  <ModelLogo model="gpt" size={14} />
+                  <ModelLogo model="claude" size={14} />
+                  <ModelLogo model="perplexity" size={14} />
+                </div>
               </button>
             ))}
           </nav>
@@ -446,7 +451,7 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
           return (
             <React.Fragment key={m.model}>
               <div className={`pipeline-step ${i === 0 ? 'active' : ''}`}>
-                <span className="status-dot"></span>
+                <ModelLogo model={m.model} />
                 <span className="step-name">run-{shortName}-{cluster.id}</span>
                 {hasData && <span className="step-time">⏱ {durations[i]}</span>}
               </div>
@@ -483,7 +488,7 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
 
 function JobSection({ modelData, clusterId, timestamp }) {
   const [isOpen, setIsOpen] = useState(true)
-  const shortName = getShortModelName(modelData.model)
+  const displayName = getModelDisplayName(modelData.model)
   const hasResults = modelData.results && modelData.results.length > 0
   const citedCount = modelData.cited_count || 0
   const totalCount = modelData.total_count || 0
@@ -492,7 +497,8 @@ function JobSection({ modelData, clusterId, timestamp }) {
     <div className="job-section">
       <button className="job-header" onClick={() => setIsOpen(!isOpen)}>
         <div className="job-header-left">
-          <span className="job-title">run-{shortName}-{clusterId} summary</span>
+          <ModelLogo model={modelData.model} size={20} />
+          <span className="job-title">{displayName} Summary</span>
         </div>
         <span className={`job-chevron ${isOpen ? 'open' : ''}`}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -506,13 +512,8 @@ function JobSection({ modelData, clusterId, timestamp }) {
           {hasResults ? (
             <>
               <div className="run-info">
-                <div className="run-timestamp">{formatTimestamp(timestamp)}</div>
-                <div className="run-meta">
-                  <span><strong>Provider:</strong> {modelData.provider || 'openrouter'}</span>
-                  <span><strong>Model:</strong> {modelData.model}</span>
-                </div>
                 <div className="run-summary">
-                  <strong>Model summary:</strong> cited targets in {citedCount}/{totalCount} prompts
+                  Cited targets in {citedCount}/{totalCount} prompts
                 </div>
               </div>
               <table className="results-table">
@@ -666,11 +667,58 @@ function AddPromptModal({ clusters, selectedCluster, onClose, onSubmit }) {
   )
 }
 
+// Model Logo Component
+function ModelLogo({ model, size = 18 }) {
+  if (!model) return <span className="status-dot"></span>
+  
+  // Perplexity logo
+  if (model.includes('perplexity') || model.includes('sonar')) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className="model-logo perplexity">
+        <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" fill="#20B2AA" />
+        <path d="M12 6l-6 3v6l6 3 6-3V9l-6-3z" fill="#1a9a94" />
+        <circle cx="12" cy="12" r="3" fill="white" />
+      </svg>
+    )
+  }
+  
+  // Claude/Anthropic logo
+  if (model.includes('claude')) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className="model-logo claude">
+        <rect width="24" height="24" rx="4" fill="#D4A574" />
+        <path d="M7 8h10M7 12h10M7 16h6" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    )
+  }
+  
+  // OpenAI/GPT logo
+  if (model.includes('gpt') || model.includes('openai')) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className="model-logo gpt">
+        <circle cx="12" cy="12" r="10" fill="#10a37f" />
+        <path d="M12 6v12M6 12h12" stroke="white" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="12" cy="12" r="3" fill="white" />
+      </svg>
+    )
+  }
+  
+  return <span className="status-dot"></span>
+}
+
 function getShortModelName(model) {
   if (!model) return 'unknown'
   if (model.includes('perplexity') || model.includes('sonar')) return 'perplexity'
   if (model.includes('claude')) return 'claude'
   if (model.includes('gpt')) return 'gpt'
+  return model.split('/').pop()?.split(':')[0] || model
+}
+
+function getModelDisplayName(model) {
+  if (!model) return 'Unknown'
+  if (model.includes('perplexity') || model.includes('sonar')) return 'Perplexity'
+  if (model.includes('claude')) return 'Claude'
+  if (model.includes('gpt') || model.includes('openai')) return 'GPT'
   return model.split('/').pop()?.split(':')[0] || model
 }
 
