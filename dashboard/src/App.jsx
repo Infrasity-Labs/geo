@@ -9,6 +9,7 @@ export default function App() {
   const [selectedCluster, setSelectedCluster] = useState(null)
   const [activeTab, setActiveTab] = useState('clusters')
   const [showAddPrompt, setShowAddPrompt] = useState(false)
+  const [showAddCluster, setShowAddCluster] = useState(false)
 
   const loadData = useCallback(async (refresh = false) => {
     setLoading(true)
@@ -152,6 +153,20 @@ export default function App() {
                 </div>
               </button>
             ))}
+            <button 
+              className="nav-item nav-item-add"
+              onClick={() => setShowAddCluster(true)}
+            >
+              <span className="nav-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </span>
+              <div className="nav-content">
+                <span className="nav-label">Add Cluster</span>
+              </div>
+            </button>
           </nav>
         </aside>
 
@@ -168,6 +183,31 @@ export default function App() {
           onSubmit={(data) => {
             console.log('Adding prompt:', data)
             setShowAddPrompt(false)
+          }}
+        />
+      )}
+
+      {showAddCluster && (
+        <AddClusterModal 
+          onClose={() => setShowAddCluster(false)}
+          onSubmit={async (data) => {
+            try {
+              const res = await fetch('http://localhost:8000/clusters', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              })
+              if (!res.ok) {
+                const err = await res.json()
+                alert(err.detail || 'Failed to create cluster')
+                return
+              }
+              setShowAddCluster(false)
+              loadData(true) // Refresh data
+            } catch (err) {
+              console.error('Failed to create cluster:', err)
+              alert('Failed to create cluster. Make sure the API server is running.')
+            }
           }}
         />
       )}
@@ -941,6 +981,93 @@ function AddPromptModal({ clusters, selectedCluster, onClose, onSubmit }) {
             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={!prompt.trim() || isSubmitting}>
               {isSubmitting ? 'Adding...' : 'Add Prompt'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+function AddClusterModal({ onClose, onSubmit }) {
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [clusterId, setClusterId] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!name.trim() || !clusterId.trim()) return
+    setIsSubmitting(true)
+    await new Promise(resolve => setTimeout(resolve, 500))
+    onSubmit({ 
+      name: name.trim(), 
+      id: clusterId.trim().toLowerCase().replace(/\s+/g, '-'),
+      description: description.trim() || null 
+    })
+    setIsSubmitting(false)
+  }
+
+  // Auto-generate ID from name
+  const handleNameChange = (e) => {
+    const newName = e.target.value
+    setName(newName)
+    if (!clusterId || clusterId === name.toLowerCase().replace(/\s+/g, '-')) {
+      setClusterId(newName.toLowerCase().replace(/\s+/g, '-'))
+    }
+  }
+
+  return (
+    <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-header">
+          <h2 className="modal-title">Add New Cluster</h2>
+          <button className="modal-close" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Cluster Name</label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g., Developer Marketing"
+                value={name}
+                onChange={handleNameChange}
+                autoFocus
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Cluster ID</label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="e.g., devmarketing"
+                value={clusterId}
+                onChange={(e) => setClusterId(e.target.value.toLowerCase().replace(/\s+/g, '-'))}
+              />
+              <div className="form-hint">Used in file names and URLs. Auto-generated from name.</div>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Description <span className="form-optional">(optional)</span></label>
+              <textarea
+                className="form-textarea"
+                placeholder="Brief description of this cluster..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={3}
+              />
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn btn-primary" disabled={!name.trim() || !clusterId.trim() || isSubmitting}>
+              {isSubmitting ? 'Adding...' : 'Add Cluster'}
             </button>
           </div>
         </form>
