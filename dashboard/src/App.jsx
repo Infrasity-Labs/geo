@@ -458,7 +458,14 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, act
             {topDisplacers.map((d, i) => (
               <div key={d.domain} className="displacer-item">
                 <span className="displacer-rank">#{i + 1}</span>
-                <span className="displacer-domain">{d.domain}</span>
+                <a 
+                  href={`https://${d.domain}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="displacer-domain"
+                >
+                  {d.domain}
+                </a>
                 <span className="displacer-count">{d.count}×</span>
               </div>
             ))}
@@ -696,7 +703,14 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
               {topDisplacers.map((d, i) => (
                 <div key={d.domain} className="displacer-item">
                   <span className="displacer-rank">#{i + 1}</span>
-                  <span className="displacer-domain">{d.domain}</span>
+                  <a 
+                    href={`https://${d.domain}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="displacer-domain"
+                  >
+                    {d.domain}
+                  </a>
                   <span className="displacer-count">{d.count}×</span>
                 </div>
               ))}
