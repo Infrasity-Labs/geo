@@ -153,7 +153,12 @@ a:hover {
   left: 0;
   bottom: 0;
   overflow-y: auto;
+  overflow-x: visible;
   padding: 16px 12px;
+}
+
+.sidebar-nav {
+  overflow: visible;
 }
 
 .sidebar-title {
@@ -322,18 +327,8 @@ a:hover {
   color: var(--red);
 }
 
-/* Custom Tooltip for nav items */
-.nav-item-wrapper[data-cluster-name] {
-  position: relative;
-}
-
-.nav-item-wrapper[data-cluster-name]::after {
-  content: attr(data-cluster-name);
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 8px;
+/* Cluster Tooltip (portal-based) */
+.cluster-tooltip {
   background: #1e293b;
   color: var(--text-primary);
   padding: 8px 14px;
@@ -343,33 +338,19 @@ a:hover {
   white-space: nowrap;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   border: 1px solid var(--border-light);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.15s ease, visibility 0.15s ease;
-  z-index: 9999;
   pointer-events: none;
+  animation: tooltipFadeIn 0.15s ease;
 }
 
-/* Arrow pointing left */
-.nav-item-wrapper[data-cluster-name]::before {
-  content: '';
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 2px;
-  border: 6px solid transparent;
-  border-right-color: var(--border-light);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.15s ease, visibility 0.15s ease;
-  z-index: 10000;
-}
-
-.nav-item-wrapper[data-cluster-name]:hover::after,
-.nav-item-wrapper[data-cluster-name]:hover::before {
-  opacity: 1;
-  visibility: visible;
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
 }
 
 /* Main Content */

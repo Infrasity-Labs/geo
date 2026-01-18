@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
+import ReactDOM from 'react-dom'
 
 export default function App() {
   const [loading, setLoading] = useState(true)
@@ -131,42 +132,13 @@ export default function App() {
               </div>
             </button>
             {clusters.map((c) => (
-              <div key={c.id} className={`nav-item-wrapper ${selectedCluster === c.id ? 'active' : ''}`} data-cluster-name={c.name}>
-                <button 
-                  className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
-                  onClick={() => setSelectedCluster(c.id)}
-                >
-                  <span className="nav-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                    </svg>
-                  </span>
-                  <div className="nav-content">
-                    <span className="nav-label" title={c.name}>{c.name}</span>
-                    <span className="nav-meta">
-                      {c.prompt_count} prompts • <span className="rate">{c.citation_rate}%</span>
-                    </span>
-                  </div>
-                  <div className="nav-models">
-                    <ModelLogo model="gpt" size={14} />
-                    <ModelLogo model="claude" size={14} />
-                    <ModelLogo model="perplexity" size={14} />
-                  </div>
-                </button>
-                <button 
-                  className="nav-item-delete"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setDeleteConfirm({ id: c.id, name: c.name })
-                  }}
-                  title="Delete cluster"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  </svg>
-                </button>
-              </div>
+              <ClusterNavItem
+                key={c.id}
+                cluster={c}
+                isActive={selectedCluster === c.id}
+                onSelect={() => setSelectedCluster(c.id)}
+                onDelete={() => setDeleteConfirm({ id: c.id, name: c.name })}
+              />
             ))}
             <button 
               className="nav-item nav-item-add"
@@ -1248,4 +1220,85 @@ function getDomain(url) {
   } catch {
     return url.replace(/^https?:\/\//, '').split('/')[0]
   }
+}
+
+// Cluster Nav Item with Tooltip
+function ClusterNavItem({ cluster, isActive, onSelect, onDelete }) {
+  const [showTooltip, setShowTooltip] = useState(false)
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 })
+  const wrapperRef = useRef(null)
+
+  const handleMouseEnter = () => {
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect()
+      setTooltipPos({
+        top: rect.top + rect.height / 2,
+        left: rect.right + 12
+      })
+      setShowTooltip(true)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false)
+  }
+
+  return (
+    <div 
+      ref={wrapperRef}
+      className={`nav-item-wrapper ${isActive ? 'active' : ''}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <button 
+        className={`nav-item ${isActive ? 'active' : ''}`}
+        onClick={onSelect}
+      >
+        <span className="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          </svg>
+        </span>
+        <div className="nav-content">
+          <span className="nav-label">{cluster.name}</span>
+          <span className="nav-meta">
+            {cluster.prompt_count} prompts • <span className="rate">{cluster.citation_rate}%</span>
+          </span>
+        </div>
+        <div className="nav-models">
+          <ModelLogo model="gpt" size={14} />
+          <ModelLogo model="claude" size={14} />
+          <ModelLogo model="perplexity" size={14} />
+        </div>
+      </button>
+      <button 
+        className="nav-item-delete"
+        onClick={(e) => {
+          e.stopPropagation()
+          onDelete()
+        }}
+        title="Delete cluster"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="3 6 5 6 21 6" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+        </svg>
+      </button>
+      {showTooltip && ReactDOM.createPortal(
+        <div 
+          className="cluster-tooltip"
+          style={{
+            position: 'fixed',
+            top: tooltipPos.top,
+            left: tooltipPos.left,
+            transform: 'translateY(-50%)',
+            zIndex: 10000
+          }}
+        >
+          {cluster.name}
+        </div>,
+        document.body
+      )}
+    </div>
+  )
 }
