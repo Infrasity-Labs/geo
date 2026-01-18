@@ -23,7 +23,7 @@ app = FastAPI(title="Citation Evaluation API")
 # Add CORS for dashboard
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -199,3 +199,84 @@ def delete_cluster(cluster_id: str) -> dict:
     save_clusters_config(config)
     
     return {"message": f"Cluster '{cluster_id}' deleted successfully"}
+
+
+# Prompt Management
+class PromptCreate(BaseModel):
+    prompt: str
+    cluster_id: str
+
+
+@app.post("/prompts")
+def add_prompt(data: PromptCreate) -> dict:
+    """Add a prompt to a cluster's prompts file."""
+    config = load_clusters_config()
+    clusters = config.get("clusters", [])
+    
+    # Find the cluster
+    cluster = next((c for c in clusters if c["id"] == data.cluster_id), None)
+    if not cluster:
+        raise HTTPException(status_code=404, detail=f"Cluster '{data.cluster_id}' not found")
+    
+    # Get prompts file path
+    prompts_file = cluster.get("prompts_file", f"prompts_{data.cluster_id}.txt")
+    prompts_path = BASE_DIR / "config" / prompts_file
+    
+    # Append prompt to file
+    prompt_text = data.prompt.strip()
+    if not prompt_text:
+        raise HTTPException(status_code=400, detail="Prompt cannot be empty")
+    
+    # Read existing prompts to avoid duplicates
+    existing_prompts = []
+    if prompts_path.exists():
+        existing_prompts = [
+            line.strip() for line in prompts_path.read_text().splitlines()
+            if line.strip() and not line.strip().startswith('#')
+        ]
+    
+    if prompt_text in existing_prompts:
+        raise HTTPException(status_code=400, detail="Prompt already exists in this cluster")
+    
+    # Append new prompt
+    with open(prompts_path, "a") as f:
+        f.write(f"\n{prompt_text}")
+    
+    # Regenerate dashboard data
+    try:
+        import subprocess
+        subprocess.run(
+            ["node", "scripts/generate-data.js"],
+            cwd=str(BASE_DIR / "dashboard"),
+            capture_output=True,
+            timeout=30
+        )
+    except Exception as e:
+        print(f"Warning: Could not regenerate dashboard data: {e}")
+    
+    return {"message": "Prompt added successfully", "prompt": prompt_text, "cluster_id": data.cluster_id}
+
+
+@app.get("/prompts/{cluster_id}")
+def get_prompts(cluster_id: str) -> dict:
+    """Get all prompts for a cluster."""
+    config = load_clusters_config()
+    clusters = config.get("clusters", [])
+    
+    # Find the cluster
+    cluster = next((c for c in clusters if c["id"] == cluster_id), None)
+    if not cluster:
+        raise HTTPException(status_code=404, detail=f"Cluster '{cluster_id}' not found")
+    
+    # Get prompts file path
+    prompts_file = cluster.get("prompts_file", f"prompts_{cluster_id}.txt")
+    prompts_path = BASE_DIR / "config" / prompts_file
+    
+    prompts = []
+    if prompts_path.exists():
+        prompts = [
+            line.strip() for line in prompts_path.read_text().splitlines()
+            if line.strip() and not line.strip().startswith('#')
+        ]
+    
+    return {"cluster_id": cluster_id, "prompts": prompts}

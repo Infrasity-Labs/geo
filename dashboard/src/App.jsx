@@ -180,9 +180,24 @@ export default function App() {
           clusters={clusters}
           selectedCluster={selectedCluster}
           onClose={() => setShowAddPrompt(false)}
-          onSubmit={(data) => {
-            console.log('Adding prompt:', data)
-            setShowAddPrompt(false)
+          onSubmit={async (data) => {
+            try {
+              const res = await fetch('http://localhost:8001/prompts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: data.prompt, cluster_id: data.cluster })
+              })
+              if (!res.ok) {
+                const err = await res.json()
+                alert(err.detail || 'Failed to add prompt')
+                return
+              }
+              setShowAddPrompt(false)
+              loadData(true) // Refresh data
+            } catch (err) {
+              console.error('Failed to add prompt:', err)
+              alert('Failed to add prompt. Make sure the API server is running.')
+            }
           }}
         />
       )}
@@ -192,7 +207,7 @@ export default function App() {
           onClose={() => setShowAddCluster(false)}
           onSubmit={async (data) => {
             try {
-              const res = await fetch('http://localhost:8000/clusters', {
+              const res = await fetch('http://localhost:8001/clusters', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)

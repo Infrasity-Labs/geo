@@ -1,15 +1,25 @@
 {
-  "generated_at": "2026-01-18T07:58:08.802Z",
+  "generated_at": "2026-01-18T08:15:02.786Z",
   "clusters": [
     {
       "id": "devmarketing",
       "name": "Developer Marketing",
       "description": "Marketing agencies specializing in developer audiences",
-      "prompt_count": 8,
+      "prompt_count": 9,
       "citation_rate": 57.3,
       "prompts_file": "prompts_devmarketing.txt",
       "targets_file": "targets_fanout.json",
       "workflow": "citation-check-devmarketing.yml"
+    },
+    {
+      "id": "test-cluster",
+      "name": "Test Cluster",
+      "description": "A test cluster",
+      "prompt_count": 1,
+      "citation_rate": 0,
+      "prompts_file": "prompts_test-cluster.txt",
+      "targets_file": "targets_fanout.json",
+      "workflow": "citation-check-test-cluster.yml"
     }
   ],
   "cluster_details": {
@@ -28,7 +38,8 @@
         "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
         "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
         "developer marketing agency for early stage software ventures",
-        "best developer marketing agencies for startups software early stage marketing agencies tech startups"
+        "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+        "What are the best developer marketing agencies?"
       ],
       "targets": [
         "infrasity.com"
@@ -1711,6 +1722,256 @@
             ],
             "cited_count": 6,
             "total_count": 8
+          }
+        ]
+      },
+      "all_models": [
+        {
+          "id": "perplexity",
+          "name": "perplexity-sonar-online",
+          "slug": "perplexity/sonar:online",
+          "provider": "openrouter"
+        },
+        {
+          "id": "claude",
+          "name": "claude-3.5-haiku-online",
+          "slug": "anthropic/claude-3.5-haiku:online",
+          "provider": "openrouter"
+        },
+        {
+          "id": "gpt",
+          "name": "gpt-oss-20b-free-online",
+          "slug": "openai/gpt-oss-20b:free:online",
+          "provider": "openrouter"
+        }
+      ]
+    },
+    "test-cluster": {
+      "cluster": {
+        "id": "test-cluster",
+        "name": "Test Cluster",
+        "description": "A test cluster",
+        "workflow": "citation-check-test-cluster.yml"
+      },
+      "prompts": [
+        "# Add your prompts here, one per line"
+      ],
+      "targets": [
+        "infrasity.com"
+      ],
+      "runs": [
+        {
+          "timestamp": "20260117T193643Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "claude-3.5-haiku-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "perplexity-sonar-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260113T160308Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "claude-3.5-haiku-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "perplexity-sonar-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260113T155110Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260110T234048Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260109T081500Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260109T075724Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260109T064433Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260108T135421Z",
+          "models": [
+            {
+              "model": "perplexity-sonar-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260108T133819Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260108T114332Z",
+          "models": [
+            {
+              "model": "perplexity-sonar-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        },
+        {
+          "timestamp": "20260107T081100Z",
+          "models": [
+            {
+              "model": "claude-3.5-haiku-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            },
+            {
+              "model": "perplexity-sonar-online",
+              "provider": "openrouter",
+              "results": [],
+              "cited_count": 0,
+              "total_count": 0
+            }
+          ]
+        }
+      ],
+      "latest_run": {
+        "timestamp": "20260117T193643Z",
+        "models": [
+          {
+            "model": "gpt-oss-20b-free-online",
+            "provider": "openrouter",
+            "results": [],
+            "cited_count": 0,
+            "total_count": 0
+          },
+          {
+            "model": "claude-3.5-haiku-online",
+            "provider": "openrouter",
+            "results": [],
+            "cited_count": 0,
+            "total_count": 0
+          },
+          {
+            "model": "perplexity-sonar-online",
+            "provider": "openrouter",
+            "results": [],
+            "cited_count": 0,
+            "total_count": 0
           }
         ]
       },

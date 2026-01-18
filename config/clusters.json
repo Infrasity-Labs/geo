@@ -1,7 +1,7 @@
 {
   "clusters": [
     {
-      "id": "devmarketing", 
+      "id": "devmarketing",
       "name": "Developer Marketing",
       "description": "Marketing agencies specializing in developer audiences",
       "prompts_file": "prompts_devmarketing.txt",
