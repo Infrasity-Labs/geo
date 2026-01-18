@@ -1075,7 +1075,249 @@ a:hover {
   animation: spin 0.6s linear infinite;
 }
 
+/* Section Header */
+.section-header {
+  margin-bottom: 16px;
+}
+
+/* Insights Row */
+.insights-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Insight Panel */
+.insight-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.insights-row .insight-panel {
+  margin-bottom: 0;
+}
+
+.insight-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.insight-title svg {
+  color: var(--accent);
+}
+
+.insight-subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+/* Model Breakdown */
+.model-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.model-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.model-stat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.model-stat-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.model-stat-rate {
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.model-stat-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.model-stat-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.model-stat-detail {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Recent Drivers */
+.drivers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.driver-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.driver-icon {
+  font-size: 14px;
+  width: 20px;
+  text-align: center;
+}
+
+.driver-gain .driver-icon {
+  color: var(--green);
+}
+
+.driver-loss .driver-icon {
+  color: var(--red);
+}
+
+.driver-rank_up .driver-icon {
+  color: var(--green);
+}
+
+.driver-rank_down .driver-icon {
+  color: var(--orange);
+}
+
+.driver-text {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.driver-rank {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.empty-drivers {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px;
+}
+
+/* Top Displacers */
+.displacers-panel {
+  border-left: 3px solid var(--orange);
+}
+
+.displacers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.displacer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-dark);
+  border-radius: 8px;
+}
+
+.displacer-rank {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--orange);
+  min-width: 24px;
+}
+
+.displacer-domain {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.displacer-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Volatility Indicator */
+.volatility-badge {
+  font-size: 14px;
+  cursor: help;
+}
+
+.volatility-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.volatility-stable {
+  color: var(--green);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.volatility-medium {
+  color: var(--yellow, #eab308);
+  border-color: rgba(234, 179, 8, 0.3);
+}
+
+.volatility-fragile {
+  color: var(--red);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Yellow color variable */
+:root {
+  --yellow: #eab308;
+}
+
 /* Responsive */
+@media (max-width: 1200px) {
+  .insights-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1024px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);

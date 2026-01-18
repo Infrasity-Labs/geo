@@ -10,10 +10,22 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('clusters')
   const [showAddPrompt, setShowAddPrompt] = useState(false)
 
-  const loadData = useCallback(async () => {
+  const loadData = useCallback(async (refresh = false) => {
     setLoading(true)
     try {
-      const res = await fetch('/data.json', { cache: 'no-store' })
+      if (refresh && import.meta.env.DEV) {
+        try {
+          const refreshRes = await fetch('/api/refresh', { method: 'GET', cache: 'no-store' })
+          if (refreshRes.ok) {
+            console.log('Data refreshed from logs (dev mode)')
+          }
+        } catch (e) {
+          console.log('Refresh endpoint not available, using static data')
+        }
+      }
+      
+      const url = refresh ? `/data.json?t=${Date.now()}` : '/data.json'
+      const res = await fetch(url, { cache: 'no-store' })
       if (!res.ok) throw new Error(`Failed to load data: ${res.status}`)
       const data = await res.json()
       setClusters(data.clusters || [])
@@ -33,9 +45,6 @@ export default function App() {
   const avgCitation = clusters.length > 0 
     ? Math.round(clusters.reduce((sum, c) => sum + (c.citation_rate || 0), 0) / clusters.length) 
     : 0
-  const topCluster = clusters.reduce((top, c) => (!top || c.citation_rate > top.citation_rate) ? c : top, null)
-  const trendsUp = clusters.reduce((sum, c) => sum + Math.round((c.citation_rate || 0) * 0.6), 0)
-  const trendsDown = clusters.reduce((sum, c) => sum + Math.round((100 - (c.citation_rate || 0)) * 0.3), 0)
 
   let content
   if (loading) {
@@ -58,9 +67,6 @@ export default function App() {
         clusterDetails={clusterDetails}
         totalPrompts={totalPrompts}
         avgCitation={avgCitation}
-        topCluster={topCluster}
-        trendsUp={trendsUp}
-        trendsDown={trendsDown}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onSelect={setSelectedCluster}
@@ -89,7 +95,7 @@ export default function App() {
           </div>
         </div>
         <div className="header-right">
-          <button className="header-btn" onClick={loadData}>
+          <button className="header-btn" onClick={() => loadData(true)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
               <path d="M3 3v5h5" />
@@ -97,12 +103,6 @@ export default function App() {
               <path d="M16 21h5v-5" />
             </svg>
             Refresh
-          </button>
-          <button className="header-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-            </svg>
           </button>
         </div>
       </header>
@@ -184,7 +184,174 @@ function LoadingState() {
   )
 }
 
-function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, topCluster, trendsUp, trendsDown, activeTab, setActiveTab, onSelect, onAddPrompt }) {
+// Helper functions for analytics
+function computeModelBreakdown(latestRun) {
+  if (!latestRun || !latestRun.models) return []
+  return latestRun.models.map(m => ({
+    model: m.model,
+    displayName: getModelDisplayName(m.model),
+    citedCount: m.cited_count || 0,
+    totalCount: m.total_count || 0,
+    rate: m.total_count > 0 ? Math.round((m.cited_count / m.total_count) * 100) : 0
+  }))
+}
+
+function computeRecentDrivers(runs) {
+  if (!runs || runs.length < 2) return []
+  
+  const latest = runs[0]
+  const previous = runs[1]
+  const drivers = []
+  
+  if (!latest?.models || !previous?.models) return drivers
+  
+  // Compare each model
+  for (const latestModel of latest.models) {
+    const prevModel = previous.models.find(m => m.model === latestModel.model)
+    if (!prevModel) continue
+    
+    const latestCited = latestModel.cited_count || 0
+    const prevCited = prevModel.cited_count || 0
+    const diff = latestCited - prevCited
+    
+    if (diff !== 0) {
+      // Find which prompts changed
+      for (const latestResult of (latestModel.results || [])) {
+        const prevResult = (prevModel.results || []).find(r => 
+          r.prompt?.toLowerCase() === latestResult.prompt?.toLowerCase()
+        )
+        
+        if (latestResult.cited && (!prevResult || !prevResult.cited)) {
+          drivers.push({
+            type: 'gain',
+            model: getModelDisplayName(latestModel.model),
+            prompt: truncatePrompt(latestResult.prompt),
+            rank: latestResult.ranks?.[0] || null
+          })
+        } else if (!latestResult.cited && prevResult?.cited) {
+          drivers.push({
+            type: 'loss',
+            model: getModelDisplayName(latestModel.model),
+            prompt: truncatePrompt(latestResult.prompt),
+            rank: null
+          })
+        } else if (latestResult.cited && prevResult?.cited) {
+          const latestRank = latestResult.ranks?.[0]
+          const prevRank = prevResult.ranks?.[0]
+          if (latestRank && prevRank && latestRank !== prevRank) {
+            drivers.push({
+              type: latestRank < prevRank ? 'rank_up' : 'rank_down',
+              model: getModelDisplayName(latestModel.model),
+              prompt: truncatePrompt(latestResult.prompt),
+              rankChange: `${prevRank} → ${latestRank}`
+            })
+          }
+        }
+      }
+    }
+  }
+  
+  return drivers.slice(0, 5)
+}
+
+function computeVolatility(runs) {
+  if (!runs || runs.length < 3) return { level: 'unknown', label: 'Insufficient data' }
+  
+  let changes = 0
+  const recentRuns = runs.slice(0, 5)
+  
+  for (let i = 0; i < recentRuns.length - 1; i++) {
+    const current = recentRuns[i]
+    const prev = recentRuns[i + 1]
+    
+    if (!current?.models || !prev?.models) continue
+    
+    for (const currentModel of current.models) {
+      const prevModel = prev.models.find(m => m.model === currentModel.model)
+      if (!prevModel) continue
+      
+      const currentCited = currentModel.cited_count || 0
+      const prevCited = prevModel.cited_count || 0
+      if (currentCited !== prevCited) changes++
+    }
+  }
+  
+  const avgChanges = changes / Math.max(recentRuns.length - 1, 1)
+  
+  if (avgChanges < 1) return { level: 'stable', label: 'Stable', color: 'var(--green)' }
+  if (avgChanges < 2) return { level: 'medium', label: 'Medium volatility', color: 'var(--yellow)' }
+  return { level: 'fragile', label: 'Fragile', color: 'var(--red)' }
+}
+
+function computeTopDisplacers(latestRun) {
+  if (!latestRun || !latestRun.models) return []
+  
+  const competitorCounts = {}
+  
+  for (const model of latestRun.models) {
+    for (const result of (model.results || [])) {
+      if (!result.cited && result.other_urls?.length > 0) {
+        for (const url of result.other_urls) {
+          const domain = getDomain(url)
+          if (domain && !domain.includes('infrasity')) {
+            competitorCounts[domain] = (competitorCounts[domain] || 0) + 1
+          }
+        }
+      }
+    }
+  }
+  
+  return Object.entries(competitorCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([domain, count]) => ({ domain, count }))
+}
+
+function truncatePrompt(prompt, maxLen = 50) {
+  if (!prompt) return ''
+  if (prompt.length <= maxLen) return prompt
+  return prompt.substring(0, maxLen) + '...'
+}
+
+function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, activeTab, setActiveTab, onSelect, onAddPrompt }) {
+  // Compute aggregate stats from all clusters
+  const allModelBreakdowns = []
+  const allDisplacers = []
+  
+  for (const cluster of clusters) {
+    const detail = clusterDetails[cluster.id]
+    if (detail?.latest_run) {
+      const breakdown = computeModelBreakdown(detail.latest_run)
+      allModelBreakdowns.push(...breakdown)
+      const displacers = computeTopDisplacers(detail.latest_run)
+      allDisplacers.push(...displacers)
+    }
+  }
+  
+  // Aggregate model stats
+  const modelStats = {}
+  for (const b of allModelBreakdowns) {
+    if (!modelStats[b.model]) {
+      modelStats[b.model] = { model: b.model, displayName: b.displayName, cited: 0, total: 0 }
+    }
+    modelStats[b.model].cited += b.citedCount
+    modelStats[b.model].total += b.totalCount
+  }
+  const aggregatedModels = Object.values(modelStats).map(m => ({
+    ...m,
+    rate: m.total > 0 ? Math.round((m.cited / m.total) * 100) : 0
+  }))
+  
+  // Aggregate displacers
+  const displacerCounts = {}
+  for (const d of allDisplacers) {
+    displacerCounts[d.domain] = (displacerCounts[d.domain] || 0) + d.count
+  }
+  const topDisplacers = Object.entries(displacerCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([domain, count]) => ({ domain, count }))
+
   return (
     <div>
       <div className="page-header">
@@ -210,15 +377,10 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
             </svg>
             Add Prompt
           </button>
-          <button className="btn btn-secondary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polygon points="5 3 19 12 5 21 5 3" />
-            </svg>
-            Run All
-          </button>
         </div>
       </div>
 
+      {/* Stats Grid */}
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-header">
@@ -230,12 +392,12 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
             </span>
           </div>
           <div className="stat-value">{totalPrompts}</div>
-          <div className="stat-meta">{clusters.length} clusters</div>
+          <div className="stat-meta">{clusters.length} cluster{clusters.length !== 1 ? 's' : ''}</div>
         </div>
 
         <div className="stat-card">
           <div className="stat-header">
-            <span className="stat-label">Avg Citation</span>
+            <span className="stat-label">Avg Citation Rate</span>
             <span className="stat-icon green">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -243,105 +405,119 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, top
             </span>
           </div>
           <div className="stat-value">{avgCitation}%</div>
-          <div className="stat-meta">All clusters <span className="trend-up">↑ +4%</span></div>
+          <div className="stat-meta">Across all models</div>
         </div>
 
         <div className="stat-card">
           <div className="stat-header">
-            <span className="stat-label">Top Cluster</span>
+            <span className="stat-label">Models Tracked</span>
             <span className="stat-icon purple">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
               </svg>
             </span>
           </div>
-          <div className="stat-value">{topCluster?.name?.split(' ')[0] || 'N/A'}</div>
-          <div className="stat-meta">Best rate</div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-label">Trends</span>
-            <span className="stat-icon orange">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="12" y1="20" x2="12" y2="10" />
-                <line x1="18" y1="20" x2="18" y2="4" />
-                <line x1="6" y1="20" x2="6" y2="16" />
-              </svg>
-            </span>
-          </div>
-          <div className="stat-value trends">
-            <span className="trend-up">{trendsUp} ↑</span>
-            <span className="trend-down">{trendsDown} ↓</span>
-          </div>
-          <div className="stat-meta">This week</div>
+          <div className="stat-value">3</div>
+          <div className="stat-meta">GPT, Claude, Perplexity</div>
         </div>
       </div>
 
-      <div className="tabs">
-        <button className={`tab ${activeTab === 'clusters' ? 'active' : ''}`} onClick={() => setActiveTab('clusters')}>
-          Clusters
-        </button>
-        <button className={`tab ${activeTab === 'prompts' ? 'active' : ''}`} onClick={() => setActiveTab('prompts')}>
-          Prompts
-        </button>
-        <button className={`tab ${activeTab === 'tips' ? 'active' : ''}`} onClick={() => setActiveTab('tips')}>
-          Tips
-        </button>
-      </div>
-
-      {activeTab === 'clusters' && (
-        <div className="cluster-grid">
-          {clusters.map((c) => {
-            const trends = Math.round((c.citation_rate || 0) * 1.5 + (c.prompt_count || 0) * 2)
-            return (
-              <div key={c.id} className="cluster-card" onClick={() => onSelect(c.id)}>
-                <div className="cluster-card-header">
-                  <h3 className="cluster-card-title">{c.name}</h3>
-                  <span className="cluster-card-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                    </svg>
-                  </span>
+      {/* Model Breakdown Panel */}
+      {aggregatedModels.length > 0 && (
+        <div className="insight-panel">
+          <h3 className="insight-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M12 20V10" />
+              <path d="M18 20V4" />
+              <path d="M6 20v-4" />
+            </svg>
+            Model Breakdown
+          </h3>
+          <div className="model-breakdown">
+            {aggregatedModels.map(m => (
+              <div key={m.model} className="model-stat">
+                <div className="model-stat-header">
+                  <ModelLogo model={m.model} size={16} />
+                  <span className="model-stat-name">{m.displayName}</span>
+                  <span className="model-stat-rate">{m.rate}%</span>
                 </div>
-                <p className="cluster-card-desc">{c.description}</p>
-                <div className="cluster-card-stats">
-                  <div className="cluster-stat">
-                    <span className="cluster-stat-label">Prompts</span>
-                    <span className="cluster-stat-value">{c.prompt_count}</span>
-                  </div>
-                  <div className="cluster-stat">
-                    <span className="cluster-stat-label">Avg Rate</span>
-                    <span className="cluster-stat-value rate">{c.citation_rate}%</span>
-                  </div>
-                  <div className="cluster-stat">
-                    <span className="cluster-stat-label">Trends</span>
-                    <span className="cluster-stat-value">{trends}</span>
-                  </div>
+                <div className="model-stat-bar">
+                  <div 
+                    className="model-stat-fill" 
+                    style={{ width: `${m.rate}%` }}
+                  />
                 </div>
+                <div className="model-stat-detail">{m.cited}/{m.total} prompts cited</div>
               </div>
-            )
-          })}
+            ))}
+          </div>
         </div>
       )}
 
-      <div className="performance-section">
-        <h3 className="section-title">Cluster Performance Comparison</h3>
-        <div className="performance-list">
-          {[...clusters]
-            .sort((a, b) => (b.citation_rate || 0) - (a.citation_rate || 0))
-            .map((c, idx) => (
-              <div key={c.id} className="performance-item" onClick={() => onSelect(c.id)}>
-                <span className="performance-rank">#{idx + 1}</span>
-                <span className="performance-name">{c.name}</span>
-                <div className="performance-bar-container">
-                  <div className="performance-bar" style={{ width: `${c.citation_rate || 0}%` }}></div>
-                </div>
-                <span className="performance-rate">{c.citation_rate}%</span>
-                <span className="performance-prompts">{c.prompt_count} prompts</span>
+      {/* Top Displacers Panel */}
+      {topDisplacers.length > 0 && (
+        <div className="insight-panel displacers-panel">
+          <h3 className="insight-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="8.5" cy="7" r="4" />
+              <path d="M20 8v6" />
+              <path d="M23 11h-6" />
+            </svg>
+            Top Displacers
+            <span className="insight-subtitle">Competitors cited when you're not</span>
+          </h3>
+          <div className="displacers-list">
+            {topDisplacers.map((d, i) => (
+              <div key={d.domain} className="displacer-item">
+                <span className="displacer-rank">#{i + 1}</span>
+                <span className="displacer-domain">{d.domain}</span>
+                <span className="displacer-count">{d.count}×</span>
               </div>
             ))}
+          </div>
         </div>
+      )}
+
+      {/* Cluster Cards */}
+      <div className="section-header">
+        <h3 className="section-title">Clusters</h3>
+      </div>
+      <div className="cluster-grid">
+        {clusters.map((c) => {
+          const detail = clusterDetails[c.id]
+          const volatility = detail?.runs ? computeVolatility(detail.runs) : null
+          
+          return (
+            <div key={c.id} className="cluster-card" onClick={() => onSelect(c.id)}>
+              <div className="cluster-card-header">
+                <h3 className="cluster-card-title">{c.name}</h3>
+                {volatility && volatility.level !== 'unknown' && (
+                  <span 
+                    className={`volatility-badge volatility-${volatility.level}`}
+                    title={volatility.label}
+                  >
+                    {volatility.level === 'stable' && '🟢'}
+                    {volatility.level === 'medium' && '🟡'}
+                    {volatility.level === 'fragile' && '🔴'}
+                  </span>
+                )}
+              </div>
+              <p className="cluster-card-desc">{c.description}</p>
+              <div className="cluster-card-stats">
+                <div className="cluster-stat">
+                  <span className="cluster-stat-label">Prompts</span>
+                  <span className="cluster-stat-value">{c.prompt_count}</span>
+                </div>
+                <div className="cluster-stat">
+                  <span className="cluster-stat-label">Citation Rate</span>
+                  <span className="cluster-stat-value rate">{c.citation_rate}%</span>
+                </div>
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
@@ -351,10 +527,15 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
   const cluster = detail?.cluster
   const latestRun = detail?.latest_run || null
   const allModels = detail?.all_models || []
+  const runs = detail?.runs || []
 
   if (!cluster) return null
 
   const modelOrder = ['gpt-oss-20b-free-online', 'claude-3.5-haiku-online', 'perplexity-sonar-online']
+  const modelBreakdown = computeModelBreakdown(latestRun)
+  const recentDrivers = computeRecentDrivers(runs)
+  const volatility = computeVolatility(runs)
+  const topDisplacers = computeTopDisplacers(latestRun)
 
   const getModelsForDisplay = () => {
     if (!latestRun || !latestRun.models) {
@@ -401,7 +582,6 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
   }
 
   const displayModels = getModelsForDisplay()
-  const timestamp = latestRun?.timestamp || null
 
   return (
     <div>
@@ -426,6 +606,14 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
           </div>
         </div>
         <div className="page-actions">
+          {volatility && volatility.level !== 'unknown' && (
+            <span className={`volatility-indicator volatility-${volatility.level}`}>
+              {volatility.level === 'stable' && '🟢'}
+              {volatility.level === 'medium' && '🟡'}
+              {volatility.level === 'fragile' && '🔴'}
+              {volatility.label}
+            </span>
+          )}
           <button className="btn btn-primary" onClick={onAddPrompt}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="12" y1="5" x2="12" y2="19" />
@@ -433,12 +621,103 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
             </svg>
             Add Prompt
           </button>
-          <button className="btn btn-secondary">
+        </div>
+      </div>
+
+      {/* Insights Row */}
+      <div className="insights-row">
+        {/* Model Breakdown */}
+        <div className="insight-panel">
+          <h3 className="insight-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polygon points="5 3 19 12 5 21 5 3" />
+              <path d="M12 20V10" />
+              <path d="M18 20V4" />
+              <path d="M6 20v-4" />
             </svg>
-            Run All Models
-          </button>
+            Model Breakdown
+          </h3>
+          <div className="model-breakdown">
+            {modelBreakdown.map(m => (
+              <div key={m.model} className="model-stat">
+                <div className="model-stat-header">
+                  <ModelLogo model={m.model} size={16} />
+                  <span className="model-stat-name">{m.displayName}</span>
+                  <span className="model-stat-rate">{m.rate}%</span>
+                </div>
+                <div className="model-stat-bar">
+                  <div 
+                    className="model-stat-fill" 
+                    style={{ 
+                      width: `${m.rate}%`,
+                      backgroundColor: m.rate >= 70 ? 'var(--green)' : m.rate >= 40 ? 'var(--yellow)' : 'var(--red)'
+                    }}
+                  />
+                </div>
+                <div className="model-stat-detail">{m.citedCount}/{m.totalCount} prompts</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Drivers */}
+        <div className="insight-panel">
+          <h3 className="insight-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+            Recent Drivers
+            <span className="insight-subtitle">What changed?</span>
+          </h3>
+          {recentDrivers.length > 0 ? (
+            <div className="drivers-list">
+              {recentDrivers.map((d, i) => (
+                <div key={i} className={`driver-item driver-${d.type}`}>
+                  <span className="driver-icon">
+                    {d.type === 'gain' && '↑'}
+                    {d.type === 'loss' && '↓'}
+                    {d.type === 'rank_up' && '⬆'}
+                    {d.type === 'rank_down' && '⬇'}
+                  </span>
+                  <span className="driver-text">
+                    {d.type === 'gain' && `Gained ${d.model} citation`}
+                    {d.type === 'loss' && `Lost ${d.model} citation`}
+                    {d.type === 'rank_up' && `${d.model} rank improved ${d.rankChange}`}
+                    {d.type === 'rank_down' && `${d.model} rank dropped ${d.rankChange}`}
+                  </span>
+                  {d.rank && <span className="driver-rank">rank {d.rank}</span>}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-drivers">No changes detected from previous run</div>
+          )}
+        </div>
+
+        {/* Top Displacers */}
+        <div className="insight-panel displacers-panel">
+          <h3 className="insight-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="8.5" cy="7" r="4" />
+              <path d="M20 8v6" />
+              <path d="M23 11h-6" />
+            </svg>
+            Top Displacers
+            <span className="insight-subtitle">Competitors cited when you're not</span>
+          </h3>
+          {topDisplacers.length > 0 ? (
+            <div className="displacers-list">
+              {topDisplacers.map((d, i) => (
+                <div key={d.domain} className="displacer-item">
+                  <span className="displacer-rank">#{i + 1}</span>
+                  <span className="displacer-domain">{d.domain}</span>
+                  <span className="displacer-count">{d.count}×</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-drivers">No competitor displacements detected</div>
+          )}
         </div>
       </div>
 
@@ -447,13 +726,11 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
         {displayModels.map((m, i) => {
           const shortName = getShortModelName(m.model)
           const hasData = m.results && m.results.length > 0
-          const durations = ['2m 15s', '2m 27s', '1m 8s']
           return (
             <React.Fragment key={m.model}>
-              <div className={`pipeline-step ${i === 0 ? 'active' : ''}`}>
+              <div className={`pipeline-step ${hasData ? 'active' : ''}`}>
                 <ModelLogo model={m.model} />
                 <span className="step-name">run-{shortName}-{cluster.id}</span>
-                {hasData && <span className="step-time">⏱ {durations[i]}</span>}
               </div>
               {i < displayModels.length - 1 && <div className="pipeline-connector"></div>}
             </React.Fragment>
@@ -473,14 +750,13 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
           key={modelData.model} 
           modelData={modelData} 
           clusterId={cluster.id}
-          timestamp={timestamp}
         />
       ))}
     </div>
   )
 }
 
-function JobSection({ modelData, clusterId, timestamp }) {
+function JobSection({ modelData, clusterId }) {
   const [isOpen, setIsOpen] = useState(true)
   const displayName = getModelDisplayName(modelData.model)
   const hasResults = modelData.results && modelData.results.length > 0
@@ -628,7 +904,6 @@ function AddPromptModal({ clusters, selectedCluster, onClose, onSubmit }) {
                 rows={4}
                 autoFocus
               />
-              <p className="form-hint">Enter the search query or prompt you want to track.</p>
             </div>
             <div className="form-group">
               <label className="form-label">Cluster</label>
@@ -652,7 +927,7 @@ function AddPromptModal({ clusters, selectedCluster, onClose, onSubmit }) {
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={!prompt.trim() || isSubmitting}>
-              {isSubmitting ? <><span className="btn-spinner"></span> Adding...</> : 'Add Prompt'}
+              {isSubmitting ? 'Adding...' : 'Add Prompt'}
             </button>
           </div>
         </form>
@@ -661,11 +936,10 @@ function AddPromptModal({ clusters, selectedCluster, onClose, onSubmit }) {
   )
 }
 
-// Model Logo Component - Official logos
+// Model Logo Component
 function ModelLogo({ model, size = 18 }) {
   if (!model) return <span className="status-dot"></span>
   
-  // Perplexity AI official logo (geometric arrows/cross pattern)
   if (model.includes('perplexity') || model.includes('sonar')) {
     return (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className="model-logo perplexity">
@@ -679,7 +953,6 @@ function ModelLogo({ model, size = 18 }) {
     )
   }
   
-  // Claude/Anthropic official logo (starburst/sparkle)
   if (model.includes('claude')) {
     return (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className="model-logo claude">
@@ -687,15 +960,10 @@ function ModelLogo({ model, size = 18 }) {
         <path d="M2 12L22 12" stroke="#da7756" strokeWidth="2" strokeLinecap="round"/>
         <path d="M4.93 4.93L19.07 19.07" stroke="#da7756" strokeWidth="2" strokeLinecap="round"/>
         <path d="M19.07 4.93L4.93 19.07" stroke="#da7756" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M12 5L12 19" stroke="#da7756" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M5 12L19 12" stroke="#da7756" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M7.05 7.05L16.95 16.95" stroke="#da7756" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M16.95 7.05L7.05 16.95" stroke="#da7756" strokeWidth="2" strokeLinecap="round"/>
       </svg>
     )
   }
   
-  // OpenAI/ChatGPT official logo (interlocking hexagonal knot)
   if (model.includes('gpt') || model.includes('openai')) {
     return (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className="model-logo gpt">
@@ -721,11 +989,6 @@ function getModelDisplayName(model) {
   if (model.includes('claude')) return 'Claude'
   if (model.includes('gpt') || model.includes('openai')) return 'GPT'
   return model.split('/').pop()?.split(':')[0] || model
-}
-
-function formatTimestamp(ts) {
-  if (!ts) return ''
-  return ts
 }
 
 function getDomain(url) {

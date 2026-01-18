@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-01-17T19:31:12.600Z",
+  "generated_at": "2026-01-17T19:49:31.058Z",
   "clusters": [
     {
       "id": "devmarketing",
       "name": "Developer Marketing",
       "description": "Marketing agencies specializing in developer audiences",
       "prompt_count": 8,
-      "citation_rate": 56.9,
+      "citation_rate": 57.3,
       "prompts_file": "prompts_devmarketing.txt",
       "targets_file": "targets_fanout.json",
       "workflow": "citation-check-devmarketing.yml"
@@ -34,6 +34,379 @@
         "infrasity.com"
       ],
       "runs": [
+        {
+          "timestamp": "20260117T193643Z",
+          "models": [
+            {
+              "model": "gpt-oss-20b-free-online",
+              "provider": "openrouter",
+              "results": [
+                {
+                  "prompt": "top developer marketing agencies for tech and software companies",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://catchyagency.com",
+                    "https://developerfirst.io",
+                    "https://devrel.agency"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "ranks": [
+                    3
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
+                },
+                {
+                  "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "ranks": [
+                    1
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                },
+                {
+                  "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "ranks": [
+                    3
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                },
+                {
+                  "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "ranks": [
+                    4
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                },
+                {
+                  "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://beomniscient.com/blog/best-ai-marketing-agencies",
+                    "https://m1-project.com/blog/10-best-ai-marketing-agencies-in-depth-comparison",
+                    "https://digitalagencynetwork.com/agencies/usa/ai-marketing"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "developer marketing agency for early stage software ventures",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/services/developer-marketting-service"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/services/developer-marketting-service"
+                  ],
+                  "ranks": [
+                    3
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/services/developer-marketting-service"
+                },
+                {
+                  "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/top-content-marketing-agencies"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/top-content-marketing-agencies"
+                  ],
+                  "ranks": [
+                    5
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/top-content-marketing-agencies"
+                }
+              ],
+              "cited_count": 6,
+              "total_count": 8
+            },
+            {
+              "model": "claude-3.5-haiku-online",
+              "provider": "openrouter",
+              "results": [
+                {
+                  "prompt": "top developer marketing agencies for tech and software companies",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://catchyagency.com",
+                    "https://hoopy.io",
+                    "https://developerfirst.io"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "ranks": [
+                    5
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
+                },
+                {
+                  "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://poweredbysearch.com/services/marketing-to-developers",
+                    "https://kalungi.com/services/developer-marketing",
+                    "https://nogood.io/b2b-saas-marketing"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "ranks": [
+                    4
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                },
+                {
+                  "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://catchyagency.com",
+                    "https://devrel.agency",
+                    "https://devrella.com"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d",
+                    "https://beomniscient.com/blog/best-ai-marketing-agencies",
+                    "https://lindy.ai/blog/ai-agent-development-platform"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "developer marketing agency for early stage software ventures",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://maximize.partners",
+                    "https://hackmamba.io/services/developer-marketing-agency",
+                    "https://devrella.com"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://catchyagency.com",
+                    "https://devrel.agency",
+                    "https://hackmamba.io/services/developer-marketing-agency"
+                  ],
+                  "status": "no target URLs cited"
+                }
+              ],
+              "cited_count": 2,
+              "total_count": 8
+            },
+            {
+              "model": "perplexity-sonar-online",
+              "provider": "openrouter",
+              "results": [
+                {
+                  "prompt": "top developer marketing agencies for tech and software companies",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://catchyagency.com",
+                    "https://nogood.io/blog/startup-marketing-agencies",
+                    "https://ninjapromo.io/best-it-marketing-agencies"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "ranks": [
+                    1
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
+                },
+                {
+                  "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "ranks": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
+                },
+                {
+                  "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "ranks": [
+                    3
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                },
+                {
+                  "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                  ],
+                  "ranks": [
+                    4
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                },
+                {
+                  "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+                  "cited": false,
+                  "target_urls": [],
+                  "cited_urls": [],
+                  "ranks": null,
+                  "other_urls": [
+                    "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d",
+                    "https://clutch.co/developers/artificial-intelligence/agents?page=0",
+                    "https://beomniscient.com/blog/best-ai-marketing-agencies"
+                  ],
+                  "status": "no target URLs cited"
+                },
+                {
+                  "prompt": "developer marketing agency for early stage software ventures",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/developer-marketing-agency"
+                  ],
+                  "ranks": [
+                    1
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
+                },
+                {
+                  "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+                  "cited": true,
+                  "target_urls": [
+                    "https://infrasity.com/blog/top-content-marketing-agencies"
+                  ],
+                  "cited_urls": [
+                    "https://infrasity.com/blog/top-content-marketing-agencies"
+                  ],
+                  "ranks": [
+                    4
+                  ],
+                  "other_urls": [],
+                  "status": "cited URL(s): https://infrasity.com/blog/top-content-marketing-agencies"
+                }
+              ],
+              "cited_count": 6,
+              "total_count": 8
+            }
+          ]
+        },
         {
           "timestamp": "20260113T160308Z",
           "models": [
@@ -969,7 +1342,7 @@
         }
       ],
       "latest_run": {
-        "timestamp": "20260113T160308Z",
+        "timestamp": "20260117T193643Z",
         "models": [
           {
             "model": "gpt-oss-20b-free-online",
@@ -983,8 +1356,8 @@
                 "ranks": null,
                 "other_urls": [
                   "https://catchyagency.com",
-                  "https://lookleftmarketing.com/industries/developer",
-                  "https://nogood.io/blog/startup-marketing-agencies"
+                  "https://developerfirst.io",
+                  "https://devrel.agency"
                 ],
                 "status": "no target URLs cited"
               },
@@ -992,60 +1365,61 @@
                 "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
                 "cited": true,
                 "target_urls": [
-                  "https://infrasity.com"
-                ],
-                "cited_urls": [
-                  "https://infrasity.com"
-                ],
-                "ranks": [
-                  2
-                ],
-                "other_urls": [],
-                "status": "cited URL(s): https://infrasity.com"
-              },
-              {
-                "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
-                "cited": true,
-                "target_urls": [
                   "https://infrasity.com/blog/developer-marketing-agency"
                 ],
                 "cited_urls": [
                   "https://infrasity.com/blog/developer-marketing-agency"
                 ],
                 "ranks": [
-                  1
+                  3
                 ],
                 "other_urls": [],
                 "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
               },
               {
-                "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
-                "cited": false,
-                "target_urls": [],
-                "cited_urls": [],
-                "ranks": null,
-                "other_urls": [
-                  "https://catchyagency.com"
+                "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+                "cited": true,
+                "target_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
                 ],
-                "status": "no target URLs cited"
+                "cited_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                ],
+                "ranks": [
+                  1
+                ],
+                "other_urls": [],
+                "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              },
+              {
+                "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+                "cited": true,
+                "target_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                ],
+                "cited_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                ],
+                "ranks": [
+                  3
+                ],
+                "other_urls": [],
+                "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
               },
               {
                 "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
                 "cited": true,
                 "target_urls": [
-                  "https://infrasity.com/blog/developer-marketing-agency",
-                  "https://infrasity.com/services/developer-marketting-service"
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
                 ],
                 "cited_urls": [
-                  "https://infrasity.com/blog/developer-marketing-agency",
-                  "https://infrasity.com/services/developer-marketting-service"
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
                 ],
                 "ranks": [
-                  1,
-                  5
+                  4
                 ],
                 "other_urls": [],
-                "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency, https://infrasity.com/services/developer-marketting-service"
+                "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
               },
               {
                 "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
@@ -1055,128 +1429,8 @@
                 "ranks": null,
                 "other_urls": [
                   "https://beomniscient.com/blog/best-ai-marketing-agencies",
-                  "https://nogood.io/ai-marketing-agency",
-                  "https://singlegrain.com/agency/ai-digital-marketing-agency"
-                ],
-                "status": "no target URLs cited"
-              },
-              {
-                "prompt": "developer marketing agency for early stage software ventures",
-                "cited": false,
-                "target_urls": [],
-                "cited_urls": [],
-                "ranks": null,
-                "other_urls": [
-                  "https://maximize.partners",
-                  "https://hackmamba.io/services/developer-marketing-agency",
-                  "https://olivinemarketing.com"
-                ],
-                "status": "no target URLs cited"
-              },
-              {
-                "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
-                "cited": true,
-                "target_urls": [
-                  "https://infrasity.com/blog/top-content-marketing-agencies"
-                ],
-                "cited_urls": [
-                  "https://infrasity.com/blog/top-content-marketing-agencies"
-                ],
-                "ranks": [
-                  2
-                ],
-                "other_urls": [],
-                "status": "cited URL(s): https://infrasity.com/blog/top-content-marketing-agencies"
-              }
-            ],
-            "cited_count": 4,
-            "total_count": 8
-          },
-          {
-            "model": "claude-3.5-haiku-online",
-            "provider": "openrouter",
-            "results": [
-              {
-                "prompt": "top developer marketing agencies for tech and software companies",
-                "cited": false,
-                "target_urls": [],
-                "cited_urls": [],
-                "ranks": null,
-                "other_urls": [
-                  "https://catchyagency.com",
-                  "https://lookleftmarketing.com/industries/developer",
-                  "https://hackmamba.io/services/developer-marketing-agency"
-                ],
-                "status": "no target URLs cited"
-              },
-              {
-                "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
-                "cited": false,
-                "target_urls": [],
-                "cited_urls": [],
-                "ranks": null,
-                "other_urls": [
-                  "https://catchyagency.com/about",
-                  "https://draft.dev/for-marketers",
-                  "https://everydeveloper.com/developer-experience"
-                ],
-                "status": "no target URLs cited"
-              },
-              {
-                "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
-                "cited": true,
-                "target_urls": [
-                  "https://infrasity.com/services/developer-marketting-service"
-                ],
-                "cited_urls": [
-                  "https://infrasity.com/services/developer-marketting-service"
-                ],
-                "ranks": [
-                  1
-                ],
-                "other_urls": [],
-                "status": "cited URL(s): https://infrasity.com/services/developer-marketting-service"
-              },
-              {
-                "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
-                "cited": true,
-                "target_urls": [
-                  "https://infrasity.com/services/developer-marketting-service"
-                ],
-                "cited_urls": [
-                  "https://infrasity.com/services/developer-marketting-service"
-                ],
-                "ranks": [
-                  1
-                ],
-                "other_urls": [],
-                "status": "cited URL(s): https://infrasity.com/services/developer-marketting-service"
-              },
-              {
-                "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
-                "cited": true,
-                "target_urls": [
-                  "https://infrasity.com/blog/developer-marketing-agency"
-                ],
-                "cited_urls": [
-                  "https://infrasity.com/blog/developer-marketing-agency"
-                ],
-                "ranks": [
-                  1
-                ],
-                "other_urls": [],
-                "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
-              },
-              {
-                "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
-                "cited": false,
-                "target_urls": [],
-                "cited_urls": [],
-                "ranks": null,
-                "other_urls": [
-                  "https://nogood.io/ai-marketing-agency",
-                  "https://coinbound.io",
-                  "https://concurate.com/work-with-us"
+                  "https://m1-project.com/blog/10-best-ai-marketing-agencies-in-depth-comparison",
+                  "https://digitalagencynetwork.com/agencies/usa/ai-marketing"
                 ],
                 "status": "no target URLs cited"
               },
@@ -1197,19 +1451,137 @@
               },
               {
                 "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+                "cited": true,
+                "target_urls": [
+                  "https://infrasity.com/blog/top-content-marketing-agencies"
+                ],
+                "cited_urls": [
+                  "https://infrasity.com/blog/top-content-marketing-agencies"
+                ],
+                "ranks": [
+                  5
+                ],
+                "other_urls": [],
+                "status": "cited URL(s): https://infrasity.com/blog/top-content-marketing-agencies"
+              }
+            ],
+            "cited_count": 6,
+            "total_count": 8
+          },
+          {
+            "model": "claude-3.5-haiku-online",
+            "provider": "openrouter",
+            "results": [
+              {
+                "prompt": "top developer marketing agencies for tech and software companies",
                 "cited": false,
                 "target_urls": [],
                 "cited_urls": [],
                 "ranks": null,
                 "other_urls": [
-                  "https://nogood.io/blog/startup-marketing-agencies",
-                  "https://seeresponse.com",
-                  "https://helloroketto.com/articles/marketing-agency-for-startups"
+                  "https://catchyagency.com",
+                  "https://hoopy.io",
+                  "https://developerfirst.io"
+                ],
+                "status": "no target URLs cited"
+              },
+              {
+                "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+                "cited": true,
+                "target_urls": [
+                  "https://infrasity.com/blog/developer-marketing-agency"
+                ],
+                "cited_urls": [
+                  "https://infrasity.com/blog/developer-marketing-agency"
+                ],
+                "ranks": [
+                  5
+                ],
+                "other_urls": [],
+                "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
+              },
+              {
+                "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+                "cited": false,
+                "target_urls": [],
+                "cited_urls": [],
+                "ranks": null,
+                "other_urls": [
+                  "https://poweredbysearch.com/services/marketing-to-developers",
+                  "https://kalungi.com/services/developer-marketing",
+                  "https://nogood.io/b2b-saas-marketing"
+                ],
+                "status": "no target URLs cited"
+              },
+              {
+                "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+                "cited": true,
+                "target_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                ],
+                "cited_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                ],
+                "ranks": [
+                  4
+                ],
+                "other_urls": [],
+                "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              },
+              {
+                "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+                "cited": false,
+                "target_urls": [],
+                "cited_urls": [],
+                "ranks": null,
+                "other_urls": [
+                  "https://catchyagency.com",
+                  "https://devrel.agency",
+                  "https://devrella.com"
+                ],
+                "status": "no target URLs cited"
+              },
+              {
+                "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+                "cited": false,
+                "target_urls": [],
+                "cited_urls": [],
+                "ranks": null,
+                "other_urls": [
+                  "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d",
+                  "https://beomniscient.com/blog/best-ai-marketing-agencies",
+                  "https://lindy.ai/blog/ai-agent-development-platform"
+                ],
+                "status": "no target URLs cited"
+              },
+              {
+                "prompt": "developer marketing agency for early stage software ventures",
+                "cited": false,
+                "target_urls": [],
+                "cited_urls": [],
+                "ranks": null,
+                "other_urls": [
+                  "https://maximize.partners",
+                  "https://hackmamba.io/services/developer-marketing-agency",
+                  "https://devrella.com"
+                ],
+                "status": "no target URLs cited"
+              },
+              {
+                "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+                "cited": false,
+                "target_urls": [],
+                "cited_urls": [],
+                "ranks": null,
+                "other_urls": [
+                  "https://catchyagency.com",
+                  "https://devrel.agency",
+                  "https://hackmamba.io/services/developer-marketing-agency"
                 ],
                 "status": "no target URLs cited"
               }
             ],
-            "cited_count": 4,
+            "cited_count": 2,
             "total_count": 8
           },
           {
@@ -1223,9 +1595,9 @@
                 "cited_urls": [],
                 "ranks": null,
                 "other_urls": [
-                  "https://nogood.io",
-                  "https://webfx.com",
-                  "https://disruptiveadvertising.com"
+                  "https://catchyagency.com",
+                  "https://nogood.io/blog/startup-marketing-agencies",
+                  "https://ninjapromo.io/best-it-marketing-agencies"
                 ],
                 "status": "no target URLs cited"
               },
@@ -1254,21 +1626,6 @@
                   "https://infrasity.com/blog/developer-marketing-agency"
                 ],
                 "ranks": [
-                  1
-                ],
-                "other_urls": [],
-                "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
-              },
-              {
-                "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
-                "cited": true,
-                "target_urls": [
-                  "https://infrasity.com/blog/developer-marketing-agency"
-                ],
-                "cited_urls": [
-                  "https://infrasity.com/blog/developer-marketing-agency"
-                ],
-                "ranks": [
                   1,
                   2,
                   3,
@@ -1279,22 +1636,34 @@
                 "status": "cited URL(s): https://infrasity.com/blog/developer-marketing-agency"
               },
               {
+                "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+                "cited": true,
+                "target_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                ],
+                "cited_urls": [
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+                ],
+                "ranks": [
+                  3
+                ],
+                "other_urls": [],
+                "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              },
+              {
                 "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
                 "cited": true,
                 "target_urls": [
-                  "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d",
-                  "https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
                 ],
                 "cited_urls": [
-                  "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d",
-                  "https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+                  "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
                 ],
                 "ranks": [
-                  1,
-                  8
+                  4
                 ],
                 "other_urls": [],
-                "status": "cited URL(s): https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d, https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+                "status": "cited URL(s): https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
               },
               {
                 "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
@@ -1303,9 +1672,9 @@
                 "cited_urls": [],
                 "ranks": null,
                 "other_urls": [
-                  "https://nogood.io",
-                  "https://beomniscient.com",
-                  "https://growthplays.com"
+                  "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d",
+                  "https://clutch.co/developers/artificial-intelligence/agents?page=0",
+                  "https://beomniscient.com/blog/best-ai-marketing-agencies"
                 ],
                 "status": "no target URLs cited"
               },
@@ -1334,7 +1703,7 @@
                   "https://infrasity.com/blog/top-content-marketing-agencies"
                 ],
                 "ranks": [
-                  1
+                  4
                 ],
                 "other_urls": [],
                 "status": "cited URL(s): https://infrasity.com/blog/top-content-marketing-agencies"
@@ -1368,6 +1737,24 @@
     }
   },
   "runs": [
+    {
+      "timestamp": "20260117T193946Z",
+      "model": "perplexity-sonar-online",
+      "provider": "openrouter",
+      "file": "run_20260117T193946Z_openrouter_perplexity-sonar-online.json"
+    },
+    {
+      "timestamp": "20260117T193824Z",
+      "model": "claude-3.5-haiku-online",
+      "provider": "openrouter",
+      "file": "run_20260117T193824Z_openrouter_claude-3.5-haiku-online.json"
+    },
+    {
+      "timestamp": "20260117T193643Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "file": "run_20260117T193643Z_openrouter_gpt-oss-20b-free-online.json"
+    },
     {
       "timestamp": "20260113T160759Z",
       "model": "perplexity-sonar-online",
@@ -1466,6 +1853,422 @@
     }
   ],
   "all_runs": [
+    {
+      "timestamp": "20260117T193946Z",
+      "model": "perplexity-sonar-online",
+      "provider": "openrouter",
+      "results": [
+        {
+          "prompt": "top developer marketing agencies for tech and software companies",
+          "matches": [],
+          "domain_urls": {
+            "catchyagency.com": [
+              "https://catchyagency.com"
+            ],
+            "nogood.io": [
+              "https://nogood.io/blog/startup-marketing-agencies"
+            ],
+            "ninjapromo.io": [
+              "https://ninjapromo.io/best-it-marketing-agencies"
+            ]
+          }
+        },
+        {
+          "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "ranks": [
+                1
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "ranks": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "ranks": [
+                3
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "ranks": [
+                4
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+          "matches": [],
+          "domain_urls": {
+            "medium.com": [
+              "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d"
+            ],
+            "clutch.co": [
+              "https://clutch.co/developers/artificial-intelligence/agents?page=0"
+            ],
+            "beomniscient.com": [
+              "https://beomniscient.com/blog/best-ai-marketing-agencies"
+            ]
+          }
+        },
+        {
+          "prompt": "developer marketing agency for early stage software ventures",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "ranks": [
+                1
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/top-content-marketing-agencies"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/top-content-marketing-agencies"
+              ],
+              "ranks": [
+                4
+              ]
+            }
+          ],
+          "domain_urls": {}
+        }
+      ],
+      "__file": "run_20260117T193946Z_openrouter_perplexity-sonar-online.json"
+    },
+    {
+      "timestamp": "20260117T193824Z",
+      "model": "claude-3.5-haiku-online",
+      "provider": "openrouter",
+      "results": [
+        {
+          "prompt": "top developer marketing agencies for tech and software companies",
+          "matches": [],
+          "domain_urls": {
+            "catchyagency.com": [
+              "https://catchyagency.com"
+            ],
+            "hoopy.io": [
+              "https://hoopy.io"
+            ],
+            "developerfirst.io": [
+              "https://developerfirst.io"
+            ]
+          }
+        },
+        {
+          "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "ranks": [
+                5
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+          "matches": [],
+          "domain_urls": {
+            "poweredbysearch.com": [
+              "https://poweredbysearch.com/services/marketing-to-developers"
+            ],
+            "kalungi.com": [
+              "https://kalungi.com/services/developer-marketing"
+            ],
+            "nogood.io": [
+              "https://nogood.io/b2b-saas-marketing"
+            ]
+          }
+        },
+        {
+          "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "ranks": [
+                4
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+          "matches": [],
+          "domain_urls": {
+            "catchyagency.com": [
+              "https://catchyagency.com"
+            ],
+            "devrel.agency": [
+              "https://devrel.agency"
+            ],
+            "devrella.com": [
+              "https://devrella.com"
+            ]
+          }
+        },
+        {
+          "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+          "matches": [],
+          "domain_urls": {
+            "medium.com": [
+              "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d"
+            ],
+            "beomniscient.com": [
+              "https://beomniscient.com/blog/best-ai-marketing-agencies"
+            ],
+            "lindy.ai": [
+              "https://lindy.ai/blog/ai-agent-development-platform"
+            ]
+          }
+        },
+        {
+          "prompt": "developer marketing agency for early stage software ventures",
+          "matches": [],
+          "domain_urls": {
+            "maximize.partners": [
+              "https://maximize.partners"
+            ],
+            "hackmamba.io": [
+              "https://hackmamba.io/services/developer-marketing-agency"
+            ],
+            "devrella.com": [
+              "https://devrella.com"
+            ]
+          }
+        },
+        {
+          "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+          "matches": [],
+          "domain_urls": {
+            "catchyagency.com": [
+              "https://catchyagency.com"
+            ],
+            "devrel.agency": [
+              "https://devrel.agency"
+            ],
+            "hackmamba.io": [
+              "https://hackmamba.io/services/developer-marketing-agency"
+            ]
+          }
+        }
+      ],
+      "__file": "run_20260117T193824Z_openrouter_claude-3.5-haiku-online.json"
+    },
+    {
+      "timestamp": "20260117T193643Z",
+      "model": "gpt-oss-20b-free-online",
+      "provider": "openrouter",
+      "results": [
+        {
+          "prompt": "top developer marketing agencies for tech and software companies",
+          "matches": [],
+          "domain_urls": {
+            "catchyagency.com": [
+              "https://catchyagency.com"
+            ],
+            "developerfirst.io": [
+              "https://developerfirst.io"
+            ],
+            "devrel.agency": [
+              "https://devrel.agency"
+            ]
+          }
+        },
+        {
+          "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/developer-marketing-agency"
+              ],
+              "ranks": [
+                3
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "ranks": [
+                1
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "ranks": [
+                3
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/ai-marketing-agency-b2b-saas"
+              ],
+              "ranks": [
+                4
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+          "matches": [],
+          "domain_urls": {
+            "beomniscient.com": [
+              "https://beomniscient.com/blog/best-ai-marketing-agencies"
+            ],
+            "m1-project.com": [
+              "https://m1-project.com/blog/10-best-ai-marketing-agencies-in-depth-comparison"
+            ],
+            "digitalagencynetwork.com": [
+              "https://digitalagencynetwork.com/agencies/usa/ai-marketing"
+            ]
+          }
+        },
+        {
+          "prompt": "developer marketing agency for early stage software ventures",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/services/developer-marketting-service"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/services/developer-marketting-service"
+              ],
+              "ranks": [
+                3
+              ]
+            }
+          ],
+          "domain_urls": {}
+        },
+        {
+          "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+          "matches": [
+            {
+              "target_urls": [
+                "https://infrasity.com/blog/top-content-marketing-agencies"
+              ],
+              "cited_urls": [
+                "https://infrasity.com/blog/top-content-marketing-agencies"
+              ],
+              "ranks": [
+                5
+              ]
+            }
+          ],
+          "domain_urls": {}
+        }
+      ],
+      "__file": "run_20260117T193643Z_openrouter_gpt-oss-20b-free-online.json"
+    },
     {
       "timestamp": "20260113T160759Z",
       "provider": "openrouter",
