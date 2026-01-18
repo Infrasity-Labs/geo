@@ -131,11 +131,10 @@ export default function App() {
               </div>
             </button>
             {clusters.map((c) => (
-              <div key={c.id} className={`nav-item-wrapper ${selectedCluster === c.id ? 'active' : ''}`}>
+              <div key={c.id} className={`nav-item-wrapper ${selectedCluster === c.id ? 'active' : ''}`} data-cluster-name={c.name}>
                 <button 
                   className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
                   onClick={() => setSelectedCluster(c.id)}
-                  data-tooltip={c.name}
                 >
                   <span className="nav-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

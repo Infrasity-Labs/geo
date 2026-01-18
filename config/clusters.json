@@ -7,6 +7,14 @@
       "prompts_file": "prompts_devmarketing.txt",
       "targets_file": "targets_fanout.json",
       "workflow": "citation-check-devmarketing.yml"
+    },
+    {
+      "id": "country-prompts",
+      "name": "Country Prompts",
+      "description": "Prompts for Country Prompts",
+      "prompts_file": "prompts_country-prompts.txt",
+      "targets_file": "targets_fanout.json",
+      "workflow": "citation-check-country-prompts.yml"
     }
   ],
   "models": [
