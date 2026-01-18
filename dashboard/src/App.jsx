@@ -135,7 +135,7 @@ export default function App() {
                 <button 
                   className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
                   onClick={() => setSelectedCluster(c.id)}
-                  title={c.name}
+                  data-tooltip={c.name}
                 >
                   <span className="nav-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

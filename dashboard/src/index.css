@@ -322,6 +322,53 @@ a:hover {
   color: var(--red);
 }
 
+/* Custom Tooltip for nav items */
+.nav-item[data-tooltip] {
+  position: relative;
+}
+
+.nav-item[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s, visibility 0.15s;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.nav-item[data-tooltip]::before {
+  content: '';
+  position: absolute;
+  left: calc(100% + 4px);
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: var(--border);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s, visibility 0.15s;
+  z-index: 1001;
+}
+
+.nav-item[data-tooltip]:hover::after,
+.nav-item[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* Main Content */
 .main {
   flex: 1;
