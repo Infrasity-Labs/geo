@@ -712,9 +712,21 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
         {displayModels.map((m, i) => {
           const shortName = getShortModelName(m.model)
           const hasData = m.results && m.results.length > 0
+          const scrollToModel = () => {
+            const element = document.getElementById(`model-section-${shortName}`)
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+          }
           return (
             <React.Fragment key={m.model}>
-              <div className={`pipeline-step ${hasData ? 'active' : ''}`}>
+              <div 
+                className={`pipeline-step ${hasData ? 'active' : ''}`}
+                onClick={scrollToModel}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && scrollToModel()}
+              >
                 <ModelLogo model={m.model} />
                 <span className="step-name">run-{shortName}-{cluster.id}</span>
               </div>
@@ -745,12 +757,13 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
 function JobSection({ modelData, clusterId }) {
   const [isOpen, setIsOpen] = useState(true)
   const displayName = getModelDisplayName(modelData.model)
+  const shortName = getShortModelName(modelData.model)
   const hasResults = modelData.results && modelData.results.length > 0
   const citedCount = modelData.cited_count || 0
   const totalCount = modelData.total_count || 0
 
   return (
-    <div className="job-section">
+    <div className="job-section" id={`model-section-${shortName}`}>
       <button className="job-header" onClick={() => setIsOpen(!isOpen)}>
         <div className="job-header-left">
           <ModelLogo model={modelData.model} size={20} />
