@@ -769,7 +769,7 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
 }
 
 function JobSection({ modelData, clusterId }) {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const displayName = getModelDisplayName(modelData.model)
   const shortName = getShortModelName(modelData.model)
   const hasResults = modelData.results && modelData.results.length > 0
