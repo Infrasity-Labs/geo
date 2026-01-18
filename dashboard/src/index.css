@@ -620,6 +620,10 @@ a:hover {
   margin-bottom: 32px;
 }
 
+.stats-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border);

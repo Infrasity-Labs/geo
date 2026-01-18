@@ -381,7 +381,7 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, act
       </div>
 
       {/* Stats Grid */}
-      <div className="stats-grid">
+      <div className="stats-grid stats-grid-2">
         <div className="stat-card">
           <div className="stat-header">
             <span className="stat-label">Total Prompts</span>
@@ -406,20 +406,6 @@ function OverviewView({ clusters, clusterDetails, totalPrompts, avgCitation, act
           </div>
           <div className="stat-value">{avgCitation}%</div>
           <div className="stat-meta">Across all models</div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-label">Models Tracked</span>
-            <span className="stat-icon purple">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 6v6l4 2" />
-              </svg>
-            </span>
-          </div>
-          <div className="stat-value">3</div>
-          <div className="stat-meta">GPT, Claude, Perplexity</div>
         </div>
       </div>
 
