@@ -130,28 +130,55 @@ export default function App() {
               </div>
             </button>
             {clusters.map((c) => (
-              <button 
-                key={c.id} 
-                className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
-                onClick={() => setSelectedCluster(c.id)}
-              >
-                <span className="nav-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                  </svg>
-                </span>
-                <div className="nav-content">
-                  <span className="nav-label">{c.name}</span>
-                  <span className="nav-meta">
-                    {c.prompt_count} prompts • <span className="rate">{c.citation_rate}%</span>
+              <div key={c.id} className={`nav-item-wrapper ${selectedCluster === c.id ? 'active' : ''}`}>
+                <button 
+                  className={`nav-item ${selectedCluster === c.id ? 'active' : ''}`}
+                  onClick={() => setSelectedCluster(c.id)}
+                >
+                  <span className="nav-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                    </svg>
                   </span>
-                </div>
-                <div className="nav-models">
-                  <ModelLogo model="gpt" size={14} />
-                  <ModelLogo model="claude" size={14} />
-                  <ModelLogo model="perplexity" size={14} />
-                </div>
-              </button>
+                  <div className="nav-content">
+                    <span className="nav-label">{c.name}</span>
+                    <span className="nav-meta">
+                      {c.prompt_count} prompts • <span className="rate">{c.citation_rate}%</span>
+                    </span>
+                  </div>
+                  <div className="nav-models">
+                    <ModelLogo model="gpt" size={14} />
+                    <ModelLogo model="claude" size={14} />
+                    <ModelLogo model="perplexity" size={14} />
+                  </div>
+                </button>
+                <button 
+                  className="nav-item-delete"
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    if (!confirm(`Delete cluster "${c.name}"? This cannot be undone.`)) return
+                    try {
+                      const res = await fetch(`http://localhost:8001/clusters/${c.id}`, { method: 'DELETE' })
+                      if (!res.ok) {
+                        const err = await res.json()
+                        alert(err.detail || 'Failed to delete cluster')
+                        return
+                      }
+                      if (selectedCluster === c.id) setSelectedCluster(null)
+                      loadData(true)
+                    } catch (err) {
+                      console.error('Failed to delete cluster:', err)
+                      alert('Failed to delete cluster. Make sure the API server is running.')
+                    }
+                  }}
+                  title="Delete cluster"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  </svg>
+                </button>
+              </div>
             ))}
             <button 
               className="nav-item nav-item-add"
