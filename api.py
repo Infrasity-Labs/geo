@@ -198,6 +198,18 @@ def delete_cluster(cluster_id: str) -> dict:
     config["clusters"] = clusters
     save_clusters_config(config)
     
+    # Regenerate dashboard data
+    try:
+        import subprocess
+        subprocess.run(
+            ["node", "scripts/generate-data.js"],
+            cwd=str(BASE_DIR / "dashboard"),
+            capture_output=True,
+            timeout=30
+        )
+    except Exception as e:
+        print(f"Warning: Could not regenerate dashboard data: {e}")
+    
     return {"message": f"Cluster '{cluster_id}' deleted successfully"}
 
 
