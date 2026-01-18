@@ -10,6 +10,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('clusters')
   const [showAddPrompt, setShowAddPrompt] = useState(false)
   const [showAddCluster, setShowAddCluster] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(null) // { id, name } or null
 
   const loadData = useCallback(async (refresh = false) => {
     setLoading(true)
@@ -155,22 +156,9 @@ export default function App() {
                 </button>
                 <button 
                   className="nav-item-delete"
-                  onClick={async (e) => {
+                  onClick={(e) => {
                     e.stopPropagation()
-                    if (!confirm(`Delete cluster "${c.name}"? This cannot be undone.`)) return
-                    try {
-                      const res = await fetch(`http://localhost:8001/clusters/${c.id}`, { method: 'DELETE' })
-                      if (!res.ok) {
-                        const err = await res.json()
-                        alert(err.detail || 'Failed to delete cluster')
-                        return
-                      }
-                      if (selectedCluster === c.id) setSelectedCluster(null)
-                      loadData(true)
-                    } catch (err) {
-                      console.error('Failed to delete cluster:', err)
-                      alert('Failed to delete cluster. Make sure the API server is running.')
-                    }
+                    setDeleteConfirm({ id: c.id, name: c.name })
                   }}
                   title="Delete cluster"
                 >
@@ -250,6 +238,29 @@ export default function App() {
             } catch (err) {
               console.error('Failed to create cluster:', err)
               alert('Failed to create cluster. Make sure the API server is running.')
+            }
+          }}
+        />
+      )}
+
+      {deleteConfirm && (
+        <DeleteConfirmModal
+          clusterName={deleteConfirm.name}
+          onClose={() => setDeleteConfirm(null)}
+          onConfirm={async () => {
+            try {
+              const res = await fetch(`http://localhost:8001/clusters/${deleteConfirm.id}`, { method: 'DELETE' })
+              if (!res.ok) {
+                const err = await res.json()
+                alert(err.detail || 'Failed to delete cluster')
+                return
+              }
+              if (selectedCluster === deleteConfirm.id) setSelectedCluster(null)
+              setDeleteConfirm(null)
+              loadData(true)
+            } catch (err) {
+              console.error('Failed to delete cluster:', err)
+              alert('Failed to delete cluster. Make sure the API server is running.')
             }
           }}
         />
@@ -1114,6 +1125,62 @@ function AddClusterModal({ onClose, onSubmit }) {
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  )
+}
+
+// Delete Confirmation Modal
+function DeleteConfirmModal({ clusterName, onClose, onConfirm }) {
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleConfirm = async () => {
+    setIsDeleting(true)
+    await onConfirm()
+    setIsDeleting(false)
+  }
+
+  return (
+    <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal modal-delete">
+        <div className="modal-header">
+          <div className="modal-icon-danger">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              <line x1="10" y1="11" x2="10" y2="17" />
+              <line x1="14" y1="11" x2="14" y2="17" />
+            </svg>
+          </div>
+          <h2 className="modal-title">Delete Cluster</h2>
+          <button className="modal-close" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div className="modal-body">
+          <p className="delete-message">
+            Are you sure you want to delete <strong>"{clusterName}"</strong>?
+          </p>
+          <p className="delete-warning">
+            This action cannot be undone. All prompts and configuration for this cluster will be permanently removed.
+          </p>
+        </div>
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isDeleting}>
+            Cancel
+          </button>
+          <button 
+            type="button" 
+            className="btn btn-danger" 
+            onClick={handleConfirm}
+            disabled={isDeleting}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete Cluster'}
+          </button>
+        </div>
       </div>
     </div>
   )

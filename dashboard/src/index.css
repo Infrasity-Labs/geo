@@ -1051,6 +1051,53 @@ a:hover {
   padding: 24px;
 }
 
+/* Delete Modal */
+.modal-delete {
+  max-width: 420px;
+}
+
+.modal-delete .modal-header {
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.modal-icon-danger {
+  width: 48px;
+  height: 48px;
+  background: rgba(239, 68, 68, 0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  flex-shrink: 0;
+}
+
+.modal-delete .modal-title {
+  flex: 1;
+}
+
+.delete-message {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.delete-message strong {
+  color: var(--text-primary);
+}
+
+.delete-warning {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  padding: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border-radius: 8px;
+  border-left: 3px solid var(--red);
+}
+
 .modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -1132,6 +1179,15 @@ a:hover {
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn-danger {
+  background: var(--red);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
 }
 
 .btn-spinner {
