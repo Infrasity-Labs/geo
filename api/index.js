@@ -348,6 +348,92 @@ module.exports = async (req, res) => {
       return sendJson(res, 200, buildClustersResponse())
     }
 
+    // POST /api/clusters - Create cluster
+    if (pathname === '/api/clusters' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk) => { body += chunk })
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body)
+          const clusterId = (data.id || '').trim()
+          const clusterName = (data.name || '').trim()
+          const clusterDescription = (data.description || '').trim()
+
+          if (!clusterId) {
+            return sendJson(res, 400, { detail: 'Cluster ID is required' })
+          }
+
+          if (!clusterName) {
+            return sendJson(res, 400, { detail: 'Cluster name is required' })
+          }
+
+          const config = loadClustersConfig()
+          const clusters = config.clusters || []
+
+          // Check if cluster ID already exists
+          if (clusters.some((c) => c.id === clusterId)) {
+            return sendJson(res, 400, { detail: `Cluster with id '${clusterId}' already exists` })
+          }
+
+          // Create prompts file for the cluster
+          const promptsFilename = `prompts_${clusterId}.txt`
+          const promptsPath = path.join(CONFIG_DIR, promptsFilename)
+          if (!fs.existsSync(promptsPath)) {
+            fs.writeFileSync(promptsPath, '# Add your prompts here, one per line\n')
+          }
+
+          // Add new cluster
+          const newCluster = {
+            id: clusterId,
+            name: clusterName,
+            description: clusterDescription || `Prompts for ${clusterName}`,
+            prompts_file: promptsFilename,
+            targets_file: 'targets_fanout.json',
+            workflow: `citation-check-${clusterId}.yml`
+          }
+
+          clusters.push(newCluster)
+          config.clusters = clusters
+
+          // Save clusters config
+          const configPath = path.join(CONFIG_DIR, 'clusters.json')
+          fs.writeFileSync(configPath, JSON.stringify(config, null, 2))
+
+          return sendJson(res, 200, { cluster: newCluster, message: 'Cluster created successfully' })
+        } catch (err) {
+          console.error('Error creating cluster:', err)
+          return sendJson(res, 500, { detail: err.message || 'Internal server error' })
+        }
+      })
+      return
+    }
+
+    // DELETE /api/clusters/:cluster_id - Delete cluster
+    const deleteClusterMatch = pathname.match(/^\/api\/clusters\/([^/]+)$/)
+    if (deleteClusterMatch && req.method === 'DELETE') {
+      try {
+        const clusterId = deleteClusterMatch[1]
+        const config = loadClustersConfig()
+        const clusters = config.clusters || []
+        const originalLen = clusters.length
+
+        config.clusters = clusters.filter((c) => c.id !== clusterId)
+
+        if (config.clusters.length === originalLen) {
+          return sendJson(res, 404, { detail: `Cluster '${clusterId}' not found` })
+        }
+
+        // Save clusters config
+        const configPath = path.join(CONFIG_DIR, 'clusters.json')
+        fs.writeFileSync(configPath, JSON.stringify(config, null, 2))
+
+        return sendJson(res, 200, { message: `Cluster '${clusterId}' deleted successfully` })
+      } catch (err) {
+        console.error('Error deleting cluster:', err)
+        return sendJson(res, 500, { detail: err.message || 'Internal server error' })
+      }
+    }
+
     const clusterDetailMatch = pathname.match(/^\/api\/clusters\/([^/]+)$/)
     if (clusterDetailMatch && req.method === 'GET') {
       const detail = buildClusterDetail(clusterDetailMatch[1])

@@ -325,6 +325,93 @@ def get_clusters():
     return {"clusters": clusters}
 
 
+@app.post("/api/clusters")
+def create_cluster(data: dict):
+    """Create a new cluster."""
+    try:
+        cluster_id = (data.get("id") or "").strip()
+        cluster_name = (data.get("name") or "").strip()
+        cluster_description = (data.get("description") or "").strip()
+        
+        if not cluster_id:
+            raise HTTPException(status_code=400, detail="Cluster ID is required")
+        if not cluster_name:
+            raise HTTPException(status_code=400, detail="Cluster name is required")
+        
+        config = load_clusters_config()
+        clusters = config.get("clusters", [])
+        
+        # Check if cluster ID already exists
+        if any(c.get("id") == cluster_id for c in clusters):
+            raise HTTPException(status_code=400, detail=f"Cluster with id '{cluster_id}' already exists")
+        
+        # Create prompts file for the cluster
+        prompts_filename = f"prompts_{cluster_id}.txt"
+        prompts_path = CONFIG_DIR / prompts_filename
+        if not prompts_path.exists():
+            with open(prompts_path, "w") as f:
+                f.write("# Add your prompts here, one per line\n")
+        
+        # Add new cluster
+        new_cluster = {
+            "id": cluster_id,
+            "name": cluster_name,
+            "description": cluster_description or f"Prompts for {cluster_name}",
+            "prompts_file": prompts_filename,
+            "targets_file": "targets_fanout.json",  # Default targets
+            "workflow": f"citation-check-{cluster_id}.yml"
+        }
+        clusters.append(new_cluster)
+        config["clusters"] = clusters
+        
+        # Save clusters config
+        config_path = CONFIG_DIR / "clusters.json"
+        with open(config_path, "w") as f:
+            json.dump(config, f, indent=2)
+        
+        return {"cluster": new_cluster, "message": "Cluster created successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        import sys
+        print(f"ERROR in create_cluster: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@app.delete("/api/clusters/{cluster_id}")
+def delete_cluster(cluster_id: str):
+    """Delete a cluster."""
+    try:
+        config = load_clusters_config()
+        clusters = config.get("clusters", [])
+        
+        # Find and remove the cluster
+        original_count = len(clusters)
+        clusters = [c for c in clusters if c.get("id") != cluster_id]
+        
+        if len(clusters) == original_count:
+            raise HTTPException(status_code=404, detail=f"Cluster '{cluster_id}' not found")
+        
+        config["clusters"] = clusters
+        
+        # Save clusters config
+        config_path = CONFIG_DIR / "clusters.json"
+        with open(config_path, "w") as f:
+            json.dump(config, f, indent=2)
+        
+        return {"message": f"Cluster '{cluster_id}' deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        import sys
+        print(f"ERROR in delete_cluster: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
 @app.get("/api/clusters/{cluster_id}")
 def get_cluster_detail(cluster_id: str):
     """Get detailed info for a specific cluster including prompts and runs."""
