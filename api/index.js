@@ -355,6 +355,121 @@ module.exports = async (req, res) => {
       return sendJson(res, 200, detail)
     }
 
+    // POST /api/prompts - Add prompt
+    if (pathname === '/api/prompts' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk) => { body += chunk })
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body)
+          const clusterId = data.cluster_id || data.cluster
+          const promptText = (data.prompt || '').trim()
+
+          if (!promptText) {
+            return sendJson(res, 400, { detail: 'Prompt cannot be empty' })
+          }
+
+          if (!clusterId) {
+            return sendJson(res, 400, { detail: 'Cluster ID is required' })
+          }
+
+          const config = loadClustersConfig()
+          const cluster = (config.clusters || []).find((c) => c.id === clusterId)
+
+          if (!cluster) {
+            return sendJson(res, 404, { detail: `Cluster '${clusterId}' not found` })
+          }
+
+          const promptsFile = cluster.prompts_file || `prompts_${clusterId}.txt`
+          const promptsPath = path.join(CONFIG_DIR, promptsFile)
+
+          // Read existing prompts to avoid duplicates
+          let existingPrompts = []
+          if (fs.existsSync(promptsPath)) {
+            existingPrompts = loadPromptsFromFile(promptsFile)
+          }
+
+          if (existingPrompts.includes(promptText)) {
+            return sendJson(res, 400, { detail: 'Prompt already exists in this cluster' })
+          }
+
+          // Append new prompt
+          fs.appendFileSync(promptsPath, `\n${promptText}`)
+
+          return sendJson(res, 200, { message: 'Prompt added successfully', prompt: promptText, cluster_id: clusterId })
+        } catch (err) {
+          console.error('Error adding prompt:', err)
+          return sendJson(res, 500, { detail: err.message || 'Internal server error' })
+        }
+      })
+      return
+    }
+
+    // DELETE /api/prompts/:cluster_id?prompt_text=... - Delete prompt
+    const deletePromptMatch = pathname.match(/^\/api\/prompts\/([^/]+)$/)
+    if (deletePromptMatch && req.method === 'DELETE') {
+      try {
+        const clusterId = deletePromptMatch[1]
+        const promptText = url.searchParams.get('prompt_text')
+        if (!promptText) {
+          return sendJson(res, 400, { detail: 'prompt_text query parameter is required' })
+        }
+        const decodedPromptText = (decodeURIComponent(promptText) || '').trim()
+
+        if (!decodedPromptText) {
+          return sendJson(res, 400, { detail: 'prompt_text cannot be empty' })
+        }
+
+        const config = loadClustersConfig()
+        const cluster = (config.clusters || []).find((c) => c.id === clusterId)
+
+        if (!cluster) {
+          return sendJson(res, 404, { detail: `Cluster '${clusterId}' not found` })
+        }
+
+        const promptsFile = cluster.prompts_file || `prompts_${clusterId}.txt`
+        const promptsPath = path.join(CONFIG_DIR, promptsFile)
+
+        if (!fs.existsSync(promptsPath)) {
+          return sendJson(res, 404, { detail: 'Prompts file not found' })
+        }
+
+        // Read existing prompts
+        const content = fs.readFileSync(promptsPath, 'utf-8')
+        const lines = content.split('\n')
+
+        // Filter out the prompt to delete (exact match after stripping)
+        const filteredLines = []
+        let found = false
+        for (const line of lines) {
+          const stripped = line.trim()
+          // Skip empty lines and comments
+          if (!stripped || stripped.startsWith('#')) {
+            filteredLines.push(line)
+            continue
+          }
+          // Compare stripped versions
+          if (stripped === decodedPromptText) {
+            found = true
+            continue // Skip this line
+          }
+          filteredLines.push(line)
+        }
+
+        if (!found) {
+          return sendJson(res, 404, { detail: 'Prompt not found' })
+        }
+
+        // Write back the filtered lines
+        fs.writeFileSync(promptsPath, filteredLines.join('\n'))
+
+        return sendJson(res, 200, { message: 'Prompt deleted successfully' })
+      } catch (err) {
+        console.error('Error deleting prompt:', err)
+        return sendJson(res, 500, { detail: err.message || 'Internal server error' })
+      }
+    }
+
     return sendJson(res, 404, { error: 'Not found' })
   } catch (err) {
     console.error('API error', err)

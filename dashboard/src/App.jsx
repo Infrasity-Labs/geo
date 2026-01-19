@@ -16,23 +16,27 @@ export default function App() {
   const loadData = useCallback(async (refresh = false) => {
     setLoading(true)
     try {
-      if (refresh && import.meta.env.DEV) {
+      // Load clusters list from API
+      const clustersRes = await fetch('/api/clusters', { cache: 'no-store' })
+      if (!clustersRes.ok) throw new Error(`Failed to load clusters: ${clustersRes.status}`)
+      const clustersData = await clustersRes.json()
+      const clustersList = clustersData.clusters || []
+      setClusters(clustersList)
+      
+      // Load details for each cluster from API
+      const details = {}
+      for (const cluster of clustersList) {
         try {
-          const refreshRes = await fetch('/api/refresh', { method: 'GET', cache: 'no-store' })
-          if (refreshRes.ok) {
-            console.log('Data refreshed from logs (dev mode)')
+          const detailRes = await fetch(`/api/clusters/${cluster.id}`, { cache: 'no-store' })
+          if (detailRes.ok) {
+            const detailData = await detailRes.json()
+            details[cluster.id] = detailData
           }
         } catch (e) {
-          console.log('Refresh endpoint not available, using static data')
+          console.error(`Failed to load details for ${cluster.id}:`, e)
         }
       }
-      
-      const url = refresh ? `/data.json?t=${Date.now()}` : '/data.json'
-      const res = await fetch(url, { cache: 'no-store' })
-      if (!res.ok) throw new Error(`Failed to load data: ${res.status}`)
-      const data = await res.json()
-      setClusters(data.clusters || [])
-      setClusterDetails(data.cluster_details || {})
+      setClusterDetails(details)
       setError(null)
     } catch (err) {
       console.error('Failed to load data', err)
@@ -169,7 +173,7 @@ export default function App() {
           onClose={() => setShowAddPrompt(false)}
           onSubmit={async (data) => {
             try {
-              const res = await fetch('http://localhost:8001/prompts', {
+              const res = await fetch('/api/prompts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: data.prompt, cluster_id: data.cluster })
@@ -180,10 +184,12 @@ export default function App() {
                 return
               }
               setShowAddPrompt(false)
+              // Wait a moment for the file to be written and data regenerated
+              await new Promise(resolve => setTimeout(resolve, 1000))
               loadData(true) // Refresh data
             } catch (err) {
               console.error('Failed to add prompt:', err)
-              alert('Failed to add prompt. Make sure the API server is running.')
+              alert('Failed to add prompt. Please try again.')
             }
           }}
         />
@@ -194,7 +200,7 @@ export default function App() {
           onClose={() => setShowAddCluster(false)}
           onSubmit={async (data) => {
             try {
-              const res = await fetch('http://localhost:8001/clusters', {
+              const res = await fetch('/api/clusters', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -208,7 +214,7 @@ export default function App() {
               loadData(true) // Refresh data
             } catch (err) {
               console.error('Failed to create cluster:', err)
-              alert('Failed to create cluster. Make sure the API server is running.')
+              alert('Failed to create cluster. Please try again.')
             }
           }}
         />
@@ -220,7 +226,7 @@ export default function App() {
           onClose={() => setDeleteConfirm(null)}
           onConfirm={async () => {
             try {
-              const res = await fetch(`http://localhost:8001/clusters/${deleteConfirm.id}`, { method: 'DELETE' })
+              const res = await fetch(`/api/clusters/${deleteConfirm.id}`, { method: 'DELETE' })
               if (!res.ok) {
                 const err = await res.json()
                 alert(err.detail || 'Failed to delete cluster')
@@ -231,7 +237,7 @@ export default function App() {
               loadData(true)
             } catch (err) {
               console.error('Failed to delete cluster:', err)
-              alert('Failed to delete cluster. Make sure the API server is running.')
+              alert('Failed to delete cluster. Please try again.')
             }
           }}
         />
@@ -586,6 +592,9 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
   const latestRun = detail?.latest_run || null
   const allModels = detail?.all_models || []
   const runs = detail?.runs || []
+  const prompts = detail?.prompts || []
+  const [editingPrompt, setEditingPrompt] = useState(null)
+  const [deletePromptId, setDeletePromptId] = useState(null)
 
   if (!cluster) return null
 
@@ -681,6 +690,126 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
           </button>
         </div>
       </div>
+
+      {/* Prompts List */}
+      {prompts.length > 0 && (
+        <div className="insight-panel">
+          <h3 className="insight-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            Prompts ({prompts.length})
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {prompts.map((prompt, idx) => (
+              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px' }}>
+                <span style={{ flex: 1, fontSize: '14px', color: '#ccc' }}>{prompt}</span>
+                <button 
+                  onClick={() => setDeletePromptId(idx)}
+                  style={{ padding: '4px 8px', backgroundColor: '#ff4444', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '12px' }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {deletePromptId !== null && (
+        <div className="modal-backdrop" onClick={() => setDeletePromptId(null)}>
+          <div className="modal modal-delete">
+            <div className="modal-header">
+              <h2 className="modal-title">Delete Prompt</h2>
+              <button className="modal-close" onClick={() => setDeletePromptId(null)}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className="modal-body">
+              <p className="delete-message">
+                Are you sure you want to delete this prompt?
+              </p>
+              <p style={{ fontSize: '13px', color: '#999', marginTop: '8px' }}>"{prompts[deletePromptId]}"</p>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={() => setDeletePromptId(null)}>
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-danger" 
+                onClick={async () => {
+                  try {
+                    const promptToDelete = prompts[deletePromptId]
+                    console.log('=== DELETE PROMPT DEBUG ===')
+                    console.log('Prompt to delete (raw):', JSON.stringify(promptToDelete))
+                    console.log('Prompt to delete (repr):', promptToDelete)
+                    console.log('Prompt length:', promptToDelete?.length)
+                    console.log('Prompt bytes:', new TextEncoder().encode(promptToDelete))
+                    
+                    const encoded = encodeURIComponent(promptToDelete)
+                    const url = `/api/prompts/${cluster.id}?prompt_text=${encoded}`
+                    console.log('Full URL:', url)
+                    console.log('Encoded prompt:', encoded)
+                    
+                    const res = await fetch(url, { method: 'DELETE' })
+                    
+                    let data = {}
+                    try {
+                      const text = await res.text()
+                      console.log('Raw response text:', text)
+                      if (text) {
+                        data = JSON.parse(text)
+                      }
+                    } catch (parseErr) {
+                      console.error('Failed to parse response:', parseErr, 'Text was:', text)
+                    }
+                    
+                    console.log('Delete response status:', res.status)
+                    console.log('Delete response data:', data)
+                    console.log('========================')
+                    
+                    if (!res.ok) {
+                      const errorMsg = data.detail || data.error || `HTTP ${res.status}: Failed to delete prompt`
+                      console.error('Delete failed:', errorMsg)
+                      alert(`Failed to delete prompt:\n\n${errorMsg}\n\nCheck console for details.`)
+                      return
+                    }
+                    setDeletePromptId(null)
+                    // Refresh data from API after a moment
+                    await new Promise(resolve => setTimeout(resolve, 500))
+                    // Reload the cluster detail from API
+                    if (cluster?.id) {
+                      try {
+                        const detailRes = await fetch(`/api/clusters/${cluster.id}`, { cache: 'no-store' })
+                        if (detailRes.ok) {
+                          const detailData = await detailRes.json()
+                          // Update the detail in parent component
+                          // We need to trigger a reload - simplest is to reload the page
+                          window.location.reload()
+                        }
+                      } catch (e) {
+                        console.error('Failed to refresh after delete:', e)
+                        window.location.reload()
+                      }
+                    } else {
+                      window.location.reload()
+                    }
+                  } catch (err) {
+                    console.error('Failed to delete prompt:', err)
+                    alert(`Failed to delete prompt: ${err.message || err}\n\nCheck console for details.`)
+                  }
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Insights Row */}
       <div className="insights-row">

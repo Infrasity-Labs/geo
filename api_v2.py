@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -675,6 +675,138 @@ def get_dashboard():
         "avg_citation_rate": avg_citation_rate,
         "clusters_count": len(config.get("clusters", []))
     }
+
+
+@app.post("/api/prompts")
+def add_prompt(data: dict):
+    """Add a prompt to a cluster's prompts file."""
+    try:
+        config = load_clusters_config()
+        cluster_id = data.get("cluster_id") or data.get("cluster")
+        prompt_text = (data.get("prompt") or "").strip()
+        
+        if not prompt_text:
+            raise HTTPException(status_code=400, detail="Prompt cannot be empty")
+        
+        if not cluster_id:
+            raise HTTPException(status_code=400, detail="Cluster ID is required")
+        
+        # Find the cluster
+        cluster = next((c for c in config.get("clusters", []) if c["id"] == cluster_id), None)
+        if not cluster:
+            raise HTTPException(status_code=404, detail=f"Cluster '{cluster_id}' not found")
+        
+        # Get prompts file path
+        prompts_file = cluster.get("prompts_file", f"prompts_{cluster_id}.txt")
+        prompts_path = CONFIG_DIR / prompts_file
+        
+        # Read existing prompts to avoid duplicates
+        existing_prompts = []
+        if prompts_path.exists():
+            with open(prompts_path) as f:
+                existing_prompts = [
+                    line.strip() for line in f
+                    if line.strip() and not line.strip().startswith('#')
+                ]
+        
+        if prompt_text in existing_prompts:
+            raise HTTPException(status_code=400, detail="Prompt already exists in this cluster")
+        
+        # Append new prompt
+        with open(prompts_path, "a") as f:
+            f.write(f"\n{prompt_text}")
+        
+        return {"message": "Prompt added successfully", "prompt": prompt_text, "cluster_id": cluster_id}
+    except HTTPException:
+        raise
+    except Exception as e:
+        import sys
+        print(f"ERROR in add_prompt: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@app.delete("/api/prompts/{cluster_id}")
+def delete_prompt(cluster_id: str, prompt_text: str = Query(..., description="The prompt text to delete")):
+    """Delete a prompt from a cluster's prompts file."""
+    try:
+        from urllib.parse import unquote
+        
+        prompt_text = unquote(prompt_text) if prompt_text else None
+        if not prompt_text:
+            raise HTTPException(status_code=400, detail="prompt_text parameter is required")
+        
+        # Strip the prompt text for comparison
+        prompt_text = prompt_text.strip()
+        
+        config = load_clusters_config()
+        cluster = next((c for c in config.get("clusters", []) if c["id"] == cluster_id), None)
+        
+        if not cluster:
+            raise HTTPException(status_code=404, detail=f"Cluster '{cluster_id}' not found")
+        
+        # Get prompts file path
+        prompts_file = cluster.get("prompts_file", f"prompts_{cluster_id}.txt")
+        prompts_path = CONFIG_DIR / prompts_file
+        
+        if not prompts_path.exists():
+            raise HTTPException(status_code=404, detail="Prompts file not found")
+        
+        # Read existing prompts
+        with open(prompts_path) as f:
+            lines = f.readlines()
+        
+        # Filter out the prompt to delete (exact match after stripping)
+        filtered_lines = []
+        found = False
+        prompt_text_stripped = prompt_text.strip()
+        
+        # Debug: log what we're looking for
+        import sys
+        print(f"DEBUG delete_prompt: Looking for prompt_text={repr(prompt_text)}", file=sys.stderr)
+        print(f"DEBUG delete_prompt: After strip={repr(prompt_text_stripped)}", file=sys.stderr)
+        
+        for line in lines:
+            stripped = line.strip()
+            # Skip empty lines and comments
+            if not stripped or stripped.startswith('#'):
+                filtered_lines.append(line)
+                continue
+            # Compare stripped versions
+            print(f"DEBUG delete_prompt: Comparing {repr(stripped)} == {repr(prompt_text_stripped)}: {stripped == prompt_text_stripped}", file=sys.stderr)
+            if stripped == prompt_text_stripped:
+                found = True
+                continue  # Skip this line
+            filtered_lines.append(line)
+        
+        if not found:
+            # Return more helpful error with available prompts
+            available_prompts = [line.strip() for line in lines if line.strip() and not line.strip().startswith('#')]
+            # Check for similar prompts (fuzzy match)
+            similar = [p for p in available_prompts if prompt_text_stripped.lower() in p.lower() or p.lower() in prompt_text_stripped.lower()]
+            error_msg = f"Prompt not found: {repr(prompt_text_stripped[:50])}..."
+            if similar:
+                error_msg += f" Similar prompts found: {similar[:3]}"
+            else:
+                error_msg += f" Available prompts: {len(available_prompts)}"
+                if len(available_prompts) <= 3:
+                    error_msg += f" - {available_prompts}"
+            raise HTTPException(status_code=404, detail=error_msg)
+        
+        # Write back the filtered lines
+        with open(prompts_path, "w") as f:
+            f.writelines(filtered_lines)
+        
+        return {"message": "Prompt deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        import sys
+        print(f"ERROR in delete_prompt: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
 # === Static files (frontend) ===
