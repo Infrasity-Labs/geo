@@ -405,6 +405,99 @@ module.exports = async (req, res) => {
       return
     }
 
+    // PUT /api/prompts/:cluster_id - Edit prompt
+    if (pathname.match(/^\/api\/prompts\/([^/]+)$/) && req.method === 'PUT') {
+      const editMatch = pathname.match(/^\/api\/prompts\/([^/]+)$/)
+      let body = ''
+      req.on('data', (chunk) => { body += chunk })
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body)
+          const clusterId = editMatch[1]
+          const oldPrompt = (data.old_prompt || '').trim()
+          const newPrompt = (data.new_prompt || data.prompt || '').trim()
+
+          if (!oldPrompt) {
+            return sendJson(res, 400, { detail: 'old_prompt is required' })
+          }
+
+          if (!newPrompt) {
+            return sendJson(res, 400, { detail: 'new_prompt cannot be empty' })
+          }
+
+          if (oldPrompt === newPrompt) {
+            return sendJson(res, 400, { detail: 'New prompt must be different from old prompt' })
+          }
+
+          const config = loadClustersConfig()
+          const cluster = (config.clusters || []).find((c) => c.id === clusterId)
+
+          if (!cluster) {
+            return sendJson(res, 404, { detail: `Cluster '${clusterId}' not found` })
+          }
+
+          const promptsFile = cluster.prompts_file || `prompts_${clusterId}.txt`
+          const promptsPath = path.join(CONFIG_DIR, promptsFile)
+
+          if (!fs.existsSync(promptsPath)) {
+            return sendJson(res, 404, { detail: 'Prompts file not found' })
+          }
+
+          // Read existing prompts
+          const content = fs.readFileSync(promptsPath, 'utf-8')
+          const lines = content.split('\n')
+
+          // Find and replace the prompt
+          let found = false
+          const updatedLines = []
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i]
+            const stripped = line.trim()
+            // Skip empty lines and comments
+            if (!stripped || stripped.startsWith('#')) {
+              updatedLines.push(i === lines.length - 1 ? line : line + '\n')
+              continue
+            }
+            // Check if this is the prompt to replace
+            if (stripped === oldPrompt) {
+              found = true
+              updatedLines.push(newPrompt + (i === lines.length - 1 ? '' : '\n'))
+            } else {
+              updatedLines.push(i === lines.length - 1 ? line : line + '\n')
+            }
+          }
+
+          if (!found) {
+            return sendJson(res, 404, { detail: `Prompt not found: ${oldPrompt.substring(0, 50)}` })
+          }
+
+          // Check if new prompt already exists (duplicate check)
+          // Get original prompts from file to check if new_prompt exists elsewhere
+          const originalPrompts = lines
+            .map((l) => l.trim())
+            .filter((l) => l && !l.startsWith('#'))
+          // Remove old_prompt from the list when checking
+          const otherPrompts = originalPrompts.filter((p) => p !== oldPrompt)
+          if (otherPrompts.includes(newPrompt)) {
+            return sendJson(res, 400, { detail: 'New prompt already exists in this cluster' })
+          }
+
+          // Write back the updated lines
+          fs.writeFileSync(promptsPath, updatedLines.join(''))
+
+          return sendJson(res, 200, {
+            message: 'Prompt updated successfully',
+            old_prompt: oldPrompt,
+            new_prompt: newPrompt
+          })
+        } catch (err) {
+          console.error('Error editing prompt:', err)
+          return sendJson(res, 500, { detail: err.message || 'Internal server error' })
+        }
+      })
+      return
+    }
+
     // DELETE /api/prompts/:cluster_id?prompt_text=... - Delete prompt
     const deletePromptMatch = pathname.match(/^\/api\/prompts\/([^/]+)$/)
     if (deletePromptMatch && req.method === 'DELETE') {

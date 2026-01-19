@@ -727,6 +727,91 @@ def add_prompt(data: dict):
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
+@app.put("/api/prompts/{cluster_id}")
+def edit_prompt(cluster_id: str, data: dict):
+    """Edit/update a prompt in a cluster's prompts file."""
+    try:
+        old_prompt = (data.get("old_prompt") or "").strip()
+        new_prompt = (data.get("new_prompt") or data.get("prompt") or "").strip()
+        
+        if not old_prompt:
+            raise HTTPException(status_code=400, detail="old_prompt is required")
+        if not new_prompt:
+            raise HTTPException(status_code=400, detail="new_prompt cannot be empty")
+        if old_prompt == new_prompt:
+            raise HTTPException(status_code=400, detail="New prompt must be different from old prompt")
+        
+        config = load_clusters_config()
+        cluster = next((c for c in config.get("clusters", []) if c["id"] == cluster_id), None)
+        
+        if not cluster:
+            raise HTTPException(status_code=404, detail=f"Cluster '{cluster_id}' not found")
+        
+        # Get prompts file path
+        prompts_file = cluster.get("prompts_file", f"prompts_{cluster_id}.txt")
+        prompts_path = CONFIG_DIR / prompts_file
+        
+        if not prompts_path.exists():
+            raise HTTPException(status_code=404, detail="Prompts file not found")
+        
+        # Read existing prompts
+        with open(prompts_path) as f:
+            lines = f.readlines()
+        
+        # Find and replace the prompt
+        found = False
+        updated_lines = []
+        for line in lines:
+            stripped = line.strip()
+            # Skip empty lines and comments
+            if not stripped or stripped.startswith('#'):
+                updated_lines.append(line)
+                continue
+            # Check if this is the prompt to replace
+            if stripped == old_prompt:
+                found = True
+                # Replace with new prompt, preserving the original line ending
+                if line.endswith('\n'):
+                    updated_lines.append(f"{new_prompt}\n")
+                else:
+                    updated_lines.append(new_prompt)
+            else:
+                updated_lines.append(line)
+        
+        if not found:
+            raise HTTPException(status_code=404, detail=f"Prompt not found: {repr(old_prompt[:50])}")
+        
+        # Check if new prompt already exists (duplicate check)
+        # Get all prompts from updated_lines, excluding the one we just replaced
+        existing_prompts = []
+        for line in updated_lines:
+            stripped = line.strip()
+            if stripped and not stripped.startswith('#'):
+                existing_prompts.append(stripped)
+        
+        # Check if new_prompt already exists (it shouldn't since we replaced old_prompt with new_prompt)
+        # But we need to check the original file to see if new_prompt exists elsewhere
+        original_prompts = [line.strip() for line in lines if line.strip() and not line.strip().startswith('#')]
+        # Remove old_prompt from the list when checking
+        other_prompts = [p for p in original_prompts if p != old_prompt]
+        if new_prompt in other_prompts:
+            raise HTTPException(status_code=400, detail="New prompt already exists in this cluster")
+        
+        # Write back the updated lines
+        with open(prompts_path, "w") as f:
+            f.writelines(updated_lines)
+        
+        return {"message": "Prompt updated successfully", "old_prompt": old_prompt, "new_prompt": new_prompt}
+    except HTTPException:
+        raise
+    except Exception as e:
+        import sys
+        print(f"ERROR in edit_prompt: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
 @app.delete("/api/prompts/{cluster_id}")
 def delete_prompt(cluster_id: str, prompt_text: str = Query(..., description="The prompt text to delete")):
     """Delete a prompt from a cluster's prompts file."""

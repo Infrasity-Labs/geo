@@ -595,6 +595,7 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
   const prompts = detail?.prompts || []
   const [editingPrompt, setEditingPrompt] = useState(null)
   const [deletePromptId, setDeletePromptId] = useState(null)
+  const [editPromptId, setEditPromptId] = useState(null)
 
   if (!cluster) return null
 
@@ -691,29 +692,45 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
         </div>
       </div>
 
-      {/* Prompts List */}
-      {prompts.length > 0 && (
-        <div className="insight-panel">
-          <h3 className="insight-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-            Prompts ({prompts.length})
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {prompts.map((prompt, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px' }}>
-                <span style={{ flex: 1, fontSize: '14px', color: '#ccc' }}>{prompt}</span>
-                <button 
-                  onClick={() => setDeletePromptId(idx)}
-                  style={{ padding: '4px 8px', backgroundColor: '#ff4444', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '12px' }}
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+      {editPromptId !== null && (
+        <EditPromptModal
+          prompt={prompts[editPromptId]}
+          onClose={() => setEditPromptId(null)}
+          onSubmit={async (newPrompt) => {
+            try {
+              const oldPrompt = prompts[editPromptId]
+              const res = await fetch(`/api/prompts/${cluster.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ old_prompt: oldPrompt, new_prompt: newPrompt })
+              })
+              
+              let data = {}
+              try {
+                const text = await res.text()
+                if (text) {
+                  data = JSON.parse(text)
+                }
+              } catch (parseErr) {
+                console.error('Failed to parse response:', parseErr)
+              }
+              
+              if (!res.ok) {
+                const errorMsg = data.detail || data.error || `HTTP ${res.status}: Failed to edit prompt`
+                alert(`Failed to edit prompt:\n\n${errorMsg}`)
+                return
+              }
+              
+              setEditPromptId(null)
+              // Refresh data after a moment
+              await new Promise(resolve => setTimeout(resolve, 500))
+              window.location.reload()
+            } catch (err) {
+              console.error('Failed to edit prompt:', err)
+              alert(`Failed to edit prompt: ${err.message || err}`)
+            }
+          }}
+        />
       )}
 
       {deletePromptId !== null && (
@@ -914,6 +931,37 @@ function ClusterDetailView({ detail, onBack, onAddPrompt }) {
           )}
         </div>
       </div>
+
+      {/* Prompts List */}
+      {prompts.length > 0 && (
+        <div className="insight-panel">
+          <h3 className="insight-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            Prompts ({prompts.length})
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {prompts.map((prompt, idx) => (
+              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px' }}>
+                <span style={{ flex: 1, fontSize: '14px', color: '#ccc' }}>{prompt}</span>
+                <button 
+                  onClick={() => setEditPromptId(idx)}
+                  style={{ padding: '4px 8px', backgroundColor: '#4a90e2', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '12px' }}
+                >
+                  Edit
+                </button>
+                <button 
+                  onClick={() => setDeletePromptId(idx)}
+                  style={{ padding: '4px 8px', backgroundColor: '#ff4444', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '12px' }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Pipeline */}
       <div className="pipeline">
@@ -1222,6 +1270,72 @@ function AddClusterModal({ onClose, onSubmit }) {
             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={!name.trim() || !clusterId.trim() || isSubmitting}>
               {isSubmitting ? 'Adding...' : 'Add Cluster'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+// Edit Prompt Modal
+function EditPromptModal({ prompt, onClose, onSubmit }) {
+  const [newPrompt, setNewPrompt] = useState(prompt || '')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!newPrompt.trim()) {
+      alert('Prompt cannot be empty')
+      return
+    }
+    if (newPrompt.trim() === prompt) {
+      alert('No changes made')
+      return
+    }
+    setIsSubmitting(true)
+    await onSubmit(newPrompt.trim())
+    setIsSubmitting(false)
+  }
+
+  return (
+    <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-header">
+          <h2 className="modal-title">Edit Prompt</h2>
+          <button className="modal-close" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="modal-body">
+            <div className="form-group">
+              <label className="form-label">Current Prompt</label>
+              <div style={{ padding: '8px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', fontSize: '13px', color: '#999', marginBottom: '12px' }}>
+                {prompt}
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label">New Prompt Text</label>
+              <textarea
+                className="form-textarea"
+                placeholder="Enter new prompt text..."
+                value={newPrompt}
+                onChange={(e) => setNewPrompt(e.target.value)}
+                rows={4}
+                autoFocus
+              />
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isSubmitting}>
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary" disabled={!newPrompt.trim() || newPrompt.trim() === prompt || isSubmitting}>
+              {isSubmitting ? 'Updating...' : 'Update Prompt'}
             </button>
           </div>
         </form>
