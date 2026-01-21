@@ -1,0 +1,39 @@
+name: Sync Supabase from Logs
+
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: "Cluster label (optional, defaults to 'default')"
+        required: false
+        default: "default"
+      company_id:
+        description: "Company UUID override (optional)"
+        required: false
+        default: ""
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Sync logs to Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_COMPANY_ID: f1585331-e07c-47fc-ae5f-56c10b5cf159
+          SUPABASE_LABEL: ${{ inputs.label || 'default' }}
+        run: npm run sync:supabase

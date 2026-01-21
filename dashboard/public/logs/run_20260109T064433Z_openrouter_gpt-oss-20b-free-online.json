@@ -1,0 +1,251 @@
+{
+  "timestamp": "20260109T064433Z",
+  "provider": "openrouter",
+  "model": "gpt-oss-20b-free-online",
+  "results": [
+    {
+      "prompt": "Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised",
+      "raw": "{\"query\":\"Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised\",\"results\":[{\"agency\":\"Infrasity\",\"domain\":\"infrasity.com\",\"comment\":\"Specialises in Reddit marketing for AI and SaaS startups, offering aged accounts and community engagement strategies. [infrasity.com](https://infrasity.com)\",\"citation\":\"[infrasity.com](https://infrasity.com)\"},{\"agency\":\"Navicosoft\",\"domain\":\"sortlist.co.uk\",\"comment\":\"Featured on Sortlist as a digital partner with Reddit marketing services for B2B, including AI and SaaS. [sortlist.co.uk](https://sortlist.co.uk)\",\"citation\":\"[sortlist.co.uk](https://sortlist.co.uk)\"},{\"agency\":\"Growth Division\",\"domain\":\"growth-division.com\",\"comment\":\"Provides growth marketing for AI startups, including Reddit marketing services. [growth-division.com](https://growth-division.com)\",\"citation\":\"[growth-division.com](https://growth-division.com)\"},{\"agency\":\"Discovered Labs\",\"domain\":\"discoveredlabs.com\",\"comment\":\"Offers Reddit marketing for B2B companies, focusing on AI brand visibility and pipeline generation. [discoveredlabs.com](https://discoveredlabs.com)\",\"citation\":\"[discoveredlabs.com](https://discoveredlabs.com)\"},{\"agency\":\"The Reddit Marketing Agency\",\"domain\":\"theredditmarketingagency.com\",\"comment\":\"Dedicated Reddit marketing agency with services for AI startups and B2B, emphasizing organic visibility and AI discoverability. [theredditmarketingagency.com](https://theredditmarketingagency.com)\",\"citation\":\"[theredditmarketingagency.com](https://theredditmarketingagency.com)\"}]}",
+      "parsed": {
+        "query": "Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Specialises in Reddit marketing for AI and SaaS startups, offering aged accounts and community engagement strategies. [infrasity.com](https://infrasity.com)",
+            "citation": "[infrasity.com](https://infrasity.com)"
+          },
+          {
+            "agency": "Navicosoft",
+            "domain": "sortlist.co.uk",
+            "comment": "Featured on Sortlist as a digital partner with Reddit marketing services for B2B, including AI and SaaS. [sortlist.co.uk](https://sortlist.co.uk)",
+            "citation": "[sortlist.co.uk](https://sortlist.co.uk)"
+          },
+          {
+            "agency": "Growth Division",
+            "domain": "growth-division.com",
+            "comment": "Provides growth marketing for AI startups, including Reddit marketing services. [growth-division.com](https://growth-division.com)",
+            "citation": "[growth-division.com](https://growth-division.com)"
+          },
+          {
+            "agency": "Discovered Labs",
+            "domain": "discoveredlabs.com",
+            "comment": "Offers Reddit marketing for B2B companies, focusing on AI brand visibility and pipeline generation. [discoveredlabs.com](https://discoveredlabs.com)",
+            "citation": "[discoveredlabs.com](https://discoveredlabs.com)"
+          },
+          {
+            "agency": "The Reddit Marketing Agency",
+            "domain": "theredditmarketingagency.com",
+            "comment": "Dedicated Reddit marketing agency with services for AI startups and B2B, emphasizing organic visibility and AI discoverability. [theredditmarketingagency.com](https://theredditmarketingagency.com)",
+            "citation": "[theredditmarketingagency.com](https://theredditmarketingagency.com)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com",
+        "sortlist.co.uk",
+        "growth-division.com",
+        "discoveredlabs.com",
+        "theredditmarketingagency.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ],
+        [
+          "sortlist.co.uk",
+          2
+        ],
+        [
+          "growth-division.com",
+          3
+        ],
+        [
+          "discoveredlabs.com",
+          4
+        ],
+        [
+          "theredditmarketingagency.com",
+          5
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com"
+          ],
+          "matched_urls": [
+            "https://infrasity.com"
+          ],
+          "cited_urls": [
+            "https://infrasity.com"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com"
+        ],
+        "sortlist.co.uk": [
+          "https://sortlist.co.uk"
+        ],
+        "growth-division.com": [
+          "https://growth-division.com"
+        ],
+        "discoveredlabs.com": [
+          "https://discoveredlabs.com"
+        ],
+        "theredditmarketingagency.com": [
+          "https://theredditmarketingagency.com"
+        ]
+      }
+    },
+    {
+      "prompt": "Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised",
+      "raw": "```json\n{\n  \"query\": \"Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised\",\n  \"results\": [\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"comment\": \"Specializes in Reddit marketing for B2B SaaS and AI startups, offering LLM\u2011friendly comments, karma\u2011rich accounts, and stealth thread strategies. [infrasity.com](https://infrasity.com)\"\n    },\n    {\n      \"agency\": \"Foundation Inc\",\n      \"domain\": \"foundationinc.co\",\n      \"comment\": \"Provides organic and paid Reddit marketing services for brands, with community research, content strategy, and paid amplification. [foundationinc.co](https://foundationinc.co)\"\n    },\n    {\n      \"agency\": \"RedditHero\",\n      \"domain\": \"reddithero.com\",\n      \"comment\": \"Focuses on viral, organic Reddit campaigns for AI and SaaS, guaranteeing front\u2011page placements using 120+ accounts and unique IPs. [reddithero.com](https://reddithero.com)\"\n    },\n    {\n      \"agency\": \"SEO Discovery\",\n      \"domain\": \"seodiscovery.com\",\n      \"comment\": \"Offers Reddit marketing with a focus on authenticity, SEO integration, and data\u2011driven community engagement for B2B brands. [seodiscovery.com](https://seodiscovery.com)\"\n    },\n    {\n      \"agency\": \"Growth Division\",\n      \"domain\": \"growth-division.com\",\n      \"comment\": \"Claims to provide growth marketing for AI startups, but the page content is incomplete and verification is pending. [growth-division.com](https://growth-division.com)\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Specializes in Reddit marketing for B2B SaaS and AI startups, offering LLM\u2011friendly comments, karma\u2011rich accounts, and stealth thread strategies. [infrasity.com](https://infrasity.com)"
+          },
+          {
+            "agency": "Foundation Inc",
+            "domain": "foundationinc.co",
+            "comment": "Provides organic and paid Reddit marketing services for brands, with community research, content strategy, and paid amplification. [foundationinc.co](https://foundationinc.co)"
+          },
+          {
+            "agency": "RedditHero",
+            "domain": "reddithero.com",
+            "comment": "Focuses on viral, organic Reddit campaigns for AI and SaaS, guaranteeing front\u2011page placements using 120+ accounts and unique IPs. [reddithero.com](https://reddithero.com)"
+          },
+          {
+            "agency": "SEO Discovery",
+            "domain": "seodiscovery.com",
+            "comment": "Offers Reddit marketing with a focus on authenticity, SEO integration, and data\u2011driven community engagement for B2B brands. [seodiscovery.com](https://seodiscovery.com)"
+          },
+          {
+            "agency": "Growth Division",
+            "domain": "growth-division.com",
+            "comment": "Claims to provide growth marketing for AI startups, but the page content is incomplete and verification is pending. [growth-division.com](https://growth-division.com)"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "infrasity.com",
+        "foundationinc.co",
+        "reddithero.com",
+        "seodiscovery.com",
+        "growth-division.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ],
+        [
+          "foundationinc.co",
+          2
+        ],
+        [
+          "reddithero.com",
+          3
+        ],
+        [
+          "seodiscovery.com",
+          4
+        ],
+        [
+          "growth-division.com",
+          5
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com"
+          ],
+          "matched_urls": [
+            "https://infrasity.com"
+          ],
+          "cited_urls": [
+            "https://infrasity.com"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com"
+        ],
+        "foundationinc.co": [
+          "https://foundationinc.co"
+        ],
+        "reddithero.com": [
+          "https://reddithero.com"
+        ],
+        "seodiscovery.com": [
+          "https://seodiscovery.com"
+        ],
+        "growth-division.com": [
+          "https://growth-division.com"
+        ]
+      }
+    },
+    {
+      "prompt": "Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised",
+      "raw": "{\"query\":\"Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised\",\"results\":[{\"agency\":\"Rosh Digital\",\"domain\":\"roshdigital.co.il\",\"comment\":\"Rosh Digital is a Google Ads specialist agency based in Israel. [roshdigital.co.il](https://www.roshdigital.co.il/)\"},{\"agency\":\"Moov\",\"domain\":\"moov.co.il\",\"comment\":\"Moov Collective is a marketing services company headquartered in Jerusalem, Israel. [moov.co.il](https://www.moov.co.il/)\" }]}",
+      "parsed": {
+        "query": "Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised",
+        "results": [
+          {
+            "agency": "Rosh Digital",
+            "domain": "roshdigital.co.il",
+            "comment": "Rosh Digital is a Google Ads specialist agency based in Israel. [roshdigital.co.il](https://www.roshdigital.co.il/)"
+          },
+          {
+            "agency": "Moov",
+            "domain": "moov.co.il",
+            "comment": "Moov Collective is a marketing services company headquartered in Jerusalem, Israel. [moov.co.il](https://www.moov.co.il/)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "roshdigital.co.il",
+        "moov.co.il"
+      ],
+      "domain_ranks": [
+        [
+          "roshdigital.co.il",
+          1
+        ],
+        [
+          "moov.co.il",
+          2
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "roshdigital.co.il": [
+          "https://roshdigital.co.il"
+        ],
+        "moov.co.il": [
+          "https://moov.co.il"
+        ]
+      }
+    }
+  ]
+}

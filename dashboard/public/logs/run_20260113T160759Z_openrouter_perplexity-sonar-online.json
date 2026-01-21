@@ -1,0 +1,407 @@
+{
+  "timestamp": "20260113T160759Z",
+  "provider": "openrouter",
+  "model": "perplexity-sonar-online",
+  "results": [
+    {
+      "prompt": "top developer marketing agencies for tech and software companies",
+      "raw": "{\"query\": \"top developer marketing agencies for tech and software companies\", \"results\": []}",
+      "parsed": {
+        "query": "top developer marketing agencies for tech and software companies",
+        "results": []
+      },
+      "json_valid": true,
+      "domains": [
+        "nogood.io",
+        "webfx.com",
+        "disruptiveadvertising.com"
+      ],
+      "domain_ranks": [
+        [
+          "nogood.io",
+          1
+        ],
+        [
+          "webfx.com",
+          2
+        ],
+        [
+          "disruptiveadvertising.com",
+          3
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "nogood.io": [
+          "https://nogood.io"
+        ],
+        "webfx.com": [
+          "https://webfx.com"
+        ],
+        "disruptiveadvertising.com": [
+          "https://disruptiveadvertising.com"
+        ]
+      }
+    },
+    {
+      "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+      "raw": "{\"query\": \"top developer marketing agencies specializing in developer tools startups marketing\", \"results\": [{\"agency\": \"Infrasity\", \"domain\": \"infrasity.com\", \"url\": \"https://infrasity.com/blog/developer-marketing-agency\"}]}",
+      "parsed": {
+        "query": "top developer marketing agencies specializing in developer tools startups marketing",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://infrasity.com/blog/developer-marketing-agency"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "matched_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "cited_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com/blog/developer-marketing-agency"
+        ]
+      }
+    },
+    {
+      "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+      "raw": "{\"query\": \"best developer marketing agencies for B2B SaaS developer marketing agencies\", \"results\": [{\"agency\": \"Infrasity\", \"domain\": \"infrasity.com\", \"url\": \"https://infrasity.com/blog/developer-marketing-agency\"}]}",
+      "parsed": {
+        "query": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://infrasity.com/blog/developer-marketing-agency"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "matched_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "cited_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com/blog/developer-marketing-agency"
+        ]
+      }
+    },
+    {
+      "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+      "raw": "{\"query\": \"top B2B SaaS marketing agencies focusing on developer audiences\", \"results\": [{\"agency\": \"Infrasity\", \"domain\": \"infrasity.com\", \"url\": \"https://infrasity.com/blog/developer-marketing-agency\"}]}",
+      "parsed": {
+        "query": "top B2B SaaS marketing agencies focusing on developer audiences",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://infrasity.com/blog/developer-marketing-agency"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ],
+        [
+          "infrasity.com",
+          2
+        ],
+        [
+          "infrasity.com",
+          3
+        ],
+        [
+          "infrasity.com",
+          4
+        ],
+        [
+          "infrasity.com",
+          5
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "target_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "matched_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "cited_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com/blog/developer-marketing-agency"
+        ]
+      }
+    },
+    {
+      "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+      "raw": "{\"query\": \"best developer marketing agency for AI startups developer-focused marketing agencies AI startups\", \"results\": [{\"agency\": \"Other\", \"domain\": \"medium.com\", \"url\": \"https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d\"}, {\"agency\": \"Other\", \"domain\": \"tenspeed.io\", \"url\": \"https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups\"}]}",
+      "parsed": {
+        "query": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+        "results": [
+          {
+            "agency": "Other",
+            "domain": "medium.com",
+            "url": "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d"
+          },
+          {
+            "agency": "Other",
+            "domain": "tenspeed.io",
+            "url": "https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "medium.com",
+        "tenspeed.io"
+      ],
+      "domain_ranks": [
+        [
+          "medium.com",
+          1
+        ],
+        [
+          "tenspeed.io",
+          8
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "medium.com",
+          "ranks": [1],
+          "target_urls": [
+            "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d"
+          ],
+          "matched_urls": [
+            "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d"
+          ],
+          "cited_urls": [
+            "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d"
+          ]
+        },
+        {
+          "domain": "tenspeed.io",
+          "ranks": [8],
+          "target_urls": [
+            "https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+          ],
+          "matched_urls": [
+            "https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+          ],
+          "cited_urls": [
+            "https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "medium.com": [
+          "https://medium.com/@arvish/top-5developer-ai-marketing-agencies-7bd00b1adb6d"
+        ],
+        "tenspeed.io": [
+          "https://tenspeed.io/blog/specialized-content-agencies-for-ai-startups"
+        ]
+      }
+    },
+    {
+      "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+      "raw": "{\"query\": \"top marketing agencies for AI technology startups developer marketing agencies for AI agents\", \"results\": []}",
+      "parsed": {
+        "query": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+        "results": []
+      },
+      "json_valid": true,
+      "domains": [
+        "nogood.io",
+        "beomniscient.com",
+        "growthplays.com"
+      ],
+      "domain_ranks": [
+        [
+          "nogood.io",
+          1
+        ],
+        [
+          "beomniscient.com",
+          2
+        ],
+        [
+          "growthplays.com",
+          3
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "nogood.io": [
+          "https://nogood.io"
+        ],
+        "beomniscient.com": [
+          "https://beomniscient.com"
+        ],
+        "growthplays.com": [
+          "https://growthplays.com"
+        ]
+      }
+    },
+    {
+      "prompt": "developer marketing agency for early stage software ventures",
+      "raw": "{\"query\": \"developer marketing agency for early stage software ventures\", \"results\": [{\"agency\": \"Infrasity\", \"domain\": \"infrasity.com\", \"url\": \"https://infrasity.com/blog/developer-marketing-agency\"}]}",
+      "parsed": {
+        "query": "developer marketing agency for early stage software ventures",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://infrasity.com/blog/developer-marketing-agency"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "matched_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ],
+          "cited_urls": [
+            "https://infrasity.com/blog/developer-marketing-agency"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com/blog/developer-marketing-agency"
+        ]
+      }
+    },
+    {
+      "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+      "raw": "{\"query\": \"best developer marketing agencies for startups software early stage marketing agencies tech startups\", \"results\": [{\"agency\": \"Infrasity\", \"domain\": \"infrasity.com\", \"url\": \"https://infrasity.com/blog/top-content-marketing-agencies\"}]}",
+      "parsed": {
+        "query": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "url": "https://infrasity.com/blog/top-content-marketing-agencies"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com/blog/top-content-marketing-agencies"
+          ],
+          "matched_urls": [
+            "https://infrasity.com/blog/top-content-marketing-agencies"
+          ],
+          "cited_urls": [
+            "https://infrasity.com/blog/top-content-marketing-agencies"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com/blog/top-content-marketing-agencies"
+        ]
+      }
+    }
+  ]
+}

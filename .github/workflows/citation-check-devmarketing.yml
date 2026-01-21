@@ -11,6 +11,12 @@ jobs:
       MODEL_SLUGS: openai/gpt-oss-20b:free:online
       PROMPTS_PATH: config/prompts_devmarketing.txt
       TARGETS_PATH: config/targets_fanout.json
+      GEO_INGEST_URL: ${{ secrets.GEO_INGEST_URL }}
+      GEO_INGEST_TOKEN: ${{ secrets.GEO_INGEST_TOKEN }}
+      GEO_COMPANY_SLUG: ${{ secrets.GEO_COMPANY_SLUG }}
+      GEO_COMPANY_ID: ${{ secrets.GEO_COMPANY_ID }}
+      GEO_LABEL: ${{ secrets.GEO_LABEL }}
+      GEO_CLUSTER_SLUG: devmarketing
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,6 +31,25 @@ jobs:
 
       - name: Run gpt-oss-20b free online (devmarketing)
         run: python run.py
+
+      - name: Send run to Supabase
+        run: |
+          set -e
+          if [ -z "${GEO_INGEST_URL}" ] || [ -z "${GEO_INGEST_TOKEN}" ]; then
+            echo "Ingest not configured; skipping upload."; exit 0; fi
+          RUN_FILE=$(ls -t logs/run_*.json | head -1)
+          echo "Sending ${RUN_FILE}"
+          jq -c \
+            --arg company_slug "${GEO_COMPANY_SLUG}" \
+            --arg company_id "${GEO_COMPANY_ID}" \
+            --arg label "${GEO_LABEL:-default}" \
+            --arg cluster "${GEO_CLUSTER_SLUG}" \
+            '. + {company_slug: $company_slug, label: $label, cluster_slug: $cluster} | (if $company_id != "" then . + {company_id: $company_id} else . end)' \
+            "${RUN_FILE}" \
+          | curl -sS -X POST "${GEO_INGEST_URL}" \
+              -H "Authorization: Bearer ${GEO_INGEST_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data-binary @-
 
       - name: Job summary
         run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
@@ -43,6 +68,12 @@ jobs:
       MODEL_SLUGS: anthropic/claude-3.5-haiku:online
       PROMPTS_PATH: config/prompts_devmarketing.txt
       TARGETS_PATH: config/targets_fanout.json
+      GEO_INGEST_URL: ${{ secrets.GEO_INGEST_URL }}
+      GEO_INGEST_TOKEN: ${{ secrets.GEO_INGEST_TOKEN }}
+      GEO_COMPANY_SLUG: ${{ secrets.GEO_COMPANY_SLUG }}
+      GEO_COMPANY_ID: ${{ secrets.GEO_COMPANY_ID }}
+      GEO_LABEL: ${{ secrets.GEO_LABEL }}
+      GEO_CLUSTER_SLUG: devmarketing
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,6 +88,25 @@ jobs:
 
       - name: Run claude 3.5 haiku online (devmarketing)
         run: python run.py
+
+      - name: Send run to Supabase
+        run: |
+          set -e
+          if [ -z "${GEO_INGEST_URL}" ] || [ -z "${GEO_INGEST_TOKEN}" ]; then
+            echo "Ingest not configured; skipping upload."; exit 0; fi
+          RUN_FILE=$(ls -t logs/run_*.json | head -1)
+          echo "Sending ${RUN_FILE}"
+          jq -c \
+            --arg company_slug "${GEO_COMPANY_SLUG}" \
+            --arg company_id "${GEO_COMPANY_ID}" \
+            --arg label "${GEO_LABEL:-default}" \
+            --arg cluster "${GEO_CLUSTER_SLUG}" \
+            '. + {company_slug: $company_slug, label: $label, cluster_slug: $cluster} | (if $company_id != "" then . + {company_id: $company_id} else . end)' \
+            "${RUN_FILE}" \
+          | curl -sS -X POST "${GEO_INGEST_URL}" \
+              -H "Authorization: Bearer ${GEO_INGEST_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data-binary @-
 
       - name: Job summary
         run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
@@ -75,6 +125,12 @@ jobs:
       MODEL_SLUGS: perplexity/sonar:online
       PROMPTS_PATH: config/prompts_devmarketing.txt
       TARGETS_PATH: config/targets_fanout.json
+      GEO_INGEST_URL: ${{ secrets.GEO_INGEST_URL }}
+      GEO_INGEST_TOKEN: ${{ secrets.GEO_INGEST_TOKEN }}
+      GEO_COMPANY_SLUG: ${{ secrets.GEO_COMPANY_SLUG }}
+      GEO_COMPANY_ID: ${{ secrets.GEO_COMPANY_ID }}
+      GEO_LABEL: ${{ secrets.GEO_LABEL }}
+      GEO_CLUSTER_SLUG: devmarketing
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -93,132 +149,21 @@ jobs:
       - name: Job summary
         run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
 
-      - name: Upload logs
-        uses: actions/upload-artifact@v4
-        with:
-          name: logs-perplexity-sonar-devmarketing
-          path: logs/
-
-  commit-logs-devmarketing:
-    runs-on: ubuntu-latest
-    needs: run-perplexity-sonar-devmarketing
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Debug - List artifacts
-        run: |
-          echo "=== Artifact structure ==="
-          find artifacts -type f | head -50
-          echo "=== End ==="
-
-      - name: Merge logs
+      - name: Send run to Supabase
         run: |
           set -e
-          mkdir -p logs
-          python3 - <<'PY'
-          import pathlib
-          import shutil
-          import os
-
-          root = pathlib.Path("artifacts")
-          log_dir = pathlib.Path("logs")
-          log_dir.mkdir(exist_ok=True)
-
-          # Find all artifact directories that contain log files
-          # Artifacts are downloaded as: artifacts/<artifact-name>/<files>
-          artifact_dirs = [d for d in root.iterdir() if d.is_dir()]
-          
-          print(f"Found artifact directories: {[d.name for d in artifact_dirs]}")
-
-          master_out = (log_dir / "master_log.jsonl").open("w", encoding="utf-8")
-          main_log_path = log_dir / "main_log.md"
-          main_written = {"done": False}
-
-          def append_main(src: pathlib.Path):
-            text = src.read_text(encoding="utf-8")
-            if not main_written["done"]:
-              main_log_path.write_text(text, encoding="utf-8")
-              main_written["done"] = True
-              return
-            lines = text.splitlines()
-            trimmed = lines
-            if trimmed and trimmed[0].startswith("# Citation runs"):
-              trimmed = trimmed[1:]
-            with main_log_path.open("a", encoding="utf-8") as handle:
-              handle.write("\n".join(trimmed) + "\n")
-
-          for artifact_dir in sorted(artifact_dirs):
-            print(f"Processing artifact: {artifact_dir.name}")
-            
-            # Check if logs are directly in artifact dir or in a logs subdirectory
-            if (artifact_dir / "logs").exists():
-              src_logs = artifact_dir / "logs"
-            else:
-              src_logs = artifact_dir
-            
-            # Copy run-level JSON files
-            for run_file in src_logs.glob("run_*.json"):
-              print(f"  Copying: {run_file.name}")
-              shutil.copy(run_file, log_dir / run_file.name)
-
-            # Append master_log.jsonl content
-            master_file = src_logs / "master_log.jsonl"
-            if master_file.exists():
-              for line in master_file.read_text(encoding="utf-8").splitlines():
-                master_out.write(line + "\n")
-
-            # Merge main_log.md
-            main_file = src_logs / "main_log.md"
-            if main_file.exists():
-              append_main(main_file)
-
-          master_out.close()
-          
-          # List what we have in logs
-          print(f"\nFinal logs directory contents:")
-          for f in sorted(log_dir.iterdir()):
-            print(f"  {f.name}")
-          PY
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Generate dashboard data
-        run: |
-          cd dashboard
-          npm install
-          node scripts/generate-data.js
-
-      - name: Commit and push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Add all log files and generated data
-          git add -f logs/*.json logs/*.jsonl logs/main_log.md 2>/dev/null || true
-          git add -f logs/last_summary.md 2>/dev/null || true
-          git add -f dashboard/public/data.json 2>/dev/null || true
-          
-          # Check if there are changes
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            echo "Changes detected, committing..."
-            git status --short
-            git commit -m "Update citation logs and dashboard data (devmarketing) [skip ci]"
-            git push origin HEAD:main
-          fi
+          if [ -z "${GEO_INGEST_URL}" ] || [ -z "${GEO_INGEST_TOKEN}" ]; then
+            echo "Ingest not configured; skipping upload."; exit 0; fi
+          RUN_FILE=$(ls -t logs/run_*.json | head -1)
+          echo "Sending ${RUN_FILE}"
+          jq -c \
+            --arg company_slug "${GEO_COMPANY_SLUG}" \
+            --arg company_id "${GEO_COMPANY_ID}" \
+            --arg label "${GEO_LABEL:-default}" \
+            --arg cluster "${GEO_CLUSTER_SLUG}" \
+            '. + {company_slug: $company_slug, label: $label, cluster_slug: $cluster} | (if $company_id != "" then . + {company_id: $company_id} else . end)' \
+            "${RUN_FILE}" \
+          | curl -sS -X POST "${GEO_INGEST_URL}" \
+              -H "Authorization: Bearer ${GEO_INGEST_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data-binary @-

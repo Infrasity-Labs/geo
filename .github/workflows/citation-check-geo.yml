@@ -11,6 +11,12 @@ jobs:
       MODEL_SLUGS: openai/gpt-oss-20b:free:online
       PROMPTS_PATH: config/prompts_geo.txt
       TARGETS_PATH: config/targets_geo.json
+      GEO_INGEST_URL: ${{ secrets.GEO_INGEST_URL }}
+      GEO_INGEST_TOKEN: ${{ secrets.GEO_INGEST_TOKEN }}
+      GEO_COMPANY_SLUG: ${{ secrets.GEO_COMPANY_SLUG }}
+      GEO_COMPANY_ID: ${{ secrets.GEO_COMPANY_ID }}
+      GEO_LABEL: ${{ secrets.GEO_LABEL }}
+      GEO_CLUSTER_SLUG: geo
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,6 +31,25 @@ jobs:
 
       - name: Run gpt-oss-20b free online (geo)
         run: python run.py
+
+      - name: Send run to Supabase
+        run: |
+          set -e
+          if [ -z "${GEO_INGEST_URL}" ] || [ -z "${GEO_INGEST_TOKEN}" ]; then
+            echo "Ingest not configured; skipping upload."; exit 0; fi
+          RUN_FILE=$(ls -t logs/run_*.json | head -1)
+          echo "Sending ${RUN_FILE}"
+          jq -c \
+            --arg company_slug "${GEO_COMPANY_SLUG}" \
+            --arg company_id "${GEO_COMPANY_ID}" \
+            --arg label "${GEO_LABEL:-default}" \
+            --arg cluster "${GEO_CLUSTER_SLUG}" \
+            '. + {company_slug: $company_slug, label: $label, cluster_slug: $cluster} | (if $company_id != "" then . + {company_id: $company_id} else . end)' \
+            "${RUN_FILE}" \
+          | curl -sS -X POST "${GEO_INGEST_URL}" \
+              -H "Authorization: Bearer ${GEO_INGEST_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data-binary @-
 
       - name: Job summary
         run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
@@ -43,6 +68,12 @@ jobs:
       MODEL_SLUGS: anthropic/claude-3.5-haiku:online
       PROMPTS_PATH: config/prompts_geo.txt
       TARGETS_PATH: config/targets_geo.json
+      GEO_INGEST_URL: ${{ secrets.GEO_INGEST_URL }}
+      GEO_INGEST_TOKEN: ${{ secrets.GEO_INGEST_TOKEN }}
+      GEO_COMPANY_SLUG: ${{ secrets.GEO_COMPANY_SLUG }}
+      GEO_COMPANY_ID: ${{ secrets.GEO_COMPANY_ID }}
+      GEO_LABEL: ${{ secrets.GEO_LABEL }}
+      GEO_CLUSTER_SLUG: geo
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -57,6 +88,25 @@ jobs:
 
       - name: Run claude 3.5 haiku online (geo)
         run: python run.py
+
+      - name: Send run to Supabase
+        run: |
+          set -e
+          if [ -z "${GEO_INGEST_URL}" ] || [ -z "${GEO_INGEST_TOKEN}" ]; then
+            echo "Ingest not configured; skipping upload."; exit 0; fi
+          RUN_FILE=$(ls -t logs/run_*.json | head -1)
+          echo "Sending ${RUN_FILE}"
+          jq -c \
+            --arg company_slug "${GEO_COMPANY_SLUG}" \
+            --arg company_id "${GEO_COMPANY_ID}" \
+            --arg label "${GEO_LABEL:-default}" \
+            --arg cluster "${GEO_CLUSTER_SLUG}" \
+            '. + {company_slug: $company_slug, label: $label, cluster_slug: $cluster} | (if $company_id != "" then . + {company_id: $company_id} else . end)' \
+            "${RUN_FILE}" \
+          | curl -sS -X POST "${GEO_INGEST_URL}" \
+              -H "Authorization: Bearer ${GEO_INGEST_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data-binary @-
 
       - name: Job summary
         run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
@@ -75,6 +125,12 @@ jobs:
       MODEL_SLUGS: perplexity/sonar:online
       PROMPTS_PATH: config/prompts_geo.txt
       TARGETS_PATH: config/targets_geo.json
+      GEO_INGEST_URL: ${{ secrets.GEO_INGEST_URL }}
+      GEO_INGEST_TOKEN: ${{ secrets.GEO_INGEST_TOKEN }}
+      GEO_COMPANY_SLUG: ${{ secrets.GEO_COMPANY_SLUG }}
+      GEO_COMPANY_ID: ${{ secrets.GEO_COMPANY_ID }}
+      GEO_LABEL: ${{ secrets.GEO_LABEL }}
+      GEO_CLUSTER_SLUG: geo
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -93,85 +149,27 @@ jobs:
       - name: Job summary
         run: cat logs/last_summary.md >> $GITHUB_STEP_SUMMARY
 
+      - name: Send run to Supabase
+        run: |
+          set -e
+          if [ -z "${GEO_INGEST_URL}" ] || [ -z "${GEO_INGEST_TOKEN}" ]; then
+            echo "Ingest not configured; skipping upload."; exit 0; fi
+          RUN_FILE=$(ls -t logs/run_*.json | head -1)
+          echo "Sending ${RUN_FILE}"
+          jq -c \
+            --arg company_slug "${GEO_COMPANY_SLUG}" \
+            --arg company_id "${GEO_COMPANY_ID}" \
+            --arg label "${GEO_LABEL:-default}" \
+            --arg cluster "${GEO_CLUSTER_SLUG}" \
+            '. + {company_slug: $company_slug, label: $label, cluster_slug: $cluster} | (if $company_id != "" then . + {company_id: $company_id} else . end)' \
+            "${RUN_FILE}" \
+          | curl -sS -X POST "${GEO_INGEST_URL}" \
+              -H "Authorization: Bearer ${GEO_INGEST_TOKEN}" \
+              -H "Content-Type: application/json" \
+              --data-binary @-
+
       - name: Upload logs
         uses: actions/upload-artifact@v4
         with:
           name: logs-perplexity-sonar-geo
           path: logs/
-
-  commit-logs-geo:
-    runs-on: ubuntu-latest
-    needs: run-perplexity-sonar-geo
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Merge logs
-        run: |
-          set -e
-          mkdir -p logs
-          python - <<'PY'
-          import pathlib
-          import shutil
-
-          root = pathlib.Path("artifacts")
-          log_dir = pathlib.Path("logs")
-          log_dir.mkdir(exist_ok=True)
-
-          artifact_logs = sorted(root.glob("*/logs"))
-
-          # Merge run_*.json files and master_log.jsonl
-          master_out = (log_dir / "master_log.jsonl").open("w", encoding="utf-8")
-          main_log_path = log_dir / "main_log.md"
-          main_written = {"done": False}
-
-          def append_main(src: pathlib.Path):
-            text = src.read_text(encoding="utf-8")
-            if not main_written["done"]:
-              main_log_path.write_text(text, encoding="utf-8")
-              main_written["done"] = True
-              return
-            # Append without duplicating the header line
-            lines = text.splitlines()
-            trimmed = lines
-            if trimmed and trimmed[0].startswith("# Citation runs"):
-              trimmed = trimmed[1:]
-            with main_log_path.open("a", encoding="utf-8") as handle:
-              handle.write("\n".join(trimmed) + "\n")
-
-          for src_logs in artifact_logs:
-            # Copy run-level JSON files
-            for run_file in src_logs.glob("run_*.json"):
-              shutil.copy(run_file, log_dir / run_file.name)
-
-            # Append master_log.jsonl content
-            master_file = src_logs / "master_log.jsonl"
-            if master_file.exists():
-              for line in master_file.read_text(encoding="utf-8").splitlines():
-                master_out.write(line + "\n")
-
-            # Merge main_log.md
-            main_file = src_logs / "main_log.md"
-            if main_file.exists():
-              append_main(main_file)
-
-          master_out.close()
-          PY
-
-      - name: Commit and push logs
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f logs/*.json logs/*.jsonl logs/main_log.md || true
-          if git diff --cached --quiet; then
-            echo "No log changes to commit."
-          else
-            git commit -m "Update citation logs (geo) [skip ci]" || true
-            git push origin HEAD:${GITHUB_REF#refs/heads/} || true
-          fi
-

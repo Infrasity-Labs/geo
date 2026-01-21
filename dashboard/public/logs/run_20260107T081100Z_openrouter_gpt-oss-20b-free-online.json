@@ -1,0 +1,749 @@
+{
+  "timestamp": "20260107T081100Z",
+  "provider": "openrouter",
+  "model": "gpt-oss-20b-free-online",
+  "results": [
+    {
+      "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+      "raw": "{\n  \"query\": \"best developer marketing agency for AI startups developer-focused marketing agencies AI startups\",\n  \"results\": [\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"comment\": \"Specializes in AI agent startups and developer marketing, offering full\u2011funnel GTM and community\u2011first growth. [infrasity.com](https://infrasity.com)\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.com\",\n      \"comment\": \"Focuses on AI/ML startups and SaaS teams with high\u2011quality technical tutorials and DevOps expertise. [hackmamba.com](https://hackmamba.com)\"\n    },\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Developer marketing agency with experience scaling Fortune 500 and tech brands, strong in product\u2011market fit for SaaS. [catchyagency.com](https://catchyagency.com)\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"comment\": \"Developer\u2011first content marketing, building technical blogs and tutorials to drive onboarding and activation. [draft.dev](https://draft.dev)\"\n    },\n    {\n      \"agency\": \"Ironhorse\",\n      \"domain\": \"ironhorse.com\",\n      \"comment\": \"Targets SaaS with mixed dev/enterprise funnels, emphasizing authentic developer engagement and community trust. [ironhorse.com](https://ironhorse.com)\"\n    },\n    {\n      \"agency\": \"Wizard on Demand\",\n      \"domain\": \"wizardondemand.com\",\n      \"comment\": \"Technical content marketing firm that helps deep\u2011tech and developer\u2011stack companies attract conversions through world\u2011class content. [wizardondemand.com](https://wizardondemand.com)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Specializes in AI agent startups and developer marketing, offering full\u2011funnel GTM and community\u2011first growth. [infrasity.com](https://infrasity.com)"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.com",
+            "comment": "Focuses on AI/ML startups and SaaS teams with high\u2011quality technical tutorials and DevOps expertise. [hackmamba.com](https://hackmamba.com)"
+          },
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "comment": "Developer marketing agency with experience scaling Fortune 500 and tech brands, strong in product\u2011market fit for SaaS. [catchyagency.com](https://catchyagency.com)"
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "comment": "Developer\u2011first content marketing, building technical blogs and tutorials to drive onboarding and activation. [draft.dev](https://draft.dev)"
+          },
+          {
+            "agency": "Ironhorse",
+            "domain": "ironhorse.com",
+            "comment": "Targets SaaS with mixed dev/enterprise funnels, emphasizing authentic developer engagement and community trust. [ironhorse.com](https://ironhorse.com)"
+          },
+          {
+            "agency": "Wizard on Demand",
+            "domain": "wizardondemand.com",
+            "comment": "Technical content marketing firm that helps deep\u2011tech and developer\u2011stack companies attract conversions through world\u2011class content. [wizardondemand.com](https://wizardondemand.com)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com",
+        "hackmamba.com",
+        "catchyagency.com",
+        "draft.dev",
+        "ironhorse.com",
+        "wizardondemand.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ],
+        [
+          "hackmamba.com",
+          2
+        ],
+        [
+          "catchyagency.com",
+          3
+        ],
+        [
+          "draft.dev",
+          4
+        ],
+        [
+          "ironhorse.com",
+          5
+        ],
+        [
+          "wizardondemand.com",
+          6
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "count": 1,
+          "ranks": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+      "raw": "```json\n{\n  \"query\": \"top developer marketing agencies specializing in developer tools startups marketing\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Full\u2011cycle developer marketing with demand generation and DX focus for tech brands. [catchyagency.com](https://catchyagency.com/)\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"comment\": \"Large technical content network, 300+ experts, ideal for scaling developer\u2011first content. [draft.dev](https://draft.dev/)\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"comment\": \"Startup\u2011focused agency offering SEO, video, and Reddit marketing for dev\u2011tool companies. [infrasity.com](https://infrasity.com/)\"\n    },\n    {\n      \"agency\": \"Maximize\",\n      \"domain\": \"maximize.partners\",\n      \"comment\": \"Marketing consultancy with community building expertise for B2B and developer ecosystems. [maximize.partners](https://maximize.partners/)\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.com\",\n      \"comment\": \"AI/ML startup marketing with deep DX focus, highlighted in a Medium article. [hackmamba.com](https://hackmamba.com/)\"\n    },\n    {\n      \"agency\": \"Ironhorse\",\n      \"domain\": \"ironhorse.com\",\n      \"comment\": \"SaaS marketing with mixed dev and enterprise funnels, mentioned in the Medium list. [ironhorse.com](https://ironhorse.com/)\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "top developer marketing agencies specializing in developer tools startups marketing",
+        "results": [
+          {
+            "agency": "Catchy",
+            "domain": "catchyagency.com",
+            "comment": "Full\u2011cycle developer marketing with demand generation and DX focus for tech brands. [catchyagency.com](https://catchyagency.com/)"
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "comment": "Large technical content network, 300+ experts, ideal for scaling developer\u2011first content. [draft.dev](https://draft.dev/)"
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Startup\u2011focused agency offering SEO, video, and Reddit marketing for dev\u2011tool companies. [infrasity.com](https://infrasity.com/)"
+          },
+          {
+            "agency": "Maximize",
+            "domain": "maximize.partners",
+            "comment": "Marketing consultancy with community building expertise for B2B and developer ecosystems. [maximize.partners](https://maximize.partners/)"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.com",
+            "comment": "AI/ML startup marketing with deep DX focus, highlighted in a Medium article. [hackmamba.com](https://hackmamba.com/)"
+          },
+          {
+            "agency": "Ironhorse",
+            "domain": "ironhorse.com",
+            "comment": "SaaS marketing with mixed dev and enterprise funnels, mentioned in the Medium list. [ironhorse.com](https://ironhorse.com/)"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "catchyagency.com",
+        "draft.dev",
+        "infrasity.com",
+        "maximize.partners",
+        "hackmamba.com",
+        "ironhorse.com"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "draft.dev",
+          2
+        ],
+        [
+          "infrasity.com",
+          3
+        ],
+        [
+          "maximize.partners",
+          4
+        ],
+        [
+          "hackmamba.com",
+          5
+        ],
+        [
+          "ironhorse.com",
+          6
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "count": 1,
+          "ranks": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "prompt": "Best Developer marketing agency",
+      "raw": "```json\n{\n  \"query\": \"Best Developer marketing agency\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Specializes in developer relations and community building for SaaS companies. Source: Catchy Agency profile and Medium article listing top agencies.\",\n      \"citation\": \"[catchyagency.com](https://catchyagency.com)\"\n    },\n    {\n      \"agency\": \"DeveloperFirst.io\",\n      \"domain\": \"developerfirst.io\",\n      \"comment\": \"Provides SEO\u2011optimized content and developer\u2011focused marketing strategies. Source: DeveloperFirst.io company profile.\",\n      \"citation\": \"[developerfirst.io](https://developerfirst.io)\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"comment\": \"Offers technical content creation and community engagement for DevTools startups. Source: Infrasity blog and Medium article.\",\n      \"citation\": \"[infrasity.com](https://infrasity.com)\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.io\",\n      \"comment\": \"Focuses on high\u2011quality technical tutorials and documentation to drive developer adoption. Source: Hackmamba website and Medium article.\",\n      \"citation\": \"[hackmamba.io](https://hackmamba.io)\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"comment\": \"Creates technical blogs, roundups, and how\u2011to guides for developer audiences. Source: Draft.dev website and Medium article.\",\n      \"citation\": \"[draft.dev](https://draft.dev)\"\n    },\n    {\n      \"agency\": \"Hoopy\",\n      \"domain\": \"hoopy.io\",\n      \"comment\": \"Provides content, community, and strategy services for DevTools startups. Source: Infrasity blog.\",\n      \"citation\": \"[hoopy.io](https://hoopy.io)\"\n    },\n    {\n      \"agency\": \"Ironhorse\",\n      \"domain\": \"unknown\",\n      \"comment\": \"Mentioned in Medium article as a top developer & AI marketing agency, but domain not specified in the provided sources.\",\n      \"citation\": \"unknown\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "Best Developer marketing agency",
+        "results": [
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "comment": "Specializes in developer relations and community building for SaaS companies. Source: Catchy Agency profile and Medium article listing top agencies.",
+            "citation": "[catchyagency.com](https://catchyagency.com)"
+          },
+          {
+            "agency": "DeveloperFirst.io",
+            "domain": "developerfirst.io",
+            "comment": "Provides SEO\u2011optimized content and developer\u2011focused marketing strategies. Source: DeveloperFirst.io company profile.",
+            "citation": "[developerfirst.io](https://developerfirst.io)"
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Offers technical content creation and community engagement for DevTools startups. Source: Infrasity blog and Medium article.",
+            "citation": "[infrasity.com](https://infrasity.com)"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.io",
+            "comment": "Focuses on high\u2011quality technical tutorials and documentation to drive developer adoption. Source: Hackmamba website and Medium article.",
+            "citation": "[hackmamba.io](https://hackmamba.io)"
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "comment": "Creates technical blogs, roundups, and how\u2011to guides for developer audiences. Source: Draft.dev website and Medium article.",
+            "citation": "[draft.dev](https://draft.dev)"
+          },
+          {
+            "agency": "Hoopy",
+            "domain": "hoopy.io",
+            "comment": "Provides content, community, and strategy services for DevTools startups. Source: Infrasity blog.",
+            "citation": "[hoopy.io](https://hoopy.io)"
+          },
+          {
+            "agency": "Ironhorse",
+            "domain": "unknown",
+            "comment": "Mentioned in Medium article as a top developer & AI marketing agency, but domain not specified in the provided sources.",
+            "citation": "unknown"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "catchyagency.com",
+        "developerfirst.io",
+        "infrasity.com",
+        "hackmamba.io",
+        "draft.dev",
+        "hoopy.io",
+        "unknown"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "developerfirst.io",
+          2
+        ],
+        [
+          "infrasity.com",
+          3
+        ],
+        [
+          "hackmamba.io",
+          4
+        ],
+        [
+          "draft.dev",
+          5
+        ],
+        [
+          "hoopy.io",
+          6
+        ],
+        [
+          "unknown",
+          7
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "count": 1,
+          "ranks": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+      "raw": "```json\n{\n  \"query\": \"top B2B SaaS marketing agencies focusing on developer audiences\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Specializes in developer\u2011centric go\u2011to\u2011market strategies and content for tech companies, as highlighted in its profile on [catchyagency.com](https://catchyagency.com).\"\n    },\n    {\n      \"agency\": \"DevRel.Agency\",\n      \"domain\": \"devrel.agency\",\n      \"comment\": \"Offers strategic guidance and tactical support for developer\u2011led growth, with a focus on developer audiences, per its website [devrel.agency](https://devrel.agency).\"\n    },\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"comment\": \"Engineered by engineers, it delivers deep technical content and community engagement for B2B SaaS and AI products, as described on [infrasity.com](https://infrasity.com).\"\n    },\n    {\n      \"agency\": \"Iron Horse\",\n      \"domain\": \"ironhorse.io\",\n      \"comment\": \"Provides developer marketing services that build communities and advocate for products, detailed on its site [ironhorse.io](https://ironhorse.io).\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "top B2B SaaS marketing agencies focusing on developer audiences",
+        "results": [
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "comment": "Specializes in developer\u2011centric go\u2011to\u2011market strategies and content for tech companies, as highlighted in its profile on [catchyagency.com](https://catchyagency.com)."
+          },
+          {
+            "agency": "DevRel.Agency",
+            "domain": "devrel.agency",
+            "comment": "Offers strategic guidance and tactical support for developer\u2011led growth, with a focus on developer audiences, per its website [devrel.agency](https://devrel.agency)."
+          },
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Engineered by engineers, it delivers deep technical content and community engagement for B2B SaaS and AI products, as described on [infrasity.com](https://infrasity.com)."
+          },
+          {
+            "agency": "Iron Horse",
+            "domain": "ironhorse.io",
+            "comment": "Provides developer marketing services that build communities and advocate for products, detailed on its site [ironhorse.io](https://ironhorse.io)."
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "catchyagency.com",
+        "devrel.agency",
+        "infrasity.com",
+        "ironhorse.io"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "devrel.agency",
+          2
+        ],
+        [
+          "infrasity.com",
+          3
+        ],
+        [
+          "ironhorse.io",
+          4
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "count": 1,
+          "ranks": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "prompt": "developer marketing agency for early stage software ventures",
+      "raw": "{\n  \"query\": \"developer marketing agency for early stage software ventures\",\n  \"results\": [\n    {\n      \"agency\": \"Hypergrowth Partners\",\n      \"domain\": \"hypergrowthpartners.com\",\n      \"comment\": \"Developer tool growth agency that invests in early\u2011stage startups to help them reach hypergrowth. [hypergrowthpartners.com](https://hypergrowthpartners.com)\"\n    },\n    {\n      \"agency\": \"Maximize\",\n      \"domain\": \"maximize.partners\",\n      \"comment\": \"Developer marketing agency focused on startups, offering GTM strategy, growth marketing, and community building. [maximize.partners](https://maximize.partners)\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.io\",\n      \"comment\": \"Developer marketing agency that provides content, technical writing, and marketing services for software teams, including early\u2011stage ventures. [hackmamba.io](https://hackmamba.io)\"\n    },\n    {\n      \"agency\": \"Olivine Marketing\",\n      \"domain\": \"olivinemarketing.com\",\n      \"comment\": \"Product marketing agency that works with B2B SaaS and developer\u2011focused companies, suitable for early\u2011stage software ventures. [olivinemarketing.com](https://olivinemarketing.com)\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"comment\": \"Developer content agency that creates technical blog posts and tutorials for dev\u2011tool startups. [draft.dev](https://draft.dev)\"\n    },\n    {\n      \"agency\": \"Wizard on Demand\",\n      \"domain\": \"wizardondemand.com\",\n      \"comment\": \"Technical content marketing agency offering SEO, paid campaigns, and content for deep\u2011tech and developer\u2011stack companies. [wizardondemand.com](https://wizardondemand.com)\"\n    },\n    {\n      \"agency\": \"Every Developer\",\n      \"domain\": \"everydeveloper.com\",\n      \"comment\": \"Agency focused on technical content strategy for developer\u2011centric companies. [everydeveloper.com](https://everydeveloper.com)\"\n    },\n    {\n      \"agency\": \"Sarg.io\",\n      \"domain\": \"sarg.io\",\n      \"comment\": \"Twitter content agency for developer\u2011tool companies, helping early\u2011stage startups reach engineers. [sarg.io](https://sarg.io)\"\n    },\n    {\n      \"agency\": \"Plug.dev\",\n      \"domain\": \"plug.dev\",\n      \"comment\": \"Product\u2011to\u2011influencer platform for dev tools, enabling influencer marketing for early\u2011stage ventures. [plug.dev](https://plug.dev)\"\n    },\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Developer marketing agency that helps tech companies build and manage developer marketing programs, suitable for early\u2011stage ventures. [catchyagency.com](https://catchyagency.com)\"\n    },\n    {\n      \"agency\": \"Nevo David (Gitroom)\",\n      \"domain\": \"gitroom.com\",\n      \"comment\": \"Open\u2011source marketing consultant helping early\u2011stage projects grow GitHub stars and visibility. [gitroom.com](https://gitroom.com)\"\n    },\n    {\n      \"agency\": \"Emily Omier\",\n      \"domain\": \"emilyomier.com\",\n      \"comment\": \"Consultant specializing in monetizing open\u2011source projects for early\u2011stage software ventures. [emilyomier.com](https://emilyomier.com)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "developer marketing agency for early stage software ventures",
+        "results": [
+          {
+            "agency": "Hypergrowth Partners",
+            "domain": "hypergrowthpartners.com",
+            "comment": "Developer tool growth agency that invests in early\u2011stage startups to help them reach hypergrowth. [hypergrowthpartners.com](https://hypergrowthpartners.com)"
+          },
+          {
+            "agency": "Maximize",
+            "domain": "maximize.partners",
+            "comment": "Developer marketing agency focused on startups, offering GTM strategy, growth marketing, and community building. [maximize.partners](https://maximize.partners)"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.io",
+            "comment": "Developer marketing agency that provides content, technical writing, and marketing services for software teams, including early\u2011stage ventures. [hackmamba.io](https://hackmamba.io)"
+          },
+          {
+            "agency": "Olivine Marketing",
+            "domain": "olivinemarketing.com",
+            "comment": "Product marketing agency that works with B2B SaaS and developer\u2011focused companies, suitable for early\u2011stage software ventures. [olivinemarketing.com](https://olivinemarketing.com)"
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "comment": "Developer content agency that creates technical blog posts and tutorials for dev\u2011tool startups. [draft.dev](https://draft.dev)"
+          },
+          {
+            "agency": "Wizard on Demand",
+            "domain": "wizardondemand.com",
+            "comment": "Technical content marketing agency offering SEO, paid campaigns, and content for deep\u2011tech and developer\u2011stack companies. [wizardondemand.com](https://wizardondemand.com)"
+          },
+          {
+            "agency": "Every Developer",
+            "domain": "everydeveloper.com",
+            "comment": "Agency focused on technical content strategy for developer\u2011centric companies. [everydeveloper.com](https://everydeveloper.com)"
+          },
+          {
+            "agency": "Sarg.io",
+            "domain": "sarg.io",
+            "comment": "Twitter content agency for developer\u2011tool companies, helping early\u2011stage startups reach engineers. [sarg.io](https://sarg.io)"
+          },
+          {
+            "agency": "Plug.dev",
+            "domain": "plug.dev",
+            "comment": "Product\u2011to\u2011influencer platform for dev tools, enabling influencer marketing for early\u2011stage ventures. [plug.dev](https://plug.dev)"
+          },
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "comment": "Developer marketing agency that helps tech companies build and manage developer marketing programs, suitable for early\u2011stage ventures. [catchyagency.com](https://catchyagency.com)"
+          },
+          {
+            "agency": "Nevo David (Gitroom)",
+            "domain": "gitroom.com",
+            "comment": "Open\u2011source marketing consultant helping early\u2011stage projects grow GitHub stars and visibility. [gitroom.com](https://gitroom.com)"
+          },
+          {
+            "agency": "Emily Omier",
+            "domain": "emilyomier.com",
+            "comment": "Consultant specializing in monetizing open\u2011source projects for early\u2011stage software ventures. [emilyomier.com](https://emilyomier.com)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "hypergrowthpartners.com",
+        "maximize.partners",
+        "hackmamba.io",
+        "olivinemarketing.com",
+        "draft.dev",
+        "wizardondemand.com",
+        "everydeveloper.com",
+        "sarg.io",
+        "plug.dev",
+        "catchyagency.com",
+        "gitroom.com",
+        "emilyomier.com"
+      ],
+      "domain_ranks": [
+        [
+          "hypergrowthpartners.com",
+          1
+        ],
+        [
+          "maximize.partners",
+          2
+        ],
+        [
+          "hackmamba.io",
+          3
+        ],
+        [
+          "olivinemarketing.com",
+          4
+        ],
+        [
+          "draft.dev",
+          5
+        ],
+        [
+          "wizardondemand.com",
+          6
+        ],
+        [
+          "everydeveloper.com",
+          7
+        ],
+        [
+          "sarg.io",
+          8
+        ],
+        [
+          "plug.dev",
+          9
+        ],
+        [
+          "catchyagency.com",
+          10
+        ],
+        [
+          "gitroom.com",
+          11
+        ],
+        [
+          "emilyomier.com",
+          12
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "top developer marketing agencies for tech and software companies",
+      "raw": "{\n  \"query\": \"top developer marketing agencies for tech and software companies\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Specializes in developer program management and marketing for tech and software brands, with a focus on API and SDK promotion. [catchyagency.com](https://catchyagency.com/)\"\n    },\n    {\n      \"agency\": \"DeveloperFirst.io\",\n      \"domain\": \"developerfirst.io\",\n      \"comment\": \"Provides SEO\u2011optimized content and developer\u2011focused marketing strategies for software companies. [developerfirst.io](https://developerfirst.io/)\"\n    },\n    {\n      \"agency\": \"DevRel.Agency\",\n      \"domain\": \"devrel.agency\",\n      \"comment\": \"Consulting agency focused on developer relations and growth for tech and software firms. [devrel.agency](https://devrel.agency/)\"\n    },\n    {\n      \"agency\": \"Look Left Marketing\",\n      \"domain\": \"lookleftmarketing.com\",\n      \"comment\": \"Developer\u2011centric PR and content marketing agency that helps tech and software companies build developer love. [lookleftmarketing.com](https://lookleftmarketing.com/)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "top developer marketing agencies for tech and software companies",
+        "results": [
+          {
+            "agency": "Catchy",
+            "domain": "catchyagency.com",
+            "comment": "Specializes in developer program management and marketing for tech and software brands, with a focus on API and SDK promotion. [catchyagency.com](https://catchyagency.com/)"
+          },
+          {
+            "agency": "DeveloperFirst.io",
+            "domain": "developerfirst.io",
+            "comment": "Provides SEO\u2011optimized content and developer\u2011focused marketing strategies for software companies. [developerfirst.io](https://developerfirst.io/)"
+          },
+          {
+            "agency": "DevRel.Agency",
+            "domain": "devrel.agency",
+            "comment": "Consulting agency focused on developer relations and growth for tech and software firms. [devrel.agency](https://devrel.agency/)"
+          },
+          {
+            "agency": "Look Left Marketing",
+            "domain": "lookleftmarketing.com",
+            "comment": "Developer\u2011centric PR and content marketing agency that helps tech and software companies build developer love. [lookleftmarketing.com](https://lookleftmarketing.com/)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "catchyagency.com",
+        "developerfirst.io",
+        "devrel.agency",
+        "lookleftmarketing.com"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "developerfirst.io",
+          2
+        ],
+        [
+          "devrel.agency",
+          3
+        ],
+        [
+          "lookleftmarketing.com",
+          4
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+      "raw": "```json\n{\n  \"query\": \"best developer marketing agencies for startups software early stage marketing agencies tech startups\",\n  \"results\": [\n    {\n      \"agency\": \"Catchy\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Specializes in developer program management and marketing for tech startups and early\u2011stage companies. [catchyagency.com](https://catchyagency.com/)\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.io\",\n      \"comment\": \"Developer marketing agency focused on technical content and developer engagement for SaaS startups. [hackmamba.io](https://hackmamba.io/)\"\n    },\n    {\n      \"agency\": \"Draft.dev\",\n      \"domain\": \"draft.dev\",\n      \"comment\": \"Content creation agency that builds developer\u2011centric marketing programs for early\u2011stage tech companies. [draft.dev](https://draft.dev/)\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+        "results": [
+          {
+            "agency": "Catchy",
+            "domain": "catchyagency.com",
+            "comment": "Specializes in developer program management and marketing for tech startups and early\u2011stage companies. [catchyagency.com](https://catchyagency.com/)"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.io",
+            "comment": "Developer marketing agency focused on technical content and developer engagement for SaaS startups. [hackmamba.io](https://hackmamba.io/)"
+          },
+          {
+            "agency": "Draft.dev",
+            "domain": "draft.dev",
+            "comment": "Content creation agency that builds developer\u2011centric marketing programs for early\u2011stage tech companies. [draft.dev](https://draft.dev/)"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "catchyagency.com",
+        "hackmamba.io",
+        "draft.dev"
+      ],
+      "domain_ranks": [
+        [
+          "catchyagency.com",
+          1
+        ],
+        [
+          "hackmamba.io",
+          2
+        ],
+        [
+          "draft.dev",
+          3
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+      "raw": "{\n  \"query\": \"top marketing agencies for AI technology startups developer marketing agencies for AI agents\",\n  \"results\": [\n    {\n      \"agency\": \"Omniscient Digital\",\n      \"domain\": \"omniscient.com\",\n      \"comment\": \"Specializes in AI\u2011driven SEO and growth for B2B SaaS and AI tech startups, offering revenue\u2011centric organic programs and AI search solutions. [omniscient.com](https://omniscient.com)\"\n    },\n    {\n      \"agency\": \"NoGood\",\n      \"domain\": \"nogood.io\",\n      \"comment\": \"Growth marketing partner for AI startups, providing AI\u2011powered lead generation, predictive analytics, and a proprietary Goodie AI platform. [nogood.io](https://nogood.io)\"\n    },\n    {\n      \"agency\": \"inBeat\",\n      \"domain\": \"inbeat.agency\",\n      \"comment\": \"AI\u2011first performance agency that blends creative intelligence with data\u2011driven strategy, ideal for AI tech brands seeking scalable growth. [inbeat.agency](https://inbeat.agency)\"\n    },\n    {\n      \"agency\": \"AI Digital\",\n      \"domain\": \"aidigital.com\",\n      \"comment\": \"Programmatic consultancy that uses AI for media buying, attribution, and real\u2011time optimization, suitable for developers building AI agents. [aidigital.com](https://aidigital.com)\"\n    },\n    {\n      \"agency\": \"AI Media Group\",\n      \"domain\": \"aimediagroup.com\",\n      \"comment\": \"AI\u2011powered media agency offering attribution, real\u2011time budget allocation, and AI\u2011driven creative across search, display, and social. [aimediagroup.com](https://aimediagroup.com)\"\n    },\n    {\n      \"agency\": \"Digital Agency Network\",\n      \"domain\": \"digitalagencynetwork.com\",\n      \"comment\": \"Directory of verified AI marketing agencies across the U.S., useful for finding niche partners for AI agent development. [digitalagencynetwork.com](https://digitalagencynetwork.com)\"\n    },\n    {\n      \"agency\": \"UFO Digital\",\n      \"domain\": \"uforocks.com\",\n      \"comment\": \"Full\u2011service agency that integrates AI into SEO, PPC, and conversion optimization, targeting eCommerce and tech startups. [uforocks.com](https://uforocks.com)\"\n    },\n    {\n      \"agency\": \"Matrix Marketing Group\",\n      \"domain\": \"matrixmarketinggroup.com\",\n      \"comment\": \"AI\u2011integrated digital marketing firm that automates content, SEO, and paid media for B2B and SaaS companies. [matrixmarketinggroup.com](https://matrixmarketinggroup.com)\"\n    },\n    {\n      \"agency\": \"Beyond\",\n      \"domain\": \"bynd.com\",\n      \"comment\": \"Design and technology agency that uses AI and automation to streamline marketing workflows for tech and AI startups. [bynd.com](https://bynd.com)\"\n    },\n    {\n      \"agency\": \"Hybrid\",\n      \"domain\": \"hybrid.co\",\n      \"comment\": \"Specializes in AI\u2011driven media strategy and enrollment campaigns, but its AI tools and data\u2011centric approach are applicable to AI agent marketing. [hybrid.co](https://hybrid.co)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "top marketing agencies for AI technology startups developer marketing agencies for AI agents",
+        "results": [
+          {
+            "agency": "Omniscient Digital",
+            "domain": "omniscient.com",
+            "comment": "Specializes in AI\u2011driven SEO and growth for B2B SaaS and AI tech startups, offering revenue\u2011centric organic programs and AI search solutions. [omniscient.com](https://omniscient.com)"
+          },
+          {
+            "agency": "NoGood",
+            "domain": "nogood.io",
+            "comment": "Growth marketing partner for AI startups, providing AI\u2011powered lead generation, predictive analytics, and a proprietary Goodie AI platform. [nogood.io](https://nogood.io)"
+          },
+          {
+            "agency": "inBeat",
+            "domain": "inbeat.agency",
+            "comment": "AI\u2011first performance agency that blends creative intelligence with data\u2011driven strategy, ideal for AI tech brands seeking scalable growth. [inbeat.agency](https://inbeat.agency)"
+          },
+          {
+            "agency": "AI Digital",
+            "domain": "aidigital.com",
+            "comment": "Programmatic consultancy that uses AI for media buying, attribution, and real\u2011time optimization, suitable for developers building AI agents. [aidigital.com](https://aidigital.com)"
+          },
+          {
+            "agency": "AI Media Group",
+            "domain": "aimediagroup.com",
+            "comment": "AI\u2011powered media agency offering attribution, real\u2011time budget allocation, and AI\u2011driven creative across search, display, and social. [aimediagroup.com](https://aimediagroup.com)"
+          },
+          {
+            "agency": "Digital Agency Network",
+            "domain": "digitalagencynetwork.com",
+            "comment": "Directory of verified AI marketing agencies across the U.S., useful for finding niche partners for AI agent development. [digitalagencynetwork.com](https://digitalagencynetwork.com)"
+          },
+          {
+            "agency": "UFO Digital",
+            "domain": "uforocks.com",
+            "comment": "Full\u2011service agency that integrates AI into SEO, PPC, and conversion optimization, targeting eCommerce and tech startups. [uforocks.com](https://uforocks.com)"
+          },
+          {
+            "agency": "Matrix Marketing Group",
+            "domain": "matrixmarketinggroup.com",
+            "comment": "AI\u2011integrated digital marketing firm that automates content, SEO, and paid media for B2B and SaaS companies. [matrixmarketinggroup.com](https://matrixmarketinggroup.com)"
+          },
+          {
+            "agency": "Beyond",
+            "domain": "bynd.com",
+            "comment": "Design and technology agency that uses AI and automation to streamline marketing workflows for tech and AI startups. [bynd.com](https://bynd.com)"
+          },
+          {
+            "agency": "Hybrid",
+            "domain": "hybrid.co",
+            "comment": "Specializes in AI\u2011driven media strategy and enrollment campaigns, but its AI tools and data\u2011centric approach are applicable to AI agent marketing. [hybrid.co](https://hybrid.co)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "omniscient.com",
+        "nogood.io",
+        "inbeat.agency",
+        "aidigital.com",
+        "aimediagroup.com",
+        "digitalagencynetwork.com",
+        "uforocks.com",
+        "matrixmarketinggroup.com",
+        "bynd.com",
+        "hybrid.co"
+      ],
+      "domain_ranks": [
+        [
+          "omniscient.com",
+          1
+        ],
+        [
+          "nogood.io",
+          2
+        ],
+        [
+          "inbeat.agency",
+          3
+        ],
+        [
+          "aidigital.com",
+          4
+        ],
+        [
+          "aimediagroup.com",
+          5
+        ],
+        [
+          "digitalagencynetwork.com",
+          6
+        ],
+        [
+          "uforocks.com",
+          7
+        ],
+        [
+          "matrixmarketinggroup.com",
+          8
+        ],
+        [
+          "bynd.com",
+          9
+        ],
+        [
+          "hybrid.co",
+          10
+        ]
+      ],
+      "matches": []
+    },
+    {
+      "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+      "raw": "```json\n{\n  \"query\": \"best developer marketing agencies for B2B SaaS developer marketing agencies\",\n  \"results\": [\n    {\n      \"agency\": \"Infrasity\",\n      \"domain\": \"infrasity.com\",\n      \"comment\": \"Featured as one of the top developer & AI marketing agencies for B2B SaaS, with a focus on technical content and developer experience. [infrasity.com](https://www.infrasity.com)\"\n    },\n    {\n      \"agency\": \"Catchy Agency\",\n      \"domain\": \"catchyagency.com\",\n      \"comment\": \"Described as the leading developer marketing agency, offering go\u2011to\u2011market strategies and developer engagement services. [catchyagency.com](https://www.catchyagency.com)\"\n    },\n    {\n      \"agency\": \"Ironhorse\",\n      \"domain\": \"ironhorse.io\",\n      \"comment\": \"Provides developer marketing services that emphasize community engagement and content tailored to developers. [ironhorse.io](https://ironhorse.io)\"\n    },\n    {\n      \"agency\": \"Hackmamba\",\n      \"domain\": \"hackmamba.io\",\n      \"comment\": \"Specializes in technical content creation and developer marketing for SaaS companies, helping drive adoption and engagement. [hackmamba.io](https://hackmamba.io)\"\n    }\n  ]\n}\n```",
+      "parsed": {
+        "query": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Featured as one of the top developer & AI marketing agencies for B2B SaaS, with a focus on technical content and developer experience. [infrasity.com](https://www.infrasity.com)"
+          },
+          {
+            "agency": "Catchy Agency",
+            "domain": "catchyagency.com",
+            "comment": "Described as the leading developer marketing agency, offering go\u2011to\u2011market strategies and developer engagement services. [catchyagency.com](https://www.catchyagency.com)"
+          },
+          {
+            "agency": "Ironhorse",
+            "domain": "ironhorse.io",
+            "comment": "Provides developer marketing services that emphasize community engagement and content tailored to developers. [ironhorse.io](https://ironhorse.io)"
+          },
+          {
+            "agency": "Hackmamba",
+            "domain": "hackmamba.io",
+            "comment": "Specializes in technical content creation and developer marketing for SaaS companies, helping drive adoption and engagement. [hackmamba.io](https://hackmamba.io)"
+          }
+        ]
+      },
+      "json_valid": false,
+      "domains": [
+        "infrasity.com",
+        "catchyagency.com",
+        "ironhorse.io",
+        "hackmamba.io"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ],
+        [
+          "catchyagency.com",
+          2
+        ],
+        [
+          "ironhorse.io",
+          3
+        ],
+        [
+          "hackmamba.io",
+          4
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "count": 1,
+          "ranks": [
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}

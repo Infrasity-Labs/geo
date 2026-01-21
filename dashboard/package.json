@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "node scripts/generate-data.js && vite",
     "build": "node scripts/generate-data.js && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync:supabase": "node scripts/sync-supabase.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.0",
+    "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

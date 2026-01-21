@@ -1,0 +1,208 @@
+{
+  "timestamp": "20260109T075724Z",
+  "provider": "openrouter",
+  "model": "gpt-oss-20b-free-online",
+  "results": [
+    {
+      "prompt": "Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised",
+      "raw": "{\"query\":\"Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised\",\"results\":[{\"agency\":\"Infrasity\",\"domain\":\"infrasity.com\",\"comment\":\"Infrasity specializes in Reddit marketing for AI agents and SaaS startups, offering aged, karma\u2011rich accounts and LLM\u2011friendly comment strategies to boost visibility in dev\u2011tool communities. [infrasity.com](https://www.infrasity.com/services/reddit-marketing-agency)\",\"citation\":\"https://www.infrasity.com/services/reddit-marketing-agency\"},{\"agency\":\"The Reddit Marketing Agency\",\"domain\":\"theredditmarketingagency.com\",\"comment\":\"The Reddit Marketing Agency focuses exclusively on Reddit, providing strategy, creative, and paid media services tailored to high\u2011intent communities, with case studies showing reduced CPL and improved search visibility. [theredditmarketingagency.com](https://www.theredditmarketingagency.com/lp-ahyanah)\",\"citation\":\"https://www.theredditmarketingagency.com/lp-ahyanah\"},{\"agency\":\"UpVote\",\"domain\":\"upvoteagency.com\",\"comment\":\"UpVote offers audit, sentiment analysis, and community management for brands on Reddit, emphasizing the platform\u2019s influence on AI and LLM search results. [upvoteagency.com](https://upvoteagency.com/)\",\"citation\":\"https://upvoteagency.com/\"} ,{\"agency\":\"ReddVisible\",\"domain\":\"reddvisible.com\",\"comment\":\"ReddVisible markets itself as a Reddit marketing specialist, promising rapid traffic growth and community building for brands, with a focus on measurable KPIs within weeks. [reddvisible.com](https://reddvisible.com/)\",\"citation\":\"https://reddvisible.com/\"} ,{\"agency\":\"Sortlist (UK directory)\",\"domain\":\"sortlist.co.uk\",\"comment\":\"Sortlist lists UK\u2011based Reddit marketing agencies, including Navicosoft, providing a directory for businesses seeking local Reddit marketing expertise. [sortlist.co.uk](https://www.sortlist.co.uk/s/reddit-marketing/united-kingdom-gb)\",\"citation\":\"https://www.sortlist.co.uk/s/reddit-marketing/united-kingdom-gb\"}]}",
+      "parsed": {
+        "query": "Reddit marketing agency for AI startups marketing on Reddit UK agencies Reddit marketing specialised",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Infrasity specializes in Reddit marketing for AI agents and SaaS startups, offering aged, karma\u2011rich accounts and LLM\u2011friendly comment strategies to boost visibility in dev\u2011tool communities. [infrasity.com](https://www.infrasity.com/services/reddit-marketing-agency)",
+            "citation": "https://www.infrasity.com/services/reddit-marketing-agency"
+          },
+          {
+            "agency": "The Reddit Marketing Agency",
+            "domain": "theredditmarketingagency.com",
+            "comment": "The Reddit Marketing Agency focuses exclusively on Reddit, providing strategy, creative, and paid media services tailored to high\u2011intent communities, with case studies showing reduced CPL and improved search visibility. [theredditmarketingagency.com](https://www.theredditmarketingagency.com/lp-ahyanah)",
+            "citation": "https://www.theredditmarketingagency.com/lp-ahyanah"
+          },
+          {
+            "agency": "UpVote",
+            "domain": "upvoteagency.com",
+            "comment": "UpVote offers audit, sentiment analysis, and community management for brands on Reddit, emphasizing the platform\u2019s influence on AI and LLM search results. [upvoteagency.com](https://upvoteagency.com/)",
+            "citation": "https://upvoteagency.com/"
+          },
+          {
+            "agency": "ReddVisible",
+            "domain": "reddvisible.com",
+            "comment": "ReddVisible markets itself as a Reddit marketing specialist, promising rapid traffic growth and community building for brands, with a focus on measurable KPIs within weeks. [reddvisible.com](https://reddvisible.com/)",
+            "citation": "https://reddvisible.com/"
+          },
+          {
+            "agency": "Sortlist (UK directory)",
+            "domain": "sortlist.co.uk",
+            "comment": "Sortlist lists UK\u2011based Reddit marketing agencies, including Navicosoft, providing a directory for businesses seeking local Reddit marketing expertise. [sortlist.co.uk](https://www.sortlist.co.uk/s/reddit-marketing/united-kingdom-gb)",
+            "citation": "https://www.sortlist.co.uk/s/reddit-marketing/united-kingdom-gb"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com",
+        "theredditmarketingagency.com",
+        "upvoteagency.com",
+        "reddvisible.com",
+        "sortlist.co.uk"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ],
+        [
+          "theredditmarketingagency.com",
+          2
+        ],
+        [
+          "upvoteagency.com",
+          3
+        ],
+        [
+          "reddvisible.com",
+          4
+        ],
+        [
+          "sortlist.co.uk",
+          5
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com"
+          ],
+          "matched_urls": [],
+          "cited_urls": [
+            "https://infrasity.com/services/reddit-marketing-agency"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com/services/reddit-marketing-agency"
+        ],
+        "theredditmarketingagency.com": [
+          "https://theredditmarketingagency.com/lp-ahyanah"
+        ],
+        "upvoteagency.com": [
+          "https://upvoteagency.com"
+        ],
+        "reddvisible.com": [
+          "https://reddvisible.com"
+        ],
+        "sortlist.co.uk": [
+          "https://sortlist.co.uk/s/reddit-marketing/united-kingdom-gb"
+        ]
+      }
+    },
+    {
+      "prompt": "Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised",
+      "raw": "{\"query\":\"Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised\",\"results\":[{\"agency\":\"Infrasity\",\"domain\":\"infrasity.com\",\"comment\":\"Infrasity offers a Reddit marketing agency focused on AI agents and SaaS startups, using aged, karma\u2011rich accounts and LLM\u2011friendly comments to engage technical communities in the US and globally. [infrasity.com](https://www.infrasity.com/services/reddit-marketing-agency)\"} ,{\"agency\":\"Foundation Marketing Inc.\",\"domain\":\"foundationinc.co\",\"comment\":\"Foundation Marketing provides Reddit marketing services tailored to B2B brands, including AI and SaaS companies, with a data\u2011driven approach to community engagement and paid amplification. [foundationinc.co](https://foundationinc.co/services/reddit-agency)\"} ,{\"agency\":\"Single Grain\",\"domain\":\"singlegrain.com\",\"comment\":\"Single Grain is highlighted as the best overall Reddit marketing partner, delivering measurable ROI and integrating Reddit SEO with broader digital strategies, especially for AI and SaaS startups. [singlegrain.com](https://www.singlegrain.com/agency/reddit-marketing-agency/)\"}]}",
+      "parsed": {
+        "query": "Reddit marketing agency for AI startups marketing on Reddit US agencies Reddit marketing specialised",
+        "results": [
+          {
+            "agency": "Infrasity",
+            "domain": "infrasity.com",
+            "comment": "Infrasity offers a Reddit marketing agency focused on AI agents and SaaS startups, using aged, karma\u2011rich accounts and LLM\u2011friendly comments to engage technical communities in the US and globally. [infrasity.com](https://www.infrasity.com/services/reddit-marketing-agency)"
+          },
+          {
+            "agency": "Foundation Marketing Inc.",
+            "domain": "foundationinc.co",
+            "comment": "Foundation Marketing provides Reddit marketing services tailored to B2B brands, including AI and SaaS companies, with a data\u2011driven approach to community engagement and paid amplification. [foundationinc.co](https://foundationinc.co/services/reddit-agency)"
+          },
+          {
+            "agency": "Single Grain",
+            "domain": "singlegrain.com",
+            "comment": "Single Grain is highlighted as the best overall Reddit marketing partner, delivering measurable ROI and integrating Reddit SEO with broader digital strategies, especially for AI and SaaS startups. [singlegrain.com](https://www.singlegrain.com/agency/reddit-marketing-agency/)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "infrasity.com",
+        "foundationinc.co",
+        "singlegrain.com"
+      ],
+      "domain_ranks": [
+        [
+          "infrasity.com",
+          1
+        ],
+        [
+          "foundationinc.co",
+          2
+        ],
+        [
+          "singlegrain.com",
+          3
+        ]
+      ],
+      "matches": [
+        {
+          "domain": "infrasity.com",
+          "ranks": [
+            1
+          ],
+          "target_urls": [
+            "https://infrasity.com"
+          ],
+          "matched_urls": [],
+          "cited_urls": [
+            "https://infrasity.com/services/reddit-marketing-agency"
+          ]
+        }
+      ],
+      "domain_urls": {
+        "infrasity.com": [
+          "https://infrasity.com/services/reddit-marketing-agency"
+        ],
+        "foundationinc.co": [
+          "https://foundationinc.co/services/reddit-agency"
+        ],
+        "singlegrain.com": [
+          "https://singlegrain.com/agency/reddit-marketing-agency"
+        ]
+      }
+    },
+    {
+      "prompt": "Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised",
+      "raw": "{\n  \"query\": \"Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised\",\n  \"results\": [\n    {\n      \"agency\": \"TechBehemoths Reddit Advertising Directory\",\n      \"domain\": \"techbehemoths.com\",\n      \"comment\": \"The TechBehemoths page lists four Israeli agencies that specialize in Reddit advertising, making it a useful resource for AI startups seeking Reddit marketing services in Israel. [techbehemoths.com](https://techbehemoths.com/companies/reddit-advertising/israel)\"\n    }\n  ]\n}",
+      "parsed": {
+        "query": "Reddit marketing agency for AI startups marketing on Reddit Israel agencies Reddit marketing specialised",
+        "results": [
+          {
+            "agency": "TechBehemoths Reddit Advertising Directory",
+            "domain": "techbehemoths.com",
+            "comment": "The TechBehemoths page lists four Israeli agencies that specialize in Reddit advertising, making it a useful resource for AI startups seeking Reddit marketing services in Israel. [techbehemoths.com](https://techbehemoths.com/companies/reddit-advertising/israel)"
+          }
+        ]
+      },
+      "json_valid": true,
+      "domains": [
+        "techbehemoths.com"
+      ],
+      "domain_ranks": [
+        [
+          "techbehemoths.com",
+          1
+        ]
+      ],
+      "matches": [],
+      "domain_urls": {
+        "techbehemoths.com": [
+          "https://techbehemoths.com/companies/reddit-advertising/israel"
+        ]
+      }
+    }
+  ]
+}

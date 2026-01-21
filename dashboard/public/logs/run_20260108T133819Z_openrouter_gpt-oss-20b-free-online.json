@@ -1,0 +1,277 @@
+{
+  "timestamp": "20260108T133819Z",
+  "provider": "openrouter",
+  "model": "gpt-oss-20b-free-online",
+  "results": [
+    {
+      "prompt": "Top developer marketing agencies for tech and software companies",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top developer marketing agencies specializing in developer tools startups marketing",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best developer marketing agencies for B2B SaaS developer marketing agencies",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top B2B SaaS marketing agencies focusing on developer audiences",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best developer marketing agency for AI startups developer-focused marketing agencies AI startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "developer marketing agency for early stage software ventures",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best developer marketing agencies for startups software early stage marketing agencies tech startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best tech content marketing agency",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top technology content marketing agencies",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best tech content marketing agencies for devtool startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top B2B tech content marketing agencies specializing in developer tools and SaaS startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top tech content marketing agencies for B2B SaaS startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best content marketing agencies specializing in B2B SaaS tech startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best tech content marketing agency for B2B SaaS",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best product documentation agency services product documentation agency",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top agencies for product documentation services",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best product documentation agency for dev tools",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top agencies specializing product documentation for developer tools and tech companies",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best product documentation agency for AI startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top technical documentation agencies that serve AI startups",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best product documentation agency for B2B SaaS",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top technical documentation agencies for SaaS product documentation services",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best Reddit marketing agency",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top Reddit advertising agencies services Reddit marketing agencies",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "Reddit marketing agency for dev tool startup what to look for and examples",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "Best agencies experienced in Reddit marketing for startups including for dev tools marketing",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "Reddit marketing agency for AI startups marketing on Reddit UK US agencies Reddit marketing specialised",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "Agencies that do Reddit marketing for startups or technology companies, Reddit ads management",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "best Reddit marketing agency for B2B SaaS Reddit marketing agencies",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    },
+    {
+      "prompt": "top agencies specialising in Reddit ads and marketing for B2B SaaS companies",
+      "raw": "{\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"openai/gpt-oss-20b:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"OpenInference\"}},\"user_id\":\"user_37HX526Qr2gJUkW39vJzPqxt99V\"}",
+      "parsed": {},
+      "json_valid": false,
+      "domains": [],
+      "domain_ranks": [],
+      "matches": []
+    }
+  ]
+}
