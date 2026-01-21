@@ -126,7 +126,7 @@ async function upsertClusters(clusters) {
     name: c.name,
     description: c.description || '',
     prompts: c.__prompts || [],
-    created_at: c.created_at,
+    created_at: c.created_at || new Date().toISOString(),
     updated_at: new Date().toISOString(),
   }))
 
