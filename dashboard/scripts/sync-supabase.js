@@ -130,7 +130,11 @@ async function upsertClusters(clusters) {
     updated_at: new Date().toISOString(),
   }))
 
-  const { error } = await supabase.from('geo_clusters').upsert(rows, { onConflict: 'company_id,label,slug' })
+  // Replace for this company/label to avoid relying on constraints
+  const { error: delErr } = await supabase.from('geo_clusters').delete().match({ company_id: SUPABASE_COMPANY_ID, label: LABEL })
+  if (delErr) throw delErr
+
+  const { error } = await supabase.from('geo_clusters').insert(rows)
   if (error) throw error
 }
 
@@ -140,11 +144,7 @@ async function deleteResultsForRun(runId) {
 }
 
 async function upsertRun(runRow) {
-  const { data, error } = await supabase
-    .from('geo_runs')
-    .upsert(runRow, { onConflict: 'company_id,label,cluster_slug,run_timestamp,model' })
-    .select('id')
-    .single()
+  const { data, error } = await supabase.from('geo_runs').insert(runRow).select('id').single()
   if (error) throw error
   return data.id
 }
@@ -157,6 +157,26 @@ async function insertResults(runId, results) {
 }
 
 async function syncRuns(clusters) {
+  // Clear existing runs/results for this company/label to avoid conflict requirements
+  const { data: existingRuns, error: runFetchErr } = await supabase
+    .from('geo_runs')
+    .select('id')
+    .match({ company_id: SUPABASE_COMPANY_ID, label: LABEL })
+  if (runFetchErr) throw runFetchErr
+
+  const runIds = (existingRuns || []).map((r) => r.id)
+  const chunk = (arr, size) => arr.length ? [arr.slice(0, size), ...chunk(arr.slice(size), size)] : []
+
+  for (const ids of chunk(runIds, 500)) {
+    const { error: delResErr } = await supabase.from('geo_run_results').delete().in('run_id', ids)
+    if (delResErr) throw delResErr
+  }
+
+  if (runIds.length) {
+    const { error: delRunsErr } = await supabase.from('geo_runs').delete().match({ company_id: SUPABASE_COMPANY_ID, label: LABEL })
+    if (delRunsErr) throw delRunsErr
+  }
+
   const files = (await fs.readdir(logsDir)).filter((f) => f.startsWith('run_') && f.endsWith('.json'))
   files.sort((a, b) => b.localeCompare(a))
 
