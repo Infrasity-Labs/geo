@@ -11,16 +11,16 @@ const configDir = path.join(repoRoot, 'config')
 const logsDir = path.join(repoRoot, 'logs')
 
 const SUPABASE_URL = process.env.SUPABASE_URL || ''
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 const SUPABASE_COMPANY_ID = process.env.SUPABASE_COMPANY_ID || ''
 const LABEL = process.env.SUPABASE_LABEL || 'default'
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !SUPABASE_COMPANY_ID) {
-  console.error('Missing SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, or SUPABASE_COMPANY_ID')
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !SUPABASE_COMPANY_ID) {
+  console.error('Missing SUPABASE_URL, SUPABASE_ANON_KEY, or SUPABASE_COMPANY_ID')
   process.exit(1)
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: { autoRefreshToken: false, persistSession: false },
 })
 
