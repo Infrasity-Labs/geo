@@ -33,7 +33,7 @@ jobs:
       - name: Sync logs to Supabase
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           SUPABASE_COMPANY_ID: f1585331-e07c-47fc-ae5f-56c10b5cf159
           SUPABASE_LABEL: ${{ inputs.label || 'default' }}
         run: npm run sync:supabase
